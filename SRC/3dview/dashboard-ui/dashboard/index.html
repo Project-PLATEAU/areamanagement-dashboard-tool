@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title> - DASHBOARD</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+      />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      />
+
+    <style>
+      h2 {
+        background-color: rgb(0, 190, 190);
+        width: 101%;
+        line-height: 3em;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.5em;
+      }
+      .bg {
+        background-color: rgb(0, 190, 190);
+      }
+      .hover_shadow_none:hover {
+        box-shadow: none !important;
+      }
+      #logoutButton {
+        background-color: rgb(0, 190, 190);
+        color: rgb(255, 255, 255);
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        border-color: #fff;
+      }
+      #menuButton {
+        background-color: rgb(0, 190, 190);
+        color: rgb(255, 255, 255);
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        border-color: #fff;
+      }
+      .row-eq-height {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .over_fllow_y_scroll {
+        overflow-y: scroll;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: #ccc;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgb(0, 190, 190);
+      }
+      #linkListTable thead th {
+        border: #fff solid 2px;
+        border-bottom-width: 4px;
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+        background-color: rgb(0, 190, 190);
+        color: rgb(255, 255, 255);
+      }
+      #linkListTable tr td {
+        border: #fff solid 2px;
+      }
+      #linkListTable tr td,
+      #linkListTable tr th {
+        width: 360px;
+      }
+      #linkListTable thead {
+        text-align: center;
+      }
+      .listTableBox {
+        max-width: 90%;
+        max-height: 640px;
+      }
+      .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding: 58px 0 0; /* Height of navbar */
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+        background-color: rgb(0, 190, 190) !important;
+        border-color: rgb(0, 190, 190) !important;
+        width: 240px;
+        z-index: 600;
+      }
+      .sidebar .inactive {
+        border-radius: 5px;
+        background-color: rgb(0, 190, 190) !important;
+        color: white !important;
+        margin: 5px 0 !important;
+        border: white solid 1px !important;
+      }
+      .sidebar .active {
+        border-radius: 5px;
+        background-color: white !important;
+        color: rgb(0, 190, 190) !important;
+        margin: 5px 0 !important;
+        border: rgb(0, 190, 190) solid 1px !important;
+      }
+      .sidebar-sticky {
+        position: relative;
+        top: 0;
+        height: calc(100vh - 48px);
+        padding-top: 0.5rem;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+      }
+      .sidebar .list-group-item:hover {
+        background-color: white !important;
+        color: rgb(0, 190, 190) !important;
+        border: rgb(0, 190, 190) solid 1px !important;
+      }
+      hr {
+        width: 100%;
+        background-color: white;
+      }
+      #pageTitle {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg mb-3 fixed-top">
+      <h1 class="navbar-brand text-center w-100 font-weight-bold">
+        地域情報ダッシュボード
+      </h1>
+      <button
+        id="menuButton"
+        type="button"
+        class="btn nav-button"
+        onclick="window.open('../menu/','_platform');return false;">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i><span
+          class="nav-button-text"> トップへ戻る</span>
+      </button>
+      <button
+        id="logoutButton"
+        type="button"
+        class="btn nav-button"
+        onclick="location.href='../logout/';">
+        <i class="fa fa-user" aria-hidden="true"></i><span
+          class="nav-button-text"> ログアウト</span>
+      </button>
+    </nav>
+
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div
+          class="list-group list-group-flush mx-3 mt-4"
+          id="sidebarMenuContent"></div>
+      </div>
+    </nav>
+
+    <div class="container" style="padding-top: 5rem; margin-left: 240px">
+      <div class="row">
+        <div class="col-xs-auto col-sm-auto col-md-auto mx-1 mt-1">
+          <span id="pageTitle"> </span>
+        </div>
+      </div>
+
+      <!-- 統計情報テーブル -->
+      <div class="row statistics-table" style="margin-top: 10px">
+        <div class="col-md-auto mt-3 listTableBox" style="overflow: auto">
+          <table
+            id="linkListTable"
+            class="table table-striped"
+            style="white-space: nowrap">
+            <!-- jsでテーブルの中身を作成 -->
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js">
+    </script>
+
+    <!-- CSVの入出力処理 -->
+    <script>
+      /**
+       * サイドメニュー情報
+       */
+      let MENU_LIST = [];
+      let urlBasePath = "";
+      let tokenName = "token";
+      let attributeName = "X-ROLE";
+      let decoded = {};
+
+      /**
+       * 初期処理
+       */
+      $(function () {
+        /**
+        * 設定情報の取得
+        */
+        $.ajax({
+            type:"GET",
+            url:"../meta/config.json",
+            dataType:"json",
+            async:false
+        }).done(function(data) {
+            if(data && data.config){
+                urlBasePath =  data.config.urlBasePath;
+                tokenName = data.config.tokenName;
+                attributeName = data.config.tokenAttributeName;
+                document.title = data.config.title + document.title;
+                if(data.dashboardMenu){
+                  MENU_LIST = data.dashboardMenu;
+                }else{
+                  alert("メニュー情報の取得に失敗しました");
+                }
+            }else{
+                alert("設定情報の取得に失敗しました");
+            }
+        }).fail(function(e) {
+            console.log(e);
+        });
+        //サイドメニューを作成
+        for (let i = 1; i < MENU_LIST.length; i++) {
+          let menuSrc = "";
+          menuSrc +=
+            '<a href="javascript:changePage(' +
+            i +
+            ')"class="list-group-item list-group-item-action py-2 inactive" id="sidebarMenuContent' +
+            i +
+            '">';
+          menuSrc +=
+            "<span>" +
+            MENU_LIST.find((menu) => menu.index == i).name +
+            "</span>";
+          menuSrc += "</a>";
+          $("#sidebarMenuContent").append(menuSrc);
+        }
+
+        //ログインユーザが管理者ユーザの場合
+        try {
+          if (document.cookie) {
+            let token = "";
+            const cookiesArray = document.cookie.split(";");
+            cookiesArray.forEach((data) => {
+              data = data.split("=");
+              //半角スペース削除
+              data[0] = data[0].trim(" ");
+              if (data[0] === tokenName) {
+                token = data[1];
+              }
+            });
+            // tokenが存在すればdecodeを実施
+            if (token !== "") {
+              decoded = jwt_decode(token);
+            }
+          }
+          // decode結果から属性情報を取得
+          if (decoded && decoded[attributeName] === "admin") {
+            let adminMenuSrc = "";
+            adminMenuSrc += "<hr>";
+            adminMenuSrc +=
+              '<a href="javascript:changePage(0)" class="list-group-item list-group-item-action py-2 inactive" id="sidebarMenuContent0">';
+            adminMenuSrc +=
+              "<span>" +
+              MENU_LIST.find((menu) => menu.index == 0).name +
+              "</span>";
+            adminMenuSrc += "</a>";
+            $("#sidebarMenuContent").append(adminMenuSrc);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+
+        //クエリパラメータで表示する画面を変更する
+        var param = window.location.hash;
+        //MENU_LISTのindexの最大値（=管理者機能以外のメニュー個数）を取得
+        var maxIndex = Math.max.apply(
+          null,
+          MENU_LIST.map((list) => {
+            return list.index;
+          })
+        );
+        //「page」というクエリパラメータかチェック
+        if (param.length > 0) {
+          param = param.split("#")[1].split("&")[0].split("=");
+          if (
+            param[0] == "page" &&
+            Number(param[1]) > 0 &&
+            Number(param[1]) <= maxIndex
+          ) {
+            changePage(Number(param[1]));
+          } else {
+            changePage(1);
+          }
+        } else {
+          changePage(1);
+        }
+      });
+
+      /**
+       * サイドメニューのリンク押下処理
+       */
+      var changePage = function (index) {
+        //現activeをinactiveに
+        $(".active").addClass("inactive").removeClass("active");
+        $("#sidebarMenuContent" + index)
+          .addClass("active")
+          .removeClass("inactive");
+
+        //コンテナを変更
+        $("#pageTitle").text(
+          MENU_LIST.find((menu) => menu.index == index).name
+        );
+        changeLinkTable(index);
+      };
+
+      /**
+       * リンクテーブルの更新
+       */
+      var changeLinkTable = function (index) {
+        //テーブル表示
+        $("#linkListTable").empty();
+        //ヘッダ作成
+        var thead = "";
+        thead += "<thead><tr>";
+        thead += "<th>リンク</th>";
+        thead += "</tr></thead>";
+        $("#linkListTable").append(thead);
+
+        //データ部作成
+        var linkList = MENU_LIST.find((menu) => menu.index == index).link;
+        var tbody = "<tbody>";
+        for (let i = 0; i < linkList.length; i++) {
+          tbody += "<tr>";
+          tbody +=
+            "<td><a href=\"javascript:openNewWindow('" +
+            linkList[i].url +
+            "','" +
+            linkList[i].target +
+            "')\">" +
+            linkList[i].title +
+            "</a></td>";
+          tbody += "</tr>";
+        }
+        tbody += "</tbody>";
+        $("#linkListTable").append(tbody);
+        $("#linkListTable").css("display", "block");
+      };
+
+      /**
+       * 新規ウインドウで表示
+       */
+      var openNewWindow = function (url, target) {
+        window.open(url, target);
+        return false;
+      };
+    </script>
+  </body>
+</html>

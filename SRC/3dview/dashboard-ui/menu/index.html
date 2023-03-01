@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title> - MENU</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+        h2 {
+            background-color: rgb(0, 190, 190);
+            width: 101%;
+            line-height: 3em;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        a {
+            color: #000;
+        }
+        a:hover {
+            text-decoration: none !important;
+            color: #000;
+        }
+        .bg {
+            background-color: rgb(0, 190, 190);
+        }
+        .card {
+            margin: 0 auto;
+            box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            height: 100%;
+        }
+        .card-body {
+            max-height: 180px;
+        }
+        .card-body a {
+            color: #4169e1;
+            text-decoration: none;
+            border-bottom: 3px solid #4169e1;
+        }
+        .hover-shadow-none:hover {
+            box-shadow: none !important;
+        }
+        #logoutButton {
+            background-color: rgb(0, 190, 190);
+            color: rgb(255, 255, 255);
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            border-color: #fff;
+        }
+        .row-eq-height {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #ccc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(0, 190, 190);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg mb-3">
+        <h1 class="navbar-brand text-center w-100 font-weight-bold" id="title">エリア地域情報プラットフォーム​</h1>
+        <button id="logoutButton" type="button" class="btn" onclick="location.href='../logout/';"><i class="fa fa-user"
+                aria-hidden="true"></i> ログアウト</button>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto mt-3">
+                <div class="row row-eq-height">
+                    <div class="col-md-6">
+                        <a href="#" onclick="window.open('../plateau/','_3dview');return false;" target="_blank">
+                            <div class="card hover-shadow-none" style="width: 18rem;">
+                                <h2>3DVIEWER <i class="fa-solid fa-cube"></i></h2>
+                                <div class="card-body">
+                                    <p class="card-text">3DVIEWERにてユースケースにおける利用が行えます。</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" onclick="window.open('../dashboard/','_metabase');return false;" target="_blank">
+                            <div class="card hover-shadow-none" style="width: 18rem;">
+                                <h2>DASHBOARD <i class="fa-solid fa-cube"></i></h2>
+                                <div class="card-body">
+                                    <p class="card-text">DASHBOARDにてユースケースにおける利用が行えます。</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+        <script>
+            let urlBasePath = "";
+            $(function(){
+                /**
+                * 設定情報の取得
+                */
+                $.ajax({
+                    type:"GET",
+                    url:"../meta/config.json",
+                    dataType:"json",
+                    async:false
+                }).done(function(data) {
+                    if(data && data.config){
+                    	urlBasePath =  data.config.urlBasePath;
+                        document.title = data.config.title + document.title;
+                        document.getElementById("title").textContent = data.config.title;
+                    }else{
+                        alert("設定情報の取得に失敗しました");
+                    }
+                }).fail(function(e) {
+                    console.log(e);
+                });
+                if(window.name==''){
+                    window.name='_platform'
+                }
+            })
+        </script>
+</body>
+
+</html>

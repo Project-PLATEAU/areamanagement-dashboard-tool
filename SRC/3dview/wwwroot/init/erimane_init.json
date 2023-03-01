@@ -1,0 +1,569 @@
+{
+    "initialCamera": {
+	    "west": 132.44260414011882,
+	    "south": 34.37661020684377,
+	    "east": 132.52218201535285,
+	    "north": 34.4134506523117,
+	    "position": {
+	      "x": -3562077.3036708836,
+	      "y": 3889724.314190411,
+	      "z": 3579840.7448215405
+	    },
+	    "direction": {
+	      "x": 0.6019807825356082,
+	      "y": -0.6573521815742026,
+	      "z": 0.4533290712467638
+	    },
+	    "up": {
+	      "x": -0.30616195866755636,
+	      "y": 0.33432334932262747,
+	      "z": 0.8913432297171197
+	    }
+	},
+	"homeCamera": {
+		"west": 132.3,
+		"south": 34.25,
+		"east": 132.6,
+		"north": 34.55
+	},
+    "corsDomains": [
+        "d300u3e35jef5x.cloudfront.net",
+        "gic-plateau.s3.ap-northeast-1.amazonaws.com",
+        "gibs.earthdata.nasa.gov"
+    ],
+    "stories": [],
+    "baseMaps": {
+        "defaultBaseMapId": "/basemap/航空写真（○○市）",
+        "items": [
+            {
+                "item": {
+                    "type": "composite",
+                    "id": "/basemap/全国最新写真 (シームレス)",
+                    "name": "全国最新写真アホ (シームレス)",
+                    "members": [
+                        {
+                            "type": "cesium-terrain",
+                            "id": "/basemap/全国最新写真 (シームレス)/terrain",
+                            "name": "tokyo-23ku-terrain",
+                            "ionAccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NGI5ZDM0Mi1jZDIzLTRmMzEtOTkwYi0zZTk4Yzk3ODZlNzQiLCJpZCI6NDA2NDYsImlhdCI6MTYwODk4MzAwOH0.3rco62ErML11TMSEflsMqeUTCDbIH6o4n4l5sssuedE",
+                            "ionAssetId": 286503,
+                            "attribution": "地形データ：基盤地図情報数値標高モデルから作成（測量法に基づく国土地理院長承認（使用）R 3JHs 259）"
+                        },
+                        {
+                            "type": "open-street-map",
+                            "opacity": 1,
+                            "id": "/basemap/航空写真/imagery",
+                            "name": "航空写真",
+                            "url": "https://gic-plateau.s3.ap-northeast-1.amazonaws.com/2020/ortho/tiles/",
+                            "fileExtension": "png",
+                            "attribution": "東京23区の地形と空中写真"
+                        },
+                        {
+                            "type": "open-street-map",
+                            "opacity": 1,
+                            "id": "/basemap/全国最新写真 (シームレス)/imagery",
+                            "name": "全国最新写真 (シームレス)",
+                            "url": "https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/",
+                            "fileExtension": "jpg",
+                            "attribution": "地理院タイル (<a href='https://www.gsi.go.jp/' target='_blank' rel='noopener noreferrer'>国土地理院</a>) / Shoreline data is derived from: United States. National Imagery and Mapping Agency. \"Vector Map Level 0 (VMAP0).\" Bethesda, MD: Denver, CO: The Agency; USGS Information Services, 1997."
+                        }
+                    ]
+                },
+                "image": "./images/bgmap_tokyo.png"
+            },
+            {
+                "item": {
+                    "type": "composite",
+                    "id": "/basemap/空中写真 (Bing)",
+                    "name": "空中写真 (Bing)",
+                    "members": [
+                        {
+                            "type": "cesium-terrain",
+                            "id": "/basemap/全国最新写真 (シームレス)/terrain",
+                            "name": "tokyo-23ku-terrain",
+                            "ionAccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NGI5ZDM0Mi1jZDIzLTRmMzEtOTkwYi0zZTk4Yzk3ODZlNzQiLCJpZCI6NDA2NDYsImlhdCI6MTYwODk4MzAwOH0.3rco62ErML11TMSEflsMqeUTCDbIH6o4n4l5sssuedE",
+                            "ionAssetId": 286503,
+                            "attribution": "地形データ：基盤地図情報数値標高モデルから作成（測量法に基づく国土地理院長承認（使用）R 3JHs 259）"
+                        },
+                        {
+                            "id": "/basemap/空中写真 (Bing)/imagery",
+                            "name": "空中写真 (Bing)",
+                            "type": "ion-imagery",
+                            "ionAssetId": 3,
+                            "opacity": 1
+                        }
+                    ]
+                },
+                "image": "./images/bgmap_bing.png"
+            },
+            {
+                "item": {
+                    "type": "composite",
+                    "id": "/basemap/地理院地図 (淡色)",
+                    "name": "地理院地図 (淡色)",
+                    "members": [
+                        {
+                            "type": "cesium-terrain",
+                            "id": "/basemap/全国最新写真 (シームレス)/terrain",
+                            "name": "tokyo-23ku-terrain",
+                            "ionAccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NGI5ZDM0Mi1jZDIzLTRmMzEtOTkwYi0zZTk4Yzk3ODZlNzQiLCJpZCI6NDA2NDYsImlhdCI6MTYwODk4MzAwOH0.3rco62ErML11TMSEflsMqeUTCDbIH6o4n4l5sssuedE",
+                            "ionAssetId": 286503,
+                            "attribution": "地形データ：基盤地図情報数値標高モデルから作成（測量法に基づく国土地理院長承認（使用）R 3JHs 259）"
+                        },
+                        {
+                            "type": "open-street-map",
+                            "opacity": 1,
+                            "id": "/basemap/地理院地図 (淡色)/imagery",
+                            "name": "地理院地図 (淡色)",
+                            "url": "https://cyberjapandata.gsi.go.jp/xyz/pale/",
+                            "fileExtension": "png",
+                            "attribution": "地理院タイル (<a href='https://www.gsi.go.jp/' target='_blank' rel='noopener noreferrer'>国土地理院</a>) / Shoreline data is derived from: United States. National Imagery and Mapping Agency. \"Vector Map Level 0 (VMAP0).\" Bethesda, MD: Denver, CO: The Agency; USGS Information Services, 1997."
+                        }
+                    ]
+                },
+                "image": "./images/bgmap_gsi.png"
+            },
+            {
+                "item": {
+                    "type": "composite",
+                    "id": "/basemap/Dark Matter",
+                    "name": "Dark Matter",
+                    "members": [
+                        {
+                            "type": "cesium-terrain",
+                            "id": "/basemap/全国最新写真 (シームレス)/terrain",
+                            "name": "tokyo-23ku-terrain",
+                            "ionAccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NGI5ZDM0Mi1jZDIzLTRmMzEtOTkwYi0zZTk4Yzk3ODZlNzQiLCJpZCI6NDA2NDYsImlhdCI6MTYwODk4MzAwOH0.3rco62ErML11TMSEflsMqeUTCDbIH6o4n4l5sssuedE",
+                            "ionAssetId": 286503,
+                            "attribution": "地形データ：基盤地図情報数値標高モデルから作成（測量法に基づく国土地理院長承認（使用）R 3JHs 259）"
+                        },
+                        {
+                            "type": "open-street-map",
+                            "opacity": 1,
+                            "id": "/basemap/basemap-darkmatter/imagery",
+                            "name": "Dark Matter",
+                            "url": "https://basemaps.cartocdn.com/dark_all/",
+                            "fileExtension": "png",
+                            "attribution": "© <a href'https://www.openstreetmap.org/copyright'>OpenStreetMap</a>, © <a href='https://carto.com/about-carto/'>CARTO</a>"
+                        }
+                    ]
+                },
+                "image": "./images/bgmap_darkmatter.png"
+            },
+            {
+                "item": {
+                    "type": "composite",
+                    "id": "/basemap/航空写真（○○市）",
+                    "name": "航空写真（○○市）",
+                    "members": [
+                        {
+                            "type": "cesium-terrain",
+                            "id": "/basemap/3D地形データ（○○市）/terrain",
+                            "name": "sample-terrain",
+                            "ionAccessToken": "ionAccessTokenを設定",
+                            "ionAssetId": 99999,
+                            "attribution": "地形データ：Cesium ionで配信"
+                        },
+                        {
+                            "type": "open-street-map",
+                            "opacity": 1,
+                            "id": "basemap//航空写真（○○市）/imagery",
+                            "name": "航空写真（○○市）",
+                            "url": "/resource/photo/",
+                            "fileExtension": "png",
+                            "attribution": "sample photo"
+                        }
+                    ]
+                },
+                "image": "./images/bgmap_○○_areaphoto.png"
+            }
+        ],
+        "enabledBaseMaps": [
+            "/basemap/全国最新写真 (シームレス)",
+            "/basemap/空中写真 (Bing)",
+            "/basemap/地理院地図 (淡色)",
+            "/basemap/Dark Matter",
+            "/basemap/航空写真（○○市）"
+        ]
+    },
+    "catalog": [
+        {
+            "id": "//データセット",
+            "name": "データセット",
+            "type": "group",
+            "members": [
+                {
+                    "id": "//データセット/建物モデル",
+                    "name": "建物モデル（○○市）",
+                    "type": "3d-tiles",
+                    "hideSource": true,
+                    "url": "/resource/3dtiles/building/texture/tileset.json"
+                },
+                {
+                    "id": "//データセット/共通",
+                    "name": "共通",
+                    "type": "group",
+                    "members": [
+                        {
+                            "id": "//データセット/共通/ランドマーク",
+                            "name": "ランドマーク",
+                            "type": "czml",
+                            "url": "/resource/landmark/landmark.czml",
+                            "hideSource": true
+                        },
+                        {
+                            "id": "//データセット/共通/歩行者ネットワークデータ",
+                            "name": "歩行者ネットワークデータ",
+                            "type": "group",
+                            "hideSource": true,
+                            "members": [
+                                {
+                                    "id": "//データセット/共通/歩行者ネットワークデータ/歩行者空間ネットワーク(2D表示)",
+                                    "name": "歩行者空間ネットワーク(2D表示)",
+                                    "type": "wms",
+                                    "url": "/geoserver/dummy/wms",
+                                    "layers": "dummy:リンク3D"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "//データセット/地域・エリマネ活動可視化",
+                    "name": "地域・エリマネ活動可視化",
+                    "type": "group",
+                    "members": [
+                        {
+                            "id": "//データセット/地域・エリマネ活動可視化/エリマネ活動結果",
+                            "name": "エリマネ活動結果",
+                            "type": "wms",
+                            "hideSource": true,
+                            "url": "/geoserver/dummy/wms",
+                            "layers": "dummy:activity"
+                        }
+                    ]
+                },
+                {
+                    "id": "//データセット/賑わい創出",
+                    "name": "賑わい創出(イベント活動・回遊性分析)",
+                    "type": "group",
+                    "members": [
+                        {
+                            "id": "//データセット/賑わい創出/イベント活動結果",
+                            "name": "イベント活動結果",
+                            "type": "wms",
+                            "hideSource": true,
+                            "url": "/geoserver/dummy/wms",
+                            "layers": "dummy:event"
+                        },
+                        {
+                            "id": "//データセット/賑わい創出/回遊分析情報",
+                            "name": "回遊分析情報",
+                            "type": "group",
+                            "members": [
+                                {
+                                    "id": "//データセット/賑わい創出/回遊分析情報/1回目",
+                                    "name": "回遊性分析結果_1回目",
+                                    "type": "group",
+                                    "members": [
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/1回目/人気スポット(3D)",
+                                            "name": "人気スポット(3D)_1回目",
+                                            "type": "composite",
+                                            "members": [
+                                                {
+                                                    "id": "//データセット/賑わい創出/回遊分析情報/1回目/人気スポット3D表示",
+                                                    "name": "人気スポット(3D)",
+                                                    "type": "wfs",
+                                                    "hideSource": true,
+                                                    "url": "/geoserver/dummy/ows",
+                                                    "typeNames": "dummy:人気スポット1",
+                                                    "czmlTemplate": {
+                                                        "ellipse": {
+                                                            "semiMinorAxis": 10.0,
+                                                            "semiMajorAxis": 10.0,
+                                                            "extrudedHeight": {
+                                                                "number": 10,
+                                                                "reference": "#properties.合計"
+                                                            },
+                                                            "height": 40.0,
+                                                            "numberOfVerticalLines": 100,
+                                                            "heightReference": "RELATIVE_TO_GROUND",
+                                                            "material": {
+                                                                "solidColor": {
+                                                                    "color": {
+                                                                        "rgba": [
+                                                                            255,
+                                                                            0,
+                                                                            0,
+                                                                            100
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            "outline": true,
+                                                            "outlineColor": {
+                                                                "rgba": [
+                                                                    255,
+                                                                    0,
+                                                                    0,
+                                                                    0
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": "//データセット/賑わい創出/回遊分析情報/1回目/人気スポット3Dラベル",
+                                                    "name": "人気スポット(3D)",
+                                                    "type": "wfs",
+                                                    "hideSource": true,
+                                                    "url": "/geoserver/dummy/ows",
+                                                    "typeNames": "dummy:人気スポットラベル1",
+                                                    "czmlTemplate": {
+                                                        "label": {
+                                                            "fillColor": {
+                                                                "rgba": [
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "font": "12pt Lucida Console bold",
+                                                            "horizontalOrigin": "CENTER",
+                                                            "verticalOrigin": {
+                                                                "verticalOrigin": "TOP",
+                                                                "reference": "#properties.合計"
+                                                            },
+                                                            "outlineColor": {
+                                                                "rgba": [
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "translucencyByDistance": {
+                                                                "nearFarScalar": [
+                                                                    1000,
+                                                                    1.0,
+                                                                    1000,
+                                                                    0.0
+                                                                ]
+                                                            },
+                                                            "showBackground ": true,
+                                                            "backgroundColor": {
+                                                                "rgba": [
+                                                                    80,
+                                                                    68,
+                                                                    236,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "backgroundPadding ": [
+                                                                100,
+                                                                100
+                                                            ],
+                                                            "outlineWidth": 1.5,
+                                                            "pixelOffset": {
+                                                                "cartesian2": [
+                                                                    0,
+                                                                    25
+                                                                ]
+                                                            },
+                                                            "heightReference": {
+                                                                "heightReference": "RELATIVE_TO_GROUND",
+                                                                "reference": "#properties.height"
+                                                            },
+                                                            "style": "FILL_AND_OUTLINE",
+                                                            "text": {
+                                                                "reference": "#properties.スポット名"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/1回目/人気スポット(2D)",
+                                            "name": "人気スポット(2D)_1回目",
+                                            "type": "wms",
+                                            "hideSource": true,
+                                            "url": "/geoserver/dummy/ows",
+                                            "layers": "dummy:人気スポット1"
+                                        },
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/1回目/イベント回遊情報",
+                                            "name": "イベント回遊情報_1回目",
+                                            "type": "czml",
+                                            "url": "/resource/kaiyuu/kaiyuu1_parabola.czml",
+                                            "legends": [
+                                                {
+                                                    "url": "/resource/legends/kaiyuu/legend_event_kaiyuu.png",
+                                                    "imageScaling": 0.5
+                                                }
+                                            ],
+                                            "featureInfoTemplate": {
+                                                "template": "<table><tr><td>移動経路</td><td>{{移動経路}}</td></tr><tr><td>合計</td><td>{{合計}}</td></tr><tr><td>距離</td><td>{{距離}}</td></tr><tr><td>ダッシュボード</td><td><a href=\"/migratoryinfo/#initview=1\" target=\"_metabase\">閲覧</a></td></tr></table>"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "//データセット/賑わい創出/回遊分析情報/2回目",
+                                    "name": "回遊性分析結果_2回目",
+                                    "type": "group",
+                                    "members": [
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/2回目/人気スポット(3D)",
+                                            "name": "人気スポット(3D)_2回目",
+                                            "type": "composite",
+                                            "members": [
+                                                {
+                                                    "id": "//データセット/賑わい創出/回遊分析情報/2回目/人気スポット3D表示",
+                                                    "name": "人気スポット(3D)",
+                                                    "type": "wfs",
+                                                    "hideSource": true,
+                                                    "url": "/geoserver/dummy/ows",
+                                                    "typeNames": "dummy:人気スポット2",
+                                                    "czmlTemplate": {
+                                                        "ellipse": {
+                                                            "semiMinorAxis": 10.0,
+                                                            "semiMajorAxis": 10.0,
+                                                            "extrudedHeight": {
+                                                                "number": 10,
+                                                                "reference": "#properties.合計"
+                                                            },
+                                                            "height": 40.0,
+                                                            "numberOfVerticalLines": 100,
+                                                            "heightReference": "RELATIVE_TO_GROUND",
+                                                            "material": {
+                                                                "solidColor": {
+                                                                    "color": {
+                                                                        "rgba": [
+                                                                            255,
+                                                                            0,
+                                                                            0,
+                                                                            100
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            "outline": true,
+                                                            "outlineColor": {
+                                                                "rgba": [
+                                                                    255,
+                                                                    0,
+                                                                    0,
+                                                                    0
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": "//データセット/賑わい創出/回遊分析情報/2回目/人気スポット3Dラベル",
+                                                    "name": "人気スポット(3D)",
+                                                    "type": "wfs",
+                                                    "hideSource": true,
+                                                    "url": "/geoserver/dummy/ows",
+                                                    "typeNames": "dummy:人気スポットラベル2",
+                                                    "czmlTemplate": {
+                                                        "label": {
+                                                            "fillColor": {
+                                                                "rgba": [
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "font": "12pt Lucida Console bold",
+                                                            "horizontalOrigin": "CENTER",
+                                                            "verticalOrigin": {
+                                                                "verticalOrigin": "TOP",
+                                                                "reference": "#properties.合計"
+                                                            },
+                                                            "outlineColor": {
+                                                                "rgba": [
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "translucencyByDistance": {
+                                                                "nearFarScalar": [
+                                                                    1000,
+                                                                    1.0,
+                                                                    1000,
+                                                                    0.0
+                                                                ]
+                                                            },
+                                                            "showBackground ": true,
+                                                            "backgroundColor": {
+                                                                "rgba": [
+                                                                    80,
+                                                                    68,
+                                                                    236,
+                                                                    255
+                                                                ]
+                                                            },
+                                                            "backgroundPadding ": [
+                                                                100,
+                                                                100
+                                                            ],
+                                                            "outlineWidth": 1.5,
+                                                            "pixelOffset": {
+                                                                "cartesian2": [
+                                                                    0,
+                                                                    25
+                                                                ]
+                                                            },
+                                                            "heightReference": {
+                                                                "heightReference": "RELATIVE_TO_GROUND",
+                                                                "reference": "#properties.height"
+                                                            },
+                                                            "style": "FILL_AND_OUTLINE",
+                                                            "text": {
+                                                                "reference": "#properties.スポット名"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/2回目/人気スポット(2D)",
+                                            "name": "人気スポット(2D)_2回目",
+                                            "type": "wms",
+                                            "hideSource": true,
+                                            "url": "/geoserver/dummy/ows",
+                                            "layers": "dummy:人気スポット2"
+                                        },
+                                        {
+                                            "id": "//データセット/賑わい創出/回遊分析情報/2回目/イベント回遊情報",
+                                            "name": "イベント回遊情報_2回目",
+                                            "type": "czml",
+                                            "url": "/resource/kaiyuu/kaiyuu2_parabola.czml",
+                                            "legends": [
+                                                {
+                                                    "url": "/resource/legends/kaiyuu/legend_event_kaiyuu.png",
+                                                    "imageScaling": 0.5
+                                                }
+                                            ],
+                                            "featureInfoTemplate": {
+                                                "template": "<table><tr><td>移動経路</td><td>{{移動経路}}</td></tr><tr><td>合計</td><td>{{合計}}</td></tr><tr><td>距離</td><td>{{距離}}</td></tr><tr><td>ダッシュボード</td><td><a href=\"/migratoryinfo/#initview=2\" target=\"_metabase\">閲覧</a></td></tr></table>"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

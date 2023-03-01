@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>redirect</title>
+        <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,300"
+            rel="stylesheet" type="text/css" />
+        <style>
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                display: none;
+                opacity: 0;
+                z-index: -1;
+            }
+        }
+        #loader {
+            width: 100%;
+            height: 100vh;
+            background-color: #00c2bc;
+        }
+        #loader.loaded {
+            animation: fadeOut 3s forwards;
+        }
+        .spinner {
+            margin: 0 auto;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            top: 50%;
+        }
+        .cube1,
+        .cube2 {
+            background-color: #ffffff;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-animation: cube-animation 1.8s infinite ease-in-out;
+            animation: cube-animation 1.8s infinite ease-in-out;
+        }
+        .cube2 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+        @-webkit-keyframes cube-animation {
+            25% {
+                -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5)
+            }
+
+            50% {
+                -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg)
+            }
+
+            75% {
+                -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5)
+            }
+
+            100% {
+                -webkit-transform: rotate(-360deg)
+            }
+        }
+        @keyframes cube-animation {
+            25% {
+                transform: translateX(42px) rotate(-90deg) scale(0.5);
+                -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
+            }
+
+            50% {
+                transform: translateX(42px) translateY(42px) rotate(-179deg);
+                -webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
+            }
+
+            50.1% {
+                transform: translateX(42px) translateY(42px) rotate(-180deg);
+                -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
+            }
+
+            75% {
+                transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+                -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+            }
+
+            100% {
+                transform: rotate(-360deg);
+                -webkit-transform: rotate(-360deg);
+            }
+        }
+    </style>
+    </head>
+
+    <body>
+        <div id="loader">
+            <div class="spinner">
+                <div class="cube1"></div>
+                <div class="cube2"></div>
+            </div>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+        <script>
+        $(function(){
+            let urlBasePath = "";
+            /**
+             * 設定情報の取得
+             */
+            $.ajax({
+                type:"GET",
+                url:"../meta/config.json",
+                dataType:"json",
+                async:false
+            }).done(function(data) {
+                if(data && data.config){
+                    urlBasePath =  data.config.urlBasePath;
+                }else{
+                    alert("設定情報の取得に失敗しました");
+                }
+            }).fail(function(e) {
+                console.log(e);
+            });
+	        setTimeout(function () {
+                window.location.href = urlBasePath + "/menu/";
+            }, 1500);
+        })
+    </script>
+    </body>
+
+</html>

@@ -1,0 +1,24 @@
+{
+    "config": {
+        "tokenName":"token",
+        "tokenAttributeName":"X-ROLE",
+        "apiUrl":"/api",
+        "geoServerUrl":"/geoserver",
+        "activityDetailsUrlForErimane":"/metabase/public/dashboard/xxxxxxxxx",
+        "activityDetailsUrlForEvent":"/metabase/public/dashboard/yyyyyyyy"
+    },
+    "layerId":{
+        "erimane":"//データセット/地域・エリマネ活動可視化/エリマネ活動結果",
+        "event":"//データセット/賑わい創出/イベント活動結果",
+        "excursionAnalysis":"//データセット/賑わい創出/回遊分析情報/[excursionAnalysisCount]回目/[excursionAnalysisType]"
+    },
+    "queryParameter":{
+        "parameterNameForActivityDetailsUrl":"%25E6%25B4%25BB%25E5%258B%2595id",
+        "activityType":{"erimane":1,"event":2},
+        "excursionAnalysisType":{"spot":"人気スポット(3D)","excursion":"イベント回遊情報"}
+    },
+    "feature":{
+        "featurePropertyNameForExcursionAnalysisId":{"spot":"スポット名","excursion":"移動経路"},
+        "featurePropertyNameForParentActivityId":"parent_activity_id"
+    }
+}

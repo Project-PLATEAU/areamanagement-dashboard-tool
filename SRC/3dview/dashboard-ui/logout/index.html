@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>logout</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,300" rel="stylesheet" type="text/css" />
+  <style>
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        display: none;
+        opacity: 0;
+        z-index: -1;
+      }
+    }
+    #loader {
+      width: 100%;
+      height: 100vh;
+      background-color: #00c2bc;
+    }
+    #loader.loaded {
+      animation: fadeOut 3s forwards;
+    }
+    .spinner {
+      margin: 0 auto;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      top: 50%;
+    }
+    .cube1,
+    .cube2 {
+      background-color: #ffffff;
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
+      animation: sk-cubemove 1.8s infinite ease-in-out;
+    }
+    .cube2 {
+      -webkit-animation-delay: -0.9s;
+      animation-delay: -0.9s;
+    }
+    @-webkit-keyframes sk-cubemove {
+      25% {
+        -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5)
+      }
+
+      50% {
+        -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg)
+      }
+
+      75% {
+        -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5)
+      }
+
+      100% {
+        -webkit-transform: rotate(-360deg)
+      }
+    }
+    @keyframes sk-cubemove {
+      25% {
+        transform: translateX(42px) rotate(-90deg) scale(0.5);
+        -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
+      }
+
+      50% {
+        transform: translateX(42px) translateY(42px) rotate(-179deg);
+        -webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
+      }
+
+      50.1% {
+        transform: translateX(42px) translateY(42px) rotate(-180deg);
+        -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
+      }
+
+      75% {
+        transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+        -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
+      }
+
+      100% {
+        transform: rotate(-360deg);
+        -webkit-transform: rotate(-360deg);
+      }
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+</head>
+<body>
+  <div id="loader">
+    <div class="spinner">
+      <div class="cube1"></div>
+      <div class="cube2"></div>
+    </div>
+  </div>
+  <script>
+    $(function(){
+      let tokenName = "";
+      let urlBasePath = "";
+      /**
+      * 設定情報の取得
+      */
+      $.ajax({
+          type:"GET",
+          url:"../meta/config.json",
+          dataType:"json",
+          async:false
+      }).done(function(data) {
+          if(data && data.config){
+              urlBasePath =  data.config.urlBasePath;
+              tokenName = data.config.tokenName;
+          }else{
+              alert("設定情報の取得に失敗しました");
+          }
+      }).fail(function(e) {
+          console.log(e);
+      });
+      // 保存したCookieを削除する(cognitoの古いtokenも削除するように追加) 2022/12/05	
+      Cookies.remove('id_token',{path: '/' });
+      Cookies.remove(tokenName,{path: '/' });
+      Cookies.remove('id_token');
+      Cookies.remove(tokenName);
+      setTimeout(function () {
+          window.location.href = urlBasePath + "/login/";
+        }, 1500);
+    })
+  </script>
+</body>
+
+</html>

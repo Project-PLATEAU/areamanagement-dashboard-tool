@@ -1,0 +1,152 @@
+{
+    "config": {
+        "title": "○○市エリア地域情報プラットフォーム",
+        "tokenName": "token",
+        "tokenAttributeName": "X-ROLE",
+        "urlBasePath": "",
+        "apiUrlBasePath": "/api",
+        "kaiyuseiMetabaseTemplateUrl": "/metabase/public/dashboard/xxxxxxxxxx"
+    },
+    "dashboardMenu": [
+        {
+            "index": 0,
+            "name": "管理者機能",
+            "link": [
+                {
+                    "title": "地域統計／回遊性情報の更新",
+                    "url": "/csvdata/",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "地域情報ダッシュボードの管理",
+                    "url": "/metabase/",
+                    "target": "_metabase"
+                }
+            ]
+        },
+        {
+            "index": 1,
+            "name": "地域・エリマネ活動可視化",
+            "link": [
+                {
+                    "title": "エリマネ活動詳細",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "地域統計情報",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "name": "地域防災力",
+            "link": [
+                {
+                    "title": "災害リスク表示（洪水浸水）",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "災害リスク表示（津波浸水・高潮浸水）",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "避難施設情報",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "わがまち防災マップ一覧",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "name": "賑わい創出",
+            "link": [
+                {
+                    "title": "イベント活動詳細",
+                    "url": "/metabase/public/dashboard/xxxxxxxxxxx",
+                    "target": "_metabase"
+                },
+                {
+                    "title": "回遊性",
+                    "url": "/migratoryinfo/",
+                    "target": "_metabase"
+                }
+            ]
+        }
+    ],
+    "statisticsItemsInformation": [
+    	{
+            "value": "chika2",
+            "displayName": "地価公示価格"
+        },
+        {
+            "value": "erimane_ninchido",
+            "displayName": "活動前と比較した認知度の推移"
+        },
+        {
+            "value": "gis_joint2_household",
+            "displayName": "町丁目別人口世帯数"
+        },
+        {
+            "value": "gis_joint2_population",
+            "displayName": "町丁目別年齢別人口"
+        },
+        {
+            "value": "gis_joint2_size",
+            "displayName": "町丁目別世帯人員別世帯数"
+        },
+        {
+            "value": "gis_joint2_office",
+            "displayName": "事務所数"
+        },
+        {
+            "value": "gis_joint2_employee",
+            "displayName": "従業者数"
+        },
+        {
+            "value": "station_users",
+            "displayName": "○○市の乗降客数"
+        },
+        {
+            "value": "syogyoshisetsu",
+            "displayName": "商業施設"
+        },
+        {
+            "value": "syokencyosa_shijiritsu",
+            "displayName": "商圏調査の支持率"
+        },
+        {
+            "value": "city_summary",
+            "displayName": "○○市まとめ"
+        },
+        {
+            "value": "kaiyusei_people",
+            "displayName": "回遊性情報_来場者人数"
+        },
+        {
+            "value": "kaiyusei_age",
+            "displayName": "回遊性情報_来場者年齢"
+        },
+        {
+            "value": "kaiyusei_gender",
+            "displayName": "回遊性情報_来場者性別"
+        },
+        {
+            "value": "kaiyusei_region",
+            "displayName": "回遊性情報_来場者地域"
+        },
+        {
+            "value": "kaiyusei_steps",
+            "displayName": "回遊性情報_来場者歩数"
+        }
+    ]
+}

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--  回遊性情報表示 HTML -->
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title> - 回遊性情報</title>
+    <style>
+    a{
+      color:#609de2;
+      text-decoration: none;
+    } 
+    .pageHeader {
+      display: flex;
+      justify-content: space-between;
+    }
+    .pageTitle {
+      width: 200px;
+      margin: 50px,50px;
+      color: #4c5773;
+      font-weight:bold;
+      font-size: 20px;
+    }
+    .pageControl {
+      display: flex;
+      justify-content: flex-end;
+    }
+    #pagePiece {
+      color:#509EE3;
+      font-weight:bold;
+      Text-decoration: none;
+    }
+    #pagePiece:hover {
+      text-decoration: underline;
+    }
+    .selectBox {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .selectLabel{
+      margin-right: 10px;
+      line-height:40px;
+      color: #4c5773;
+      font-size: 14px;
+      font-weight:bold;
+    }
+    #selectMenu {
+      margin: 50px,50px;
+      background: #FFFDF4;
+      border: 2px solid #509EE3;
+      border-radius: 7px;
+      color: #509EE3;
+      font-size: 16px;
+      height: 25px;
+      line-height: 25px;
+      text-align: left;
+      text-indent: 5px;
+      vertical-align: middle;
+      width: 170px;
+      height: 40px;
+    }
+    #selectMenuIndex {
+      visibility: hidden;
+    }
+    .chartTitle {
+      margin-left: 10px;
+      font-size: 14px;
+      color: #4c5773;
+      font-weight:bold;
+    }
+    .chartjsArea {
+      display: flex;
+      justify-content: space-around;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    .merabaseArea {
+      display: flex;
+      justify-content: center;
+    }
+    #title{
+       padding-left:20px;
+    }
+    @media screen and (max-width: 900px) {
+     #rootCanvas,#spotCanvas{
+       width:100%!important;
+     }
+     .chartjsArea{
+       display:block!important;
+     }
+    }
+  </style>
+  </head>
+
+  <body>
+    <!--  ヘッダー情報表示　-->
+    <div class="pageHeader" style="margin-top: 30px; margin-left: 20px;
+      margin-right: 20px;">
+      <div class="pageTitle">回遊性情報</div>
+      <div class="selectBox">
+        <div class="selectLabel">回数</div>
+        <select name="selectMenu" id="selectMenu">
+        </select>
+        <div id="selectMenuIndex" style="display: inline;">
+        </div>
+      </div>
+    </div>
+    <div class="pageControl" style="margin-top: 50px;">
+      <div id="pagePiece" style="margin-right: 20px;">
+        <a href="../dashboard/#page=3" target="_metabase">前に戻る</a>
+      </div>
+      <div id="pagePiece" style="margin-right: 20px;">
+        <a href="../dashboard/" target="_metabase">トップに戻る</a>
+      </div>
+      <div id="pagePiece" style="margin-right: 20px;">
+        <a href="../logout/">ログアウト</a>
+      </div>
+    </div>
+    <!--  回遊性情報表示　-->
+    <h2 id="title">回遊性・人気スポットのグラフを選択すると対象個所の3Dビューアへ移動</h2>
+    <div class="chartjsArea" style="margin:30px 0px; height: 100%">
+      <div id="rootCanvas" style="position: relative; height:40vh; width:50%;
+        margin: 0px 10px">
+        <div class="chartTitle">回遊性順位</div>
+        <canvas id="rootChart">
+        </canvas>
+      </div>
+      <div id="spotCanvas" style="position: relative; height:40vh; width:50%;
+        margin: 0px 10px">
+        <div class="chartTitle">人気スポット順位</div>
+        <canvas id="spotChart">
+        </canvas>
+      </div>
+    </div>
+    <!--  metabase インラインフレーム表示 -->
+    <div class="merabaseArea">
+      <iframe id="metabaseFrame" title="Inline Frame" width="1900" height="1200"
+        src="" frameborder="0">
+      </iframe>
+    </div>
+    <!-- フッター -->
+    <div class="pageFooter" style="margin:70px 20px">
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script>
+    const roop = 12;  //  棒グラフのデータ件数リミット（最大の定義数まで降順にグラフ表示します）
+    let apiUrlBasePath = "";
+    let kaiyuseiMetabaseTemplateUrl = "";
+    let MAX_COUNT = 0; //回遊性情報の最大回数
+    /**
+    * 設定情報の取得
+    */
+    $.ajax({
+        type:"GET",
+        url:"../meta/config.json",
+        dataType:"json",
+        async:false
+    }).done(function(data) {
+        if(data && data.config){
+            apiUrlBasePath = data.config.apiUrlBasePath;
+            kaiyuseiMetabaseTemplateUrl = data.config.kaiyuseiMetabaseTemplateUrl;
+            document.title = data.config.title + document.title;
+        }else{
+            alert("設定情報の取得に失敗しました");
+        }
+    }).fail(function(e) {
+        console.log(e);
+    });
+    /****************************************************************
+    起動時（初回）処理
+      1.APIによる回数情報の取得
+      2.セレクトメニュー作成
+      3.APIによる回遊・スポットデータの取得
+      4.データの並び替え
+      5.初期グラフ表示（最新データに基づく表示）
+      6.３Ｄ都市モデルビュー表示
+    *****************************************************************/
+    window.onload = function() {
+      getAPIData("GET","/getLatestNumber","")                       //  APIから回数の値を取得
+      .then(function(apiData){
+        let initViewSelect = getInitSelect(apiData.jsonObj);
+        var  selectObj = makeSelectObject(apiData.jsonObj);	        //  セレクトメニュー用データ（配列）の作成
+        makeSelectMenu(selectObj, initViewSelect);                                 //  セレクトメニューにデータを設定
+        
+        return getAPIData("POST","/getMoveNumSum",initViewSelect); //  APIから回数の値を取得
+
+      })
+      .then(function(apiData){
+
+        var chartData = rootChartData(apiData.jsonObj);             //  グラフ用データ作成
+        var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#rootCanvas", "rootChart",);   //  グラフ表示（横棒グラフ）
+        open3Dview("rootChart", chartObj, chartData.url);	          //  ３Ｄ都市モデルビュー表示
+        return apiData.selectNumber;
+      
+      })
+      .then(function(selectNumber){
+
+        return getAPIData("POST","/getFavSpot",selectNumber);       //  APIから回数の値を取得
+
+      })
+      .then(function(apiData){
+
+        var chartData = spotChartData(apiData.jsonObj);             //  グラフ用データ作成
+        var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#spotCanvas", "spotChart",);   //  グラフ表示（横棒グラフ）
+        open3Dview("spotChart", chartObj, chartData.url);           //  ３Ｄ都市モデルビュー表示
+        return apiData.selectNumber;
+      })
+      .then(function(selectNumber) {
+          updateIframeUrl(selectNumber);                           //  iframe更新
+        });;
+    };
+    /****************************************************************
+    回数選択によるグラフ表示
+      1.セレクトメニュー選択情報取得
+      2.選択した回数をセレクトメニューに表示
+      3.APIによる回遊・スポットデータの取得
+      4.グラフ表示（選択した回数に応じた表示）
+      5.３Ｄ都市モデルビュー表示
+      6. metabase iframe更新
+    *****************************************************************/
+
+    // セレクトメニューから選択した値を取得
+    var select = document.getElementById('selectMenu');
+    select.addEventListener('change', (e) => {
+      selectMenuIndex = document.getElementById('selectMenuIndex');
+      selectMenuIndex.innerHTML = e.target.value;
+      let param =  window.location.hash;
+      let paramFlag = false;
+      if (param.length > 0) {
+          param = param.split("#")[1].split("&")[0].split("=");
+      }
+      if (param[0] == "initview" && Number(param[1]) > 0) {
+        paramFlag = true;
+      }
+      if (paramFlag) {
+        //ハッシュを選択値に更新
+        window.location.hash = "initview=" + e.target.value;
+      } else {
+        getAPIData("POST","/getMoveNumSum",e.target.value)          //  APIによる回遊情報の取得
+        .then(function(apiData){
+
+          var chartData = rootChartData(apiData.jsonObj);           //  グラフ用データ作成
+          var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#rootCanvas", "rootChart",);   //  グラフ表示（横棒グラフ）
+          open3Dview("rootChart", chartObj, chartData.url);         //  ３Ｄ都市モデルビュー表示
+          return apiData.selectNumber;
+
+        })
+        .then(function(selectNumber){
+
+          return getAPIData("POST","/getFavSpot",selectNumber);    //  APIによる回遊情報の取得
+
+        })
+        .then(function(apiData){
+
+          var chartData = spotChartData(apiData.jsonObj);          //  グラフ用データ作成
+          var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#spotCanvas", "spotChart",);   //  グラフ表示（横棒グラフ）
+          open3Dview("spotChart", chartObj, chartData.url);        //  ３Ｄ都市モデルビュー表示
+          return apiData.selectNumber;
+        })
+        .then(function(selectNumber) {
+          updateIframeUrl(selectNumber);                           //  iframe更新
+        });
+      }
+    });
+    /****************************************************************
+    アンカー変更検知処理
+    *****************************************************************/
+   window.addEventListener('hashchange', function() {
+    getAPIData("GET","/getLatestNumber","")                       //  APIから回数の値を取得
+      .then(function(apiData){
+        // セレクトタグの中身を初期化
+        const selectMenu = document.getElementById('selectMenu');
+        while( selectMenu.firstChild ){
+          selectMenu.removeChild( selectMenu.firstChild );
+        }
+        let initViewSelect = getInitSelect(apiData.jsonObj);
+        var  selectObj = makeSelectObject(apiData.jsonObj);	        //  セレクトメニュー用データ（配列）の作成
+        makeSelectMenu(selectObj, initViewSelect);                                 //  セレクトメニューにデータを設定
+        
+        return getAPIData("POST","/getMoveNumSum",initViewSelect); //  APIから回数の値を取得
+
+      })
+      .then(function(apiData){
+
+        var chartData = rootChartData(apiData.jsonObj);             //  グラフ用データ作成
+        var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#rootCanvas", "rootChart",);   //  グラフ表示（横棒グラフ）
+        open3Dview("rootChart", chartObj, chartData.url);	          //  ３Ｄ都市モデルビュー表示
+        return apiData.selectNumber;
+      
+      })
+      .then(function(selectNumber){
+
+        return getAPIData("POST","/getFavSpot",selectNumber);       //  APIから回数の値を取得
+
+      })
+      .then(function(apiData){
+
+        var chartData = spotChartData(apiData.jsonObj);             //  グラフ用データ作成
+        var chartObj = drawChart(chartData.label, chartData.data, chartData.url, chartData.color, "#spotCanvas", "spotChart",);   //  グラフ表示（横棒グラフ）
+        open3Dview("spotChart", chartObj, chartData.url);           //  ３Ｄ都市モデルビュー表示
+        return apiData.selectNumber;
+      })
+      .then(function(selectNumber) {
+          updateIframeUrl(selectNumber);                           //  iframe更新
+        });;
+   }, false);
+    /****************************************************************
+    APIによる回遊情報の取得
+    getAPIData(method,path,request)
+
+    *****************************************************************/
+    function getAPIData(method,path,request){
+      return new Promise(function(resolve){
+
+        let jsonObj; //JSON取得
+        const xhr = new XMLHttpRequest();
+        xhr.open(method,apiUrlBasePath + "/metabase/kaiyusei" + path,true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("number="+String(request));
+
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            jsonObj = JSON.parse(xhr.responseText);  // jsonをオブジェクトに変更
+            resolve({selectNumber:request, jsonObj:jsonObj});
+          }
+        };
+
+      })
+    }
+
+
+
+    /****************************************************************
+    セレクトメニュー用データ（配列）の作成
+    makeSelectObject(selectNumber)
+
+    *****************************************************************/
+    function makeSelectObject(selectNumber){
+
+      var number = new Array();
+      for (var i = 0; i < selectNumber;  i++ ){
+        number[i]  = new Object();
+        number[i].val = i+1;
+        number[i].txt = i+1;
+      };
+      return number;
+
+    }
+
+
+
+    /****************************************************************
+    セレクトメニューにデータを設定
+    makeSelectMenu(selectNumber)
+
+    *****************************************************************/
+
+    function makeSelectMenu(selectNumber, selectedValue){
+
+      selectNumber.sort((a, b) => b.val - a.val); // データ（配列）の並び変え（降順）
+
+      var selectNo = selectNumber[0].val;
+      const selectMenu = document.getElementById('selectMenu');  //select要素を取得する
+      // セレクトメニューの設定
+      for(var i=0;i<selectNumber.length;i++){
+        let option = document.createElement('option');  //option要素にvalueと表示名を設定
+        option.value = selectNumber[i].val;
+        option.textContent = selectNumber[i].txt; 
+        if (selectNumber[i].val == selectedValue) {
+          option.selected = true;
+        }
+        selectMenu.appendChild(option); //select要素にoption要素を追加
+      }
+
+    }
+    /****************************************************************
+    初期選択を設定
+
+    *****************************************************************/
+    function getInitSelect(maxValue) {
+      MAX_COUNT = maxValue;
+      let res = maxValue;
+      //クエリパラメータ判定
+      var param = window.location.hash;
+      if (param.length > 0) {
+          param = param.split("#")[1].split("&")[0].split("=");
+      }
+      if (param[0] == "initview" && Number(param[1]) > 0 && Number(param[1]) <= maxValue) {
+        res = Number(param[1]);
+      }
+      return res;
+    }
+
+     /****************************************************************
+    metabase iframe url 修正
+
+    *****************************************************************/
+    function updateIframeUrl(selectNum) {
+      document.getElementById("metabaseFrame").setAttribute("src", kaiyuseiMetabaseTemplateUrl.replace("$num_of_time", selectNum))
+    }
+
+    /****************************************************************
+    グラフ用データ作成
+    rootChartData(jsonObj)
+
+    *****************************************************************/
+    function rootChartData(jsonObj){
+
+    //  const roop = 12;
+      var label = new Array();
+      var data  = new Array();
+      var color = new Array();
+      var url   = new Array();
+
+      for (  var i = 0;  i < roop;  i++  ) {
+        label.push(jsonObj[i].移動経路);
+        data.push(jsonObj[i].合計);
+        url.push(jsonObj[i].url+"&excursionAnalysisMaxCount="+MAX_COUNT);
+        color.push('#509EE3');
+      }
+
+      return {label:label, data:data, url:url, color:color}
+
+    }
+
+
+
+    /****************************************************************
+    グラフ用データ作成
+    spotChartData(jsonObj)
+
+    *****************************************************************/
+    function spotChartData(jsonObj){
+
+    //  const roop = 12;
+      var label = new Array();
+      var data  = new Array();
+      var color = new Array();
+      var url   = new Array();
+
+      for (  var i = 0;  i < roop;  i++  ) {
+        label.push(jsonObj[i].スポット名);
+        data.push(jsonObj[i].合計);
+        url.push(jsonObj[i].url+"&excursionAnalysisMaxCount="+MAX_COUNT);
+        color.push('#EF8C8C');
+      }
+
+      return {label:label, data:data, url:url, color:color}
+
+    }
+
+
+
+    /****************************************************************
+    グラフ表示（横棒グラフ）
+    drawChart(label,data,url,color,canvasId,chartId)
+
+    *****************************************************************/
+    function drawChart(label,data,url,color,canvasId,chartId){
+
+      const canvas = document.querySelector(canvasId);
+      const ctx = document.getElementById(chartId).getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+          labels: label,
+          datasets: [
+            {
+              label: '合計',
+              data: data,
+
+              backgroundColor: color
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  min: 0,
+                  fontColor:'#7788AF',
+                  fontSize: 10,
+                  fontStyle: 'bold',
+                },
+              },
+            ],
+            yAxes: [
+              {        
+                gridLines: {
+                  display: false,
+                },
+                ticks: {
+                  fontColor:'#7788AF',
+                  fontSize: 10,
+                  fontStyle: 'bold',
+                },
+              },
+            ],
+          },
+          legend: {
+            display: false
+          },
+        },
+      });
+
+      return chart;
+
+    }
+
+
+
+
+    /****************************************************************
+    ３Ｄ都市モデルビュー表示（別タブにて表示）
+    open3Dview(chartId,chartObj,url)
+
+    *****************************************************************/
+    function open3Dview(chartId,chartObj,url){
+
+      document.getElementById(chartId).addEventListener('click', e => {
+
+        const elements = chartObj.getElementAtEvent(e);
+        if (elements.length) {
+          window.open("../plateau/"+ url[elements[0]._index], '_3dview')}
+      });
+
+    }
+  </script>
+  </body>
+</html>
