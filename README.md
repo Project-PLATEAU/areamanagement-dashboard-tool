@@ -46,7 +46,7 @@
     |ファイル|プロジェクトフォルダ|備考|
     | - | - | - |
     |1.環境設定ファイル一式|[/Release/environmant_settings.zip](/Release/environmant_settings.zip)|zipファイル内の各ファイルについては[環境構築手順書](http://example.com)を参照してください。
-    |2.サンプルデータ一式|[/Release/environmant_settings.zip](/Release/environmant_settings.zip)|zipファイル内の各ファイルについては[環境構築手順書](http://example.com)を参照してください。
+    |2.サンプルデータ一式|[/Release/area_management_sample_data.zip](/Release/area_management_sample_data.zip)|zipファイル内の各ファイルについては[環境構築手順書](http://example.com)を参照してください。
   
 ### **ビルド及びデプロイ時に必要な動作環境**
 
