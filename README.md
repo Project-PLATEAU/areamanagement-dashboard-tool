@@ -40,6 +40,14 @@
 
     ※データベースの構築及び認証で使用するミドルウェアのセットアップも合わせて必要となります。
 
+### **インストール**
+* 構築時に必要となるファイル等を下表に示します。
+
+    |ファイル|プロジェクトフォルダ|備考|
+    | - | - | - |
+    |1.環境設定ファイル一式|[/Release/environmant_settings.zip](/Release/environmant_settings.zip)|zipファイル内の各ファイルについては[環境構築手順書](http://example.com)を参照してください。
+    |2.サンプルデータ一式|[/Release/environmant_settings.zip](/Release/environmant_settings.zip)|zipファイル内の各ファイルについては[環境構築手順書](http://example.com)を参照してください。
+  
 ### **ビルド及びデプロイ時に必要な動作環境**
 
  * Node.js v10.0 以降、npm v6.0 以降、yarn v1.19.0 以降を必要に応じてマシーンにインストールしてください。
