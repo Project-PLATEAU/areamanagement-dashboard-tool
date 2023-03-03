@@ -490,5 +490,6 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
 
 ## **参考資料**　 <!-- 各リンクは納品時に更新 -->
 * （ユースケース名）技術検証レポート: https://www.mlit.go.jp/plateau/libraries/technical-reports/
-*  PLATEAU Webサイト Use caseページ「（ユースケース名）」: https://www.mlit.go.jp/plateau/use-case/
+* PLATEAU Webサイト Use
+caseページ「エリアマネジメント・ダッシュボードの構築」:https://www.mlit.go.jp/plateau/use-case/uc22-028/
 * （利用しているライブラリなどへのリンク）
