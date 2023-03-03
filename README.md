@@ -492,4 +492,10 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
 * （ユースケース名）技術検証レポート: https://www.mlit.go.jp/plateau/libraries/technical-reports/
 * PLATEAU Webサイト Use
 caseページ「エリアマネジメント・ダッシュボードの構築」:https://www.mlit.go.jp/plateau/use-case/uc22-028/
-* （利用しているライブラリなどへのリンク）
+* Project-PLATEAU PLATEAU-VIEW:https://github.com/Project-PLATEAU/PLATEAU-VIEW
+* Project-PLATEAU terriajs:https://github.com/Project-PLATEAU/terriajs
+* Metabase:https://www.metabase.com/
+* GeoServer:https://geoserver.org/
+* mod_mruby:https://github.com/matsumotory/mod_mruby
+
+
