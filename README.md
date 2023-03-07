@@ -254,14 +254,14 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
 1. gitコマンド又は手動で3dviewのソースコードをダウンロードし、任意のディレクトリに置きます。前提ソフトウェアの環境構築時に既にダウンロードしている場合は不要です。
     
     - gitコマンドで一式ダウンロードする場合
-        ```bash
+        ```console
         git clone 本リポジトリURL erimane-dashboard-tool
         cd erimane-dashboard-tool/SRC/3dview
         ```
 
     - gitコマンドで対象のソースコードのみダウンロードしたい場合
 
-        ```bash
+        ```console
         mkdir 3dview
         cd 3dview
         git init
@@ -271,28 +271,28 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
         ```
         ※以下を記載して保存してください 
         
-        ```bash
+        ```console
         SRC/3dview
         ```
 
-        ```bash
+        ```console
         git pull origin master
         cd SRC/3dview
         ```
 1. SRC/3dview/wwwroot/init/erimane_init.json及びSRC/3dview/packages/terriajs/customconfig.jsonを設定してください。
 1. 3dviewのプロジェクトフォルダ直下でnodejs依存モジュールのインストールを行います。
-    ```bash
+    ```console
     cd SRC/3dview
     export NODE_OPTIONS=--max_old_space_size=4096
     yarn
     ```
 1. ビルドを実施します。
-    ```bash
+    ```console
     yarn gulp release
     ```
 1. 3dviewのプロジェクトフォルダ直下のwwwroot、node_modules、ecosystem.config.js、ecosystem-production.config.js、productionserverconfig.jsonをサーバに配置してください。
 /home/upload/に転送後の配置例を下記に示します。
-    ```bash
+    ```console
     cd /home/upload/
     mv wwwroot /opt/PLATEAU_VIEW/
     mv node_modules /opt/PLATEAU_VIEW/
@@ -315,7 +315,7 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
     |image|イベント回遊情報の説明画像等| 
 
     dashboard-uiフォルダを/home/upload/に転送後の配置例を下記に示します。
-    ```bash
+    ```console
     cd /home/upload/dashboard-ui/
     mv csvdata /usr/local/apache2/htdocs/
     mv dashboard/usr/local/apache2/htdocs/
@@ -343,7 +343,7 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
     |authentication.rb|認証スクリプト|
 
     apache-confフォルダを/home/upload/に転送後の配置例を下記に示します。
-    ```bash
+    ```console
     mkdir /home/backup/
     mv /usr/local/apache2/conf/httpd.conf /home/backup/
     cd /home/upload/apache-conf/
@@ -357,7 +357,7 @@ SRC/3dview/packages/terriajs/customconfig.jsonの設定で下表の箇所を確�
     |SECRET_KEY|JWTの署名検証を行う秘密鍵|
 
 1. エリアマネジメント3D都市モデルビューワを実行します。
-    ```bash
+    ```console
     cd /opt/PLATEAU_VIEW
     
     ./node_modules/.bin/pm2 start ecosystem-production.config.js --update-env --env production
