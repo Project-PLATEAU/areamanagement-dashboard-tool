@@ -70,6 +70,3 @@ caseページ「エリアマネジメント・ダッシュボードの構築」:
 * Project-PLATEAU terriajs:https://github.com/Project-PLATEAU/terriajs
 * Metabase:https://www.metabase.com/
 * GeoServer:https://geoserver.org/
-* mod_mruby:https://github.com/matsumotory/mod_mruby
-
-
