@@ -37,8 +37,8 @@
 
     |ファイル|プロジェクトフォルダ|
     | - | - |
-    |1. 環境設定ファイル一式|[/Release/environmant_settings.zip](/Release/environmant_settings.zip)|
-    |2. サンプルデータ一式|[/Release/area_management_sample_data.zip](/Release/area_management_sample_data.zip)|
+    |1. 環境設定ファイル一式|[/Settings/environmant_settings/](./Settings/environmant_settings/)|
+    |2. サンプルデータ一式|[/Settings/area_management_sample_data/](./Settings/area_management_sample_data/)|
   
 
 ### **使い方**

@@ -1,0 +1,60 @@
+WITH attachment_file_names AS (
+    select
+        activity_id,
+        array_agg(attachment_file_name) as file_names
+    from
+        attachments
+    group by
+        activity_id
+)
+
+select
+    activity.activity_id,
+    activity.geom,
+    activity.activity_type,
+    activity_type.type_name as "地域活動種別",
+    activity.parent_activity_id,
+    group_type.type_name as "エリアマネジメント団体",
+    v_event_activity.activity_name as "イベント名",
+    activity.activity_place as "イベント場所",
+    activity.activity_content as "イベント内容",
+    activity.participants_count as "参加者数",
+    activity.remarks as "備考",
+    to_char(
+        activity.start_date_and_time,
+        'YYYY/MM/DD HH24:MI'
+    ) as "開始日時",
+    to_char(activity.end_date_and_time, 'YYYY/MM/DD HH24:MI') as "終了日時",
+    
+    case
+        when attachment_file_names.file_names [1] is null then ''
+        else '/api/activity/attachments/' || activity.activity_id || '/' || file_names [1]
+    END ファイル1,
+    case
+        when attachment_file_names.file_names [2] is null then ''
+        else '/api/activity/attachments/' || activity.activity_id || '/' || file_names [2]
+    END ファイル2,
+    case
+        when attachment_file_names.file_names [3] is null then ''
+        else '/api/activity/attachments/' || activity.activity_id || '/' || file_names [3]
+    END ファイル3,
+    case
+        when attachment_file_names.file_names [4] is null then ''
+        else '/api/activity/attachments/' || activity.activity_id || '/' || file_names [4]
+    END ファイル4
+
+from
+    activity
+    left outer join activity_type on activity.activity_type = activity_type.id
+    left outer join attachment_file_names on activity.activity_id = attachment_file_names.activity_id
+    left outer join group_type on activity.group_type = group_type.id 
+    left outer join v_event_activity on activity.activity_id = v_event_activity.activity_id
+
+where
+    activity.activity_type = 2
+    [[AND {{groupname}}]]
+    [[AND parent_activity_id = cast({{activityid}} as integer)]][[ AND activity_place = {{activity_site}}]]
+    [[AND {{activity_name}}]]
+
+group by activity.activity_id, activity_type.type_name, group_type.type_name, attachment_file_names.file_names, activity.start_date_and_time,v_event_activity.activity_name
+order by activity.start_date_and_time DESC

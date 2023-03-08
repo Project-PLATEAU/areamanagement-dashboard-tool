@@ -1,0 +1,49 @@
+--metabaseView エリマネ活動詳細
+with search_activity as (
+    select
+            geom,
+            parent_activity_id,
+            Max(start_date_and_time) as start_date_and_time
+        from
+            activity
+        group by
+            geom,
+            parent_activity_id,
+            activity_type
+)
+
+select
+    activity.activity_id,
+    activity.parent_activity_id,
+    activity.geom,
+    activity.activity_type,
+    activity_type.type_name as "地域活動種別",
+    group_type.type_name as "エリアマネジメント団体",
+    v_area_management_activity.activity_name as "活動名",
+    activity.activity_place as "活動場所",
+    activity.activity_content as "活動内容",
+    activity.participants_count as "参加者数",
+    to_char(
+        activity.start_date_and_time,
+        'YYYY/MM/DD HH24:MI'
+    ) as "開始日時",
+    to_char(activity.end_date_and_time, 'YYYY/MM/DD HH24:MI') as "終了日時",
+    activity.remarks as "備考", 
+    '/plateau/#activityType=1&parentActivityId='|| activity.parent_activity_id || '&lon=' || ST_X(ST_TransForm(activity.geom, 4326)) ||'&lat=' || ST_Y(ST_TransForm(activity.geom, 4326)) AS "3D都市モデルビューワ" 
+from
+    activity
+    left outer join activity_type on activity.activity_type = activity_type.id
+    left outer join group_type on activity.group_type = group_type.id
+    left outer join v_area_management_activity on activity.activity_id = v_area_management_activity.activity_id
+    inner join search_activity on search_activity.geom = activity.geom
+    and search_activity.parent_activity_id = activity.parent_activity_id
+    and search_activity.start_date_and_time = activity.start_date_and_time
+where
+    activity.activity_type = 1
+    [[AND {{groupname}}]]
+    [[AND activity.parent_activity_id = cast({{activityid}} as integer)]]
+    [[AND {{activity_name}}]]
+
+
+group by activity.activity_id, activity_type.type_name, group_type.type_name, activity.start_date_and_time,v_area_management_activity.activity_name
+order by activity.start_date_and_time ASC
