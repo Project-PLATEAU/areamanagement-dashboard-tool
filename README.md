@@ -20,7 +20,9 @@
 
 ## **3.利用手順**
 ### **インストール**<!-- 納品時リンク変更 -->
-* 本システムで必要となるソフトウェアを下表に示します。 [環境構築手順書](https://stunning-dollop-69vk1r3.pages.github.io/manual/devMan.html)を参照の上、ソフトウェアのインストール及びセットアップを完了させてください。
+* 本システムで必要となるソフトウェアを下表に示します。 [稼働環境構築手順書](https://stunning-dollop-69vk1r3.pages.github.io/manual/devMan.html)を参照の上、ソフトウェアのインストール及びセットアップを完了させてください。
+
+    [エリアマネジメント・ダッシュボード　稼働環境構築手順書](https://stunning-dollop-69vk1r3.pages.github.io/manual/devMan.html)
 
     |ソフトウェア|プロジェクトフォルダ|
     | - | - |
