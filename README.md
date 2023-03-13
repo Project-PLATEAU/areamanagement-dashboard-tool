@@ -65,7 +65,7 @@
 * 本レポジトリの利用により生じた損失及び損害等について、国土交通省はいかなる責任も負わないものとします。
 
 ## **参考資料**　 <!-- 各リンクは納品時に更新 -->
-* エリアマネジメント・ダッシュボードの構築 技術検証レポート: https://www.mlit.go.jp/plateau/libraries/technical-reports/
+* エリアマネジメント・ダッシュボードの構築 技術検証レポート（近日公開予定）:
 * PLATEAU Webサイト Use
 caseページ「エリアマネジメント・ダッシュボードの構築」:https://www.mlit.go.jp/plateau/use-case/uc22-028/
 * Project-PLATEAU PLATEAU-VIEW:https://github.com/Project-PLATEAU/PLATEAU-VIEW
