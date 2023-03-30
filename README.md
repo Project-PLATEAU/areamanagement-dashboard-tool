@@ -19,9 +19,9 @@
 
 ## **3.利用手順**
 ### **インストール**<!-- 納品時リンク変更 -->
-* 本システムで必要となるソフトウェアを下表に示します。 [稼働環境構築手順書](https://stunning-dollop-69vk1r3.pages.github.io/manual/devMan.html)を参照の上、ソフトウェアのインストール及びセットアップを完了させてください。
+* 本システムで必要となるソフトウェアを下表に示します。 [稼働環境構築手順書](https://project-plateau.github.io/UC22-028-areamanagement-dashboard-tool/manual/devMan.html)を参照の上、ソフトウェアのインストール及びセットアップを完了させてください。
 
-    [エリアマネジメント・ダッシュボード　稼働環境構築手順書](https://stunning-dollop-69vk1r3.pages.github.io/manual/devMan.html)
+    [エリアマネジメント・ダッシュボード　稼働環境構築手順書](https://project-plateau.github.io/UC22-028-areamanagement-dashboard-tool/manual/devMan.html)
 
     |ソフトウェア|プロジェクトフォルダ|
     | - | - |
@@ -51,7 +51,7 @@
 
 本システムの使い方は下記の操作マニュアルを参照ください。
 
-[エリアマネジメント・ダッシュボード　操作マニュアル](https://stunning-dollop-69vk1r3.pages.github.io/manual/userMan.html)
+[エリアマネジメント・ダッシュボード　操作マニュアル](https://project-plateau.github.io/UC22-028-areamanagement-dashboard-tool/manual/userMan.html)
 
 ## **ライセンス** <!-- 定型文のため変更しない -->
 * ソースコードおよび関連ドキュメントの著作権は国土交通省に帰属します。
@@ -64,7 +64,7 @@
 * 本レポジトリの利用により生じた損失及び損害等について、国土交通省はいかなる責任も負わないものとします。
 
 ## **参考資料**　 <!-- 各リンクは納品時に更新 -->
-* エリアマネジメント・ダッシュボードの構築 技術検証レポート（近日公開予定）:
+* エリアマネジメント・ダッシュボードの構築 技術検証レポート:https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0023_ver01.pdf
 * PLATEAU Webサイト Use
 caseページ「エリアマネジメント・ダッシュボードの構築」:https://www.mlit.go.jp/plateau/use-case/uc22-028/
 * Project-PLATEAU PLATEAU-VIEW:https://github.com/Project-PLATEAU/PLATEAU-VIEW
