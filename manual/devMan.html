@@ -1,0 +1,6137 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>稼動環境構築手順書 </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="稼動環境構築手順書 ">
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<style>
+img {
+    border: 1px #dddddd solid;
+}
+</style>
+<h1 id="稼動環境構築手順書">稼動環境構築手順書</h1>
+<h1 id="1-本書について">1 本書について</h1>
+<p>本書では、エリアマネジメント・ダッシュボード（以下本システム）の稼働環境を構築する手順について記載します。</p>
+<br>
+<h1 id="2-システム構成">2 システム構成</h1>
+<p>本システム稼働環境の構成は以下になります。</p>
+<img src="../resources/devMan/image1.png" style="width:5.90556in;height:3.11319in">
+<p>Web/APサーバとDBサーバ、データサーバは同一のサーバでも稼働可能ですが、パフォーマンスの観点から別途構築することを推奨します。</p>
+<p>以下では、上記稼働環境の前提で稼働環境構築手順を記載します。</p>
+<br>
+<p>以下、本システムで利用するSW,MWの一覧です。</p>
+<table>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>サーバ</th>
+<th>大機能</th>
+<th>ライセンス</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td rowspan="9">Web/APサーバ</td>
+<td>apache</td>
+<td>Apache License 2.0</td>
+<td>Webアプリで配信を行うためのWebサーバ</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>PLATEAU VIEW</td>
+<td>Apache License 2.0</td>
+<td>3D都市モデルビューワ</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Terria</td>
+<td>Apache License 2.0</td>
+<td><p>UI（ユーザーインターフェイス）の提供及びUIを介してCesium</p>
+<p>の描画機能を制御するためのライブラリ</p></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Cesium</td>
+<td>Apache License 2.0</td>
+<td>3D都市モデルビューワ上にデータを描画するためのライブラリ</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Node.js</td>
+<td>MIT License</td>
+<td>3D都市モデルビューワの実行環境</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>GeoServer</td>
+<td>GNU GENERAL PUBLIC LICENSE Version 2</td>
+<td>各種データをWMS及びWFSなどで配信するためのGISサーバ</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>metabase</td>
+<td>GNU Affero General Public License V3</td>
+<td>地域情報ダッシュボードで使用するBIツール</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Tomcat</td>
+<td>Apache License 2.0</td>
+<td>GeoServer、metabase、カスタムアプリを起動するJ2EEのSDK</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Spring boot</td>
+<td>Apache License 2.0</td>
+<td>Javaで利用可能なWebアプリのフレームワーク</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td rowspan="3">DBサーバ</td>
+<td>PostgresSQL</td>
+<td>PostgreSQL License</td>
+<td>各種配信するデータを格納するデータベース</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>PostGIS</td>
+<td>GNU General Public License</td>
+<td>PostgreSQLで位置情報を扱うことを可能とするextention</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>pgRouting</td>
+<td>GNU General Public License version 2</td>
+<td>PostgreSQLでルート検索を可能とするextention</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>データサーバ</td>
+<td colspan="2">3DTile等配信データ</td>
+<td>データベース以外で配信する3Dデータ等</td>
+</tr>
+</tbody>
+</table>
+<br>
+<p>稼働環境は以下になります。</p>
+<p>【クライアント環境】</p>
+<p>ブラウザ要件：Chrome、Safari、Edge（最新のDesktop版）</p>
+<p>システム要件：CPU: 2 GHz 4コア以上、システムメモリ（RAM）: 4GB</p>
+<p>【WEB/APサーバ環境】</p>
+<ul>
+<li><p>動作環境：ubuntu</p>
+</li>
+<li><p>必要なソフトウェア：</p>
+<ul>
+<li><p>Apache Version 2.4.37</p>
+</li>
+<li><p>Java Version 1.8.0_312 (OpenJDK 64-Bit Server VM)</p>
+</li>
+<li><p>Apache Tomcat Version 9.0.65</p>
+</li>
+<li><p>GeoServer Version 2.18.0</p>
+</li>
+<li><p>Node.js Version 16.17.0</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>【DBサーバ環境】</p>
+<ul>
+<li><p>PostgreSQL Version 14.3</p>
+</li>
+<li><p>PostGIS Version 3.1</p>
+</li>
+</ul>
+<br>
+<h1 id="3-準備物一覧">3 準備物一覧</h1>
+<p>初めに、本システムを構築する際に必要となるresourceはgithub上からダウンロードしてください。</p>
+<ol>
+<li><p>本リポジトリ（erimane-dashboard-tool）</p>
+<p>手動又はgitコマンドを使用して作業PCにダウンロードしてください。</p>
+<p>※ gitコマンドの場合下記のコマンドでダウンロードしてください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">git clone 本リポジトリURL erimane-dashboard-tool
+</code></pre>
+<p>本書ではerimane-dashboard-tool一式がダウンロードされている前提で説明を行います。</p>
+<br>
+<p>以下、本システムを構築する際に必要となる準備物一覧になります。</p>
+<br>
+<p>【稼働環境】</p>
+<p>Ubuntu</p>
+<p>【セットアップ環境】</p>
+<ul>
+<li><p>稼働環境と80,8080,5432ポートでTCP通信可能であること</p>
+</li>
+<li><p>Windows10</p>
+</li>
+</ul>
+<p>【アプリケーション】</p>
+<ul>
+<li><p>3D都市モデルビューワソースコード</p>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/3dview/</p>
+</li>
+<li><p>API（Springboot）ソースコード</p>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/api/</p>
+</li>
+<li><p>地域情報ダッシュボード（metabase）ソースコード</p>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/metabase</p>
+</li>
+</ul>
+<p>【DDL、設定ファイル等】</p>
+<ul>
+<li><p>投入ツール一式</p>
+<p>対象フォルダ: erimane-dashboard-tool/SRC/util/</p>
+</li>
+<li><p>設定ファイル一式（environment_settings.zip）</p>
+<p>対象フォルダ: erimane-dashboard-tool/Settings/environment_settings/</p>
+</li>
+</ul>
+<p>【セットアップ用SW】</p>
+<ul>
+<li><p>GISソフト（本書ではQGISを利用）</p>
+<p><a href="https://qgis.org/ja/site/forusers/download.html">https://qgis.org/ja/site/forusers/download.html</a></p>
+</li>
+<li><p>SQLクライアントソフト（本書ではA5:SQL Mk-2を利用）</p>
+<p><a href="https://a5m2.mmatsubara.com/">https://a5m2.mmatsubara.com/</a></p>
+</li>
+</ul>
+<p>※ そのほか構築の際に必須となるSWのインストールは手順の中に含めています。</p>
+<br>
+<h1 id="4-稼働環境構築事前準備">4 稼働環境構築（事前準備）</h1>
+<p>構築対象：Web/APサーバ</p>
+<p>検証済みサーバ環境：Ubuntu 22.04 LTS</p>
+<p>※ セキュリティ関係の設定は必要に応じて自身で設定してください。</p>
+<p>※ 基本管理者アカウントで操作を行います。</p>
+<p>管理者アカウントに切り替えます。</p>
+<pre><code class="lang-Text">sudo -i
+</code></pre>
+<br>
+<h2 id="4-1npm-v60-以降yarnnodejs-v100-以降をインストール">4-1.npm v6.0 以降、yarn、Node.js v10.0 以降をインストール</h2>
+<p><a id="sec41"></a></p>
+<p>npm、yarn、Nodejsのインストールを行います。</p>
+<pre><code class="lang-Text">apt update
+
+apt install npm
+
+npm install -g n
+
+npm install -g yarn
+
+n 16
+
+apt purge nodejs npm -y
+</code></pre>
+<p>有効になっているnodejsのバージョンを確認します。</p>
+<pre><code class="lang-Text">node -v
+</code></pre>
+<br>
+<h1 id="5-稼働環境構築mwsw">5 稼働環境構築（MW,SW）</h1>
+<p><a id="sec5"></a></p>
+<p>検証済みサーバ環境：Ubuntu 22.04.1 LTS</p>
+<p>構築対象；Web/APサーバ（DBサーバ）</p>
+<p>※ セキュリティ関係の設定は必要に応じて自身で設定してください。</p>
+<p>※ 基本管理者アカウントで操作を行います。</p>
+<p>管理者アカウントは下記のコマンドで切り替えます。</p>
+<pre><code class="lang-Text">sudo -i
+</code></pre>
+<br>
+<h2 id="5-1apache24-開発ツールのインストール">5-1.Apache2.4 開発ツールのインストール</h2>
+<p>mod_mrubyを使用する為、ソースからApacheのインストールを行います。</p>
+<ol>
+<li>Apacheをインストールするための必要な開発ツール及びapr、pcreをインストールします。初めにaptの更新を行います。</li>
+</ol>
+<pre><code class="lang-Text">apt update
+</code></pre>
+<ol start="2">
+<li>ビルドツール等を先にインストールします。</li>
+</ol>
+<pre><code class="lang-Text">apt install build-essential
+
+apt install libreadline-dev libssl-dev zlib1g-dev
+
+apt install git-core curl
+</code></pre>
+<ol start="3">
+<li><p>作業用ディレクトリの作成を行います。</p>
+<p>「/home/work/」などは作業ディレクトリの為適宜置き換えてください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">mkdir /home/work/
+
+cd /home/work/
+</code></pre>
+<ol start="4">
+<li><p>expat、apr、pcreを作業用ディレクトリにダウンロードします。</p>
+<p>404となった場合、現行で対応しているバージョンを適宜確認してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">wget https://github.com/libexpat/libexpat/releases/download/R_2_2_7/expat-2.2.7.tar.gz
+
+wget &lt;http://ftp.jaist.ac.jp/pub/apache//apr/apr-1.6.5.tar.gz&gt;
+
+wget &lt;http://ftp.jaist.ac.jp/pub/apache//apr/apr-util-1.6.3.tar.gz&gt;
+
+wget http://sourceforge.net/projects/pcre/files/pcre/8.32/pcre-8.32.tar.gz
+</code></pre>
+<ol start="5">
+<li>expatのインストール及び初期設定を行います。</li>
+</ol>
+<pre><code class="lang-Text">tar xvfz expat-2.2.7.tar.gz
+
+cd expat-2.2.7
+
+./configure --prefix=/usr/local/expat/2_2_7
+
+make
+
+make install
+
+ln -s /usr/local/expat/2_2_7/bin/xmlwf/usr/local/bin/
+
+ln -s /usr/local/expat/2_2_7/include/expat.h /usr/local/include/
+
+ln -s /usr/local/expat/2_2_7/include/expat_config.h /usr/local/include/
+
+ln -s /usr/local/expat/2_2_7/include/expat_external.h /usr/local/include/
+
+ln -s /usr/local/expat/2_2_7/lib/libexpat.a /usr/local/lib/
+
+ln -s /usr/local/expat/2_2_7/lib/libexpat.la /usr/local/lib/
+
+ln -s /usr/local/expat/2_2_7/lib/libexpat.so /usr/local/lib/
+
+ln -s /usr/local/expat/2_2_7/lib/libexpat.so.1 /usr/local/lib/
+
+ln -s /usr/local/expat/2_2_7/lib/libexpat.so.1.6.9 /usr/local/lib/
+</code></pre>
+<ol start="6">
+<li>環境変数を設定します。</li>
+</ol>
+<pre><code class="lang-Text">vi ~/.bashrc
+</code></pre>
+<p>下記にlibexpatのパスを追加し保存します。</p>
+<table><tbody><tr>
+            <td>export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+<p>export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH</p>
+</td>
+</tr></tbody></table>
+<ol start="7">
+<li>環境変数の設定を反映します。</li>
+</ol>
+<pre><code class="lang-Text">source ~/.bashrc
+</code></pre>
+<ol start="8">
+<li>aprのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">cd ..
+
+tar zxf apr-1.6.5.tar.gz
+
+cd apr-1.6.5/
+
+./configure
+
+make
+
+make install
+
+cd ..
+
+tar zxf apr-util-1.6.3.tar.gz
+
+cd apr-util-1.6.3/
+
+./configure --with-apr=/usr/local/apr
+
+make
+
+make install
+</code></pre>
+<ol start="9">
+<li>pcreのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">cd ..
+
+tar zxvf pcre-8.32.tar.gz
+
+cd pcre-8.32/
+
+./configure
+
+make
+
+make install
+</code></pre>
+<br>
+<h2 id="5-2apache24のインストール及びmod_mrubyのインストール">5-2.Apache2.4のインストール及びmod_mrubyのインストール</h2>
+<ol>
+<li><p>適当な作業用フォルダに移動し、Apache httpd 2.4 をインストールします。</p>
+<p>「/home/work/」などは作業ディレクトリの為適宜置き換えてください。</p>
+<p>404となった場合現行で対応しているバージョンを適宜確認してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /home/work/
+
+wget &lt;http://ftp.kddilabs.jp/infosystems/apache//httpd/httpd-2.4.54.tar.gz&gt;
+
+tar zxf httpd-2.4.54.tar.gz
+
+cd httpd-2.4.54/
+
+./configure --enable-mods-shared=all --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr
+
+make
+
+make install
+
+ln -s /usr/local/lib/libpcre.so.1 /lib/libpcre.so.1
+
+/usr/local/apache2/bin/apachectl start
+</code></pre>
+<ol start="2">
+<li>Rubyのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">apt install ruby
+
+gem install rake
+</code></pre>
+<ol start="3">
+<li><p>mod_mrubyのインストールを行います。</p>
+<p>「/home/work/」などは作業ディレクトリの為適宜置き換えてください。</p>
+<p>404となった場合現行で対応しているバージョンを適宜確認してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /home/work/
+
+git clone &lt;https://github.com/matsumoto-r/mod_mruby.git&gt;
+
+cd mod_mruby/
+
+git submodule init
+
+git submodule update
+
+cd mruby/
+
+vi build_config.rb
+</code></pre>
+<p>mruby-jwtを追加</p>
+<table><tbody><tr>
+            <td>conf.gem :git ='https://github.com/ainoya/mruby-jwt.git'</td>
+</tr></tbody></table>
+<pre><code class="lang-Text">rake CFLAGS=&quot;-O3 -fPIC&quot;
+
+apt install bison
+
+rake CFLAGS=&quot;-O3 -fPIC&quot;
+
+cd ..
+
+vi Makefile.in
+</code></pre>
+<p>Makefileにapache2へのパスを変更し保存します。</p>
+<table><tbody><tr>
+            <td>APXS=/usr/local/apache2/bin/apxs
+<p>APACHECTL=/usr/local/apache2/bin/apachectl</p></td>
+</tr></tbody></table>
+<pre><code class="lang-Text">./configure
+
+make
+
+make install
+</code></pre>
+<ol start="4">
+<li>認証スクリプトとhttpd.confの仮設定及びapacheの再起動を行います。</li>
+</ol>
+<pre><code class="lang-Text">vi /usr/local/apache2/conf/authentication.rb
+</code></pre>
+<p>後程変更するファイルになるのでここでは空で保存してください</p>
+<pre><code class="lang-Text">vi /usr/local/apache2/conf/httpd.conf
+</code></pre>
+<p>httpd.confの仮設定を行います。後程置き換えるファイルとなります。</p>
+<p>下記のコメントアウトを解除してください。</p>
+<table><tbody><tr>
+            <td>LoadModule proxy_module modules/mod_proxy.so
+<p>LoadModule proxy_http_module modules/mod_proxy_http.so</p></td>
+</tr></tbody></table>
+<p>最下部に下記を追加</p>
+<table><tbody><tr>
+            <td>ProxyPass /plateau http://localhost:3001/
+<p>ProxyPassReverse /plateau http://localhost:3001/</p>
+<p>ProxyPass /geoserver http://localhost:8080/geoserver</p>
+<p>ProxyPassReverse /geoserver http://localhost:8080/geoserver</p>
+<p>ProxyPass /api http://localhost:8080/3dviewapi</p>
+<p>ProxyPassReverse /api http://localhost:8080/3dviewapi</p>
+<p>AddHandler mruby-script .mrb</p>
+<p>&lt;IfModule mruby_module&gt;</p>
+<p>    mrubyTranslateNameFirst /usr/local/apache2/conf/authentication.rb</p>
+<p>&lt;/IfModule&gt;</p>
+<p>Header set X-Frame-Options: &quot;SAMEORIGIN&quot;</p></td>
+</tr></tbody></table>
+<pre><code class="lang-Text">/usr/local/apache2/bin/apachectl restart
+</code></pre>
+<p>※ 起動</p>
+<p>「http://&lt;サーバマシンのIPアドレス&gt;/」でアクセスできることを確認してください。</p>
+<pre><code class="lang-Text">/usr/local/apache2/bin/apachectl start
+</code></pre>
+<p>※ 再起動</p>
+<pre><code class="lang-Text">/usr/local/apache2/bin/apachectl restart
+</code></pre>
+<p>※ 停止</p>
+<pre><code class="lang-Text">/usr/local/apache2/bin/apachectl stop
+</code></pre>
+<br>
+<h2 id="5-3openjdk-8-のインストール">5-3.OpenJDK 8 のインストール</h2>
+<p><a id="sec53"></a></p>
+<ol>
+<li>openjdk8をインストールします。</li>
+</ol>
+<pre><code class="lang-Text">add-apt-repository ppa:openjdk-r/ppa
+
+apt update
+
+apt install openjdk-8-jdk
+</code></pre>
+<ol start="2">
+<li>インストール後バージョンを確認します。</li>
+</ol>
+<pre><code class="lang-Text">java -version
+</code></pre>
+<ol start="3">
+<li>Java Pathの確認</li>
+</ol>
+<pre><code class="lang-Text">dirname \$(readlink \$(readlink \$(which java)))
+</code></pre>
+<ol start="4">
+<li>環境変数を設定します。</li>
+</ol>
+<pre><code class="lang-Text">vi ~/.bashrc
+</code></pre>
+<p>最終行に以下の内容を追記し保存します。（/usr/lib/jvm以降は適宜バージョンを確認）</p>
+<table><tbody><tr>
+            <td>export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+<p>export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH</p>
+<p>export CLASSPATH=.:/usr/lib/jvm/java-8-openjdk-amd64/lib</p></td>
+</tr></tbody></table>
+<ol start="5">
+<li>環境変数の設定を反映します。</li>
+</ol>
+<pre><code class="lang-Text">source ~/.bashrc
+</code></pre>
+<ol start="6">
+<li>環境変数の値を出力します。</li>
+</ol>
+<pre><code class="lang-Text">echo \$JAVA_HOME
+</code></pre>
+<br>
+<h2 id="5-4tomcat-9のインストール">5-4.Tomcat 9のインストール</h2>
+<ol>
+<li>ユーザーを作成します。</li>
+</ol>
+<pre><code class="lang-Text">useradd -m -U -d /opt/tomcat -s /bin/false tomcat
+</code></pre>
+<ol start="2">
+<li><p>作業フォルダなどに移動し、tomcatのダウンロードを行います。</p>
+<p>適宜tomcatのversionを確認してください。</p>
+<p>「/home/work/」などは作業ディレクトリの為適宜置き換えてください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /home/work/
+
+wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/tomcat/tomcat-9/v9.0.71/bin/apache-tomcat-9.0.71.tar.gz
+</code></pre>
+<ol start="3">
+<li>展開及びファイル移動を行います。</li>
+</ol>
+<pre><code class="lang-Text">tar zxf apache-tomcat-9.0.71.tar.gz
+
+mv apache-tomcat-9.0.71/ /opt/tomcat
+</code></pre>
+<ol start="4">
+<li>権限の設定を行います。</li>
+</ol>
+<pre><code class="lang-Text">chown -R tomcat: /opt/tomcat
+
+chmod +x /opt/tomcat/bin/*.sh
+</code></pre>
+<ol start="5">
+<li>サービス定義ファイルを作成します。</li>
+</ol>
+<pre><code class="lang-Text">vi /etc/systemd/system/tomcat.service
+</code></pre>
+<p>以下全て入力して保存します。</p>
+<p>パス等は適宜環境に合っているか確認してください。</p>
+<table><tbody><tr>
+            <td>[Unit]
+<p>Description=Tomcat 9 servlet container</p>
+<p>After=network.target</p>
+<br>
+<p>[Service]</p>
+<p>Type=forking</p>
+<br>
+<p>User=tomcat</p>
+<p>Group=tomcat</p>
+<br>
+<p>Environment=&quot;JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64&quot;</p>
+<p>Environment=&quot;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true&quot;</p>
+<br>
+<p>Environment=&quot;CATALINA_BASE=/opt/tomcat&quot;</p>
+<p>Environment=&quot;CATALINA_HOME=/opt/tomcat&quot;</p>
+<p>Environment=&quot;CATALINA_PID=/opt/tomcat/temp/tomcat.pid&quot;</p>
+<p>Environment=&quot;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&quot;</p>
+<br>
+<p>ExecStart=/opt/tomcat/bin/startup.sh</p>
+<p>ExecStop=/opt/tomcat/bin/shutdown.sh</p>
+<br>
+<p>[Install]</p>
+<p>WantedBy=multi-user.target</p></td>
+</tr></tbody></table>
+<ol start="6">
+<li>設定ファイルの読み込みを行いサービスの起動設定を行います。</li>
+</ol>
+<pre><code class="lang-Text">systemctl daemon-reload
+
+systemctl enable --now tomcat
+</code></pre>
+<ol start="7">
+<li><p>タイムゾーンの設定を行います。</p>
+<p>環境設定ファイルを新規で作成してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">vi /opt/tomcat/bin/setenv.sh
+</code></pre>
+<p>下記を入力後、保存してください。</p>
+<table><tbody><tr>
+            <td>CATALINA_OPTS="-Duser.timezone=Asia/Tokyo"</td>
+</tr></tbody></table>
+<p>設定を反映させるため、再起動します。</p>
+<pre><code class="lang-Text">systemctl restart tomcat
+</code></pre>
+<p>※ 起動</p>
+<p>「http://&lt;サーバマシンのIPアドレス&gt;:8080/」でアクセスできることを確認してください。</p>
+<pre><code class="lang-Text">systemctl start tomcat
+</code></pre>
+<p>※ 再起動</p>
+<pre><code class="lang-Text">systemctl restart tomcat
+</code></pre>
+<p>※ 停止</p>
+<pre><code class="lang-Text">systemctl stop tomcat
+</code></pre>
+<p>※ 必要な場合、ファイアーウォールの設定を行います。</p>
+<pre><code class="lang-Text">ufw allow 8080/tcp
+</code></pre>
+<br>
+<h2 id="5-5geoserver223xのインストール">5-5.GeoServer2.23.xのインストール</h2>
+<ol>
+<li>SOURCE FORGEで配信されているため、ブラウザから「https://geoserver.org/release/stable/」にアクセス後、Web Archiveからwarのダウンロード及び解凍を行います。</li>
+</ol>
+<img src="../resources/devMan/image2.png" style="width:5.87718in;height:2.72708in">
+<ol start="2">
+<li>解凍したwarをtomcatに配備します。</li>
+</ol>
+<pre><code class="lang-Text">cd &quot;warが置いてある場所&quot;
+mv geoserver.war /opt/tomcat/webapps/
+</code></pre>
+<br>
+<h2 id="5-6postgresql14とpostgis3のインストール">5-6.PostgreSQL14とPostGIS3のインストール</h2>
+<p>※ 本書では、Web/APサーバとDBサーバを同一のサーバ上に構築する手順で記載しております。両サーバを別環境で構築する場合、本章の以下手順はDBサーバ上で実施してください。</p>
+<ol>
+<li>PostgreSQLのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">sh -c 'echo &quot;deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main&quot; &gt; /etc/apt/sources.list.d/pgdg.list'
+
+apt install curl ca-certificates gnupg
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+apt update
+
+apt install postgresql-14-postgis-3
+</code></pre>
+<p>※ 起動</p>
+<pre><code class="lang-Text">service postgresql start
+</code></pre>
+<p>※ 停止</p>
+<pre><code class="lang-Text">service postgresql stop
+</code></pre>
+<p>※ postgresユーザーへ切り替え</p>
+<pre><code class="lang-Text">su - postgres
+</code></pre>
+<p>※ 終了</p>
+<pre><code class="lang-Text">exit
+</code></pre>
+<p>※ PostgreSQL の接続</p>
+<pre><code class="lang-Text">psql
+</code></pre>
+<p>※ 終了</p>
+<pre><code class="lang-Text">exit
+</code></pre>
+<p>※ 必要な場合、ファイアーウォールの設定を行います。</p>
+<pre><code class="lang-Text">ufw allow 5432/tcp
+</code></pre>
+<p>※ 外部からPostgreSQL14への接続を許可する際は下記の設定を変更してください</p>
+<p>postgresql.confの修正</p>
+<pre><code class="lang-Text">vi /etc/postgresql/14/main/postgresql.conf
+
+service postgresql restart
+</code></pre>
+<p>listen_addressesとportのコメントアウトを外す(セキュリティに留意して見直してください)</p>
+<table><tbody><tr>
+            <td>listen_addresses = '*'
+<p>port = 5432</p></td>
+</tr></tbody></table>
+<p>pg_hba.confの修正</p>
+<pre><code class="lang-Text">vi /etc/postgresql/14/main/pg_hba.conf
+
+service postgresql restart
+</code></pre>
+<p>IPv4の「METHOD」を「password」にし、「ADDRESS」を「all」に変更(セキュリティに留意して見直してください)</p>
+<br>
+<h2 id="5-7データベースの作成">5-7.データベースの作成</h2>
+<ol>
+<li><p>ロールの作成は必要に応じて行ってください。</p>
+<p>postgresユーザへ切り替え後、PostgreSQL に接続します。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">su - postgres
+
+psql
+</code></pre>
+<p>ロールを作成します。</p>
+<table><tbody><tr>
+            <td>CREATE ROLE devps WITH
+<p>    SUPERUSER</p>
+<p>    CREATEDB</p>
+<p>    CREATEROLE</p>
+<p>    INHERIT</p>
+<p>    LOGIN</p>
+<p>    REPLICATION</p>
+<p>    BYPASSRLS</p>
+<p>    ENCRYPTED PASSWORD 'password';</p></td>
+</tr></tbody></table>
+<p>その他オプション</p>
+<table><tbody><tr>
+            <td>CREATE ROLE name [ [ WITH ] option [ ... ] ]
+<p>option:</p>
+<p>    SUPERUSER | NOSUPERUSER</p>
+<p>    | CREATEDB | NOCREATEDB</p>
+<p>    | CREATEROLE | NOCREATEROLE</p>
+<p>    | INHERIT | NOINHERIT</p>
+<p>    | LOGIN | NOLOGIN</p>
+<p>    | REPLICATION | NOREPLICATION</p>
+<p>    | BYPASSRLS | NOBYPASSRLS</p>
+<p>    | CONNECTION LIMIT connlimit</p>
+<p>    | [ ENCRYPTED ] PASSWORD 'password'</p>
+<p>    | VALID UNTIL 'timestamp'</p>
+<p>    | IN ROLE role_name [, ...]</p>
+<p>    | IN GROUP role_name [, ...]</p>
+<p>    | ROLE role_name [, ...]</p>
+<p>    | ADMIN role_name [, ...]</p>
+<p>    | USER role_name [, ...]</p>
+<p>    | SYSID uid</p></td>
+</tr></tbody></table>
+<p>PostgreSQLを切断</p>
+<pre><code class="lang-Text">\q
+</code></pre>
+<p>postgresユーザをログアウト</p>
+<pre><code class="lang-Text">exit
+</code></pre>
+<ol start="2">
+<li><p>テーブルスペースとデータベースの作成</p>
+<p>PostgreSQL に接続します。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">psql
+</code></pre>
+<p>データベースを作成します。(queryは必要に応じて変更してください)</p>
+<table><tbody><tr>
+            <td>CREATE DATABASE devps_db
+<p>    WITH</p>
+<p>    OWNER = devps;</p>
+</td>
+</tr></tbody></table>
+作成したデータベースが一覧に表示されていることを確認してください。
+<pre><code class="lang-Text">\l
+</code></pre>
+<p>PostgreSQLを切断</p>
+<pre><code class="lang-Text">\q
+</code></pre>
+<p>postgresユーザをログアウト</p>
+<pre><code class="lang-Text">exit
+</code></pre>
+<br>
+<h2 id="5-8postgisの有効化">5-8.PostGISの有効化</h2>
+<ol>
+<li>postgresユーザへ切り替え後、DB に接続します。</li>
+</ol>
+<pre><code class="lang-Text">su - postgres
+
+psql -h localhost -p 5432 -U devps -d devps_db
+</code></pre>
+<ol start="2">
+<li>PostGISの有効化を行います。</li>
+</ol>
+<pre><code class="lang-Text">CREATE EXTENSION postgis;
+</code></pre>
+<ol start="3">
+<li>正常に有効化されているかバージョン確認を行います。</li>
+</ol>
+<pre><code class="lang-Text">SELECT PostGIS_version();
+
+</code></pre>
+<br>
+<h2 id="5-9pgroutingの有効化">5-9.pgRoutingの有効化</h2>
+<ol>
+<li>pgRoutingのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">apt install postgresql-14-pgrouting
+</code></pre>
+<ol start="2">
+<li>postgresユーザへ切り替え後、DB に接続します。</li>
+</ol>
+<pre><code class="lang-Text">su - postgres
+
+psql -h localhost -p 5432 -U devps -d devps_db
+</code></pre>
+<ol start="3">
+<li>pgRoutingの有効化を行います。</li>
+</ol>
+<pre><code class="lang-Text">CREATE EXTENSION pgrouting;
+</code></pre>
+<ol start="4">
+<li>正常に有効化されているかバージョン確認を行います。</li>
+</ol>
+<pre><code class="lang-Text">SELECT * FROM pgr_full_version();
+</code></pre>
+<br>
+<h2 id="5-10metabaseのビルド配置">5-10.metabaseのビルド・配置</h2>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/metabase</p>
+<p>確認済みサーバ環境：Ubuntu 22.04.1 LTS</p>
+<p>確認済み作業PC環境 ：Windows 10 Pro</p>
+<p>metabaseは一度ビルドを実行し、jarファイルを作成してからWebサーバに格納します。</p>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li><p>WSL環境を構築後2~7のビルドを実行してください。</p>
+<p>※ WSL環境構築の参考サイト：</p>
+<p><a href="https://www.kagoya.jp/howto/it-glossary/develop/wsl2_linux/">https://www.kagoya.jp/howto/it-glossary/develop/wsl2_linux/</a></p>
+</li>
+<li><p>javaをインストールします。</p>
+<p>※ 第5章<a href="#sec53">5-3</a>を参照</p>
+</li>
+<li><p>npm、Nodejs、yarnをインストールします。</p>
+<p>※ 第4章<a href="#sec41">4-1</a>を参照</p>
+</li>
+<li><p>clojureをインストールします。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /適当な作業フォルダ/
+
+curl -O https://download.clojure.org/install/linux-install-1.11.1.1165.sh
+
+chmod +x linux-install-1.11.1.1165.sh
+
+sudo ./linux-install-1.11.1.1165.sh
+</code></pre>
+<ol start="5">
+<li>metabaseのプロジェクトフォルダ直下に移動して、依存モジュールのインストールを行います。</li>
+</ol>
+<pre><code class="lang-Text">cd metabase
+
+yarn
+</code></pre>
+<ol start="6">
+<li><p>metabaseのビルドを行います。</p>
+<p>※ java versionは1.8であることが必須条件となります。それ以外の場合一時的にバージョンを切替える必要があります。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">java -version　※ 1.8.xxであることを必ず確認
+
+clojure -X:deps prep
+
+cd modules/drivers
+
+clojure -X:deps prep
+
+cd ../..
+
+./bin/build
+</code></pre>
+<ol start="7">
+<li><p>生成されたjarをサーバにアップロードしてください。ここでは /home/upload/ に転送する事としています。</p>
+<p>※ 以降サーバ上で行う</p>
+</li>
+<li><p>アップロード後、プロジェクトフォルダに配置しユーザ設定及び権限設定を行います。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">mkdir /opt/metabase
+
+cd /home/upload/
+
+mv metabase.jar /opt/metabase/
+
+addgroup --quiet --system metabase
+
+adduser --quiet --system --ingroup metabase --no-create-home --disabled-password metabase
+
+chown -R metabase:metabase /opt/metabase
+
+chmod -R 755 /opt/metabase
+</code></pre>
+<ol start="9">
+<li>サービスファイルを作成後起動します。パスは適宜確認してください。</li>
+</ol>
+<pre><code class="lang-Text">vi /etc/systemd/system/metabase.service
+</code></pre>
+<table><tbody><tr>
+            <td>[Unit]
+<p>Description=Metabase server</p>
+<br>
+<p>[Service]</p>
+<p>WorkingDirectory=/opt/metabase/</p>
+<p>ExecStart=/usr/bin/java -jar /opt/metabase/metabase.jar</p>
+<p>User=metabase</p>
+<p>Type=simple</p>
+<p>Restart=on-failure</p>
+<p>RestartSec=10</p>
+<br>
+<p>[Install]</p>
+<p>WantedBy=multi-user.target</p></td>
+</tr></tbody></table>
+<p>サービスファイルを読み込み起動します。</p>
+<pre><code class="lang-Text">systemctl daemon-reload
+
+systemctl start metabase
+</code></pre>
+<p>[http:// &lt;サーバマシンのIPアドレス&gt;:3000/][]でmetabaseが表示されることを確認してください。</p>
+<p>※ 起動</p>
+<pre><code class="lang-Text">systemctl start metabase
+</code></pre>
+<p>※ 停止</p>
+<pre><code class="lang-Text">systemctl stop metabase
+</code></pre>
+<p>※ apiと3dviewerのルート相対パスを変更したい場合（基本編集不要）</p>
+<p>下記の箇所にurlを設定してビルドを行ってください。</p>
+<p>（例）<a href="http://example.com/v1/api">http://example.com/v1/api</a>/と<a href="http://example.com/v1/plateau/">http://example.com/v1/plateau/</a> とする場合下記のように設定します。</p>
+<p>\frontend\src\metabase\lib\settings.ts</p>
+<table><tbody><tr>
+            <td>…
+<p>class Settings {</p>
+<p>_settings: Partial<settingsmap>;</settingsmap></p>
+<p>_listeners: Partial&lt;Record&lt;SettingName, SettingListener[]&gt;&gt; = {};</p>
+<p><strong>_plateauUrl: string = &quot;/v1/platau&quot;;</strong></p>
+<p><strong>_apiUrl: string = &quot;/v1/api&quot;;</strong></p>
+<p>…</p></td>
+</tr></tbody></table>
+<br>
+<h1 id="6-データ取込データベース">6 データ取込（データベース）</h1>
+<p><a id="sec6"></a></p>
+<p><strong>必要リソース：erimane-dashboard-tool/SRC/Settings/environmant_settings/</strong></p>
+<p>本システムでは、以下のテーブルの登録が必須となります。</p>
+<p>後述する各テーブルの項目定義と取込方法について確認し、データの取り込みを行ってください。</p>
+<p>そのほか、災害リスク情報や建物属性、避難施設、イベント会場情報等のデータを必要に応じて取り込むことで、システム上の表示内容をカスタマイズすることが可能です。</p>
+<p>area_management_sample_dataフォルダには下表に記載の取込方式「CSV」「GIS」のデータが含まれていますので、本システムの動作確認に利用可能です。実際に本システムを活用される際は、ユースケースに合わせてデータをご用意ください。</p>
+<table>
+<colgroup>
+<col style="width: 15%">
+<col style="width: 30%">
+<col style="width: 14%">
+<col style="width: 13%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カテゴリ</th>
+<th>テーブル名</th>
+<th>空間データ</th>
+<th>取込方式</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>共通</td>
+<td>login_user</td>
+<td></td>
+<td>DDL</td>
+<td>ログインユーザ</td>
+</tr>
+<tr class="even">
+<td rowspan="4">エリマネ・イベント活動</td>
+<td>activity</td>
+<td>○</td>
+<td>DDL</td>
+<td>エリマネ・イベント活動情報</td>
+</tr>
+<tr class="odd">
+<td>activity_type</td>
+<td></td>
+<td>DDL</td>
+<td>エリマネ・イベント活動種別</td>
+</tr>
+<tr class="even">
+<td>attachments</td>
+<td></td>
+<td>DDL</td>
+<td>エリマネ・イベント活動ファイル</td>
+</tr>
+<tr class="odd">
+<td>group_type</td>
+<td></td>
+<td>DDL</td>
+<td>エリマネ・イベント活動グループ種別</td>
+</tr>
+<tr class="even">
+<td rowspan="2">歩行空間ネットワークデータ</td>
+<td>node_3d</td>
+<td>○</td>
+<td>GIS</td>
+<td>歩行空間ネットワークデータ（ノード）</td>
+</tr>
+<tr class="odd">
+<td>link_3d</td>
+<td>○</td>
+<td>GIS</td>
+<td>歩行空間ネットワークデータ（リンク）</td>
+</tr>
+<tr class="even">
+<td rowspan="9">地域統計情報</td>
+<td>chochomokukai_erimane</td>
+<td>○</td>
+<td>GIS</td>
+<td>町丁目界データ</td>
+</tr>
+<tr class="odd">
+<td>chika2</td>
+<td></td>
+<td>CSV</td>
+<td>地価公示価格</td>
+</tr>
+<tr class="even">
+<td>gis_joint2</td>
+<td></td>
+<td>CSV</td>
+<td>町丁目別統計情報</td>
+</tr>
+<tr class="odd">
+<td>erimane_ninchido</td>
+<td></td>
+<td>CSV</td>
+<td>エリマネ団体の認知度</td>
+</tr>
+<tr class="even">
+<td>station_users</td>
+<td></td>
+<td>CSV</td>
+<td>駅利用者数</td>
+</tr>
+<tr class="odd">
+<td>syokencyosa_shijiritsu</td>
+<td></td>
+<td>CSV</td>
+<td>商圏調査の支持率</td>
+</tr>
+<tr class="even">
+<td>syogyoshisetsu</td>
+<td></td>
+<td>CSV</td>
+<td>商業施設</td>
+</tr>
+<tr class="odd">
+<td>region_summary</td>
+<td></td>
+<td>CSV</td>
+<td>自治体全体の統計値</td>
+</tr>
+<tr class="even">
+<td>sougou_hyouka_result</td>
+<td></td>
+<td>CSV</td>
+<td>総合評価</td>
+</tr>
+<tr class="odd">
+<td rowspan="7">回遊性</td>
+<td>kaiyu_jinryu_nenrei_1</td>
+<td></td>
+<td>CSV</td>
+<td>回遊分析結果（年齢）</td>
+</tr>
+<tr class="even">
+<td>kaiyu_jinryu_seibetsu_1</td>
+<td></td>
+<td>CSV</td>
+<td>回遊分析結果（性別）</td>
+</tr>
+<tr class="odd">
+<td>kaiyu_jinryu_ninzuu_1</td>
+<td></td>
+<td>CSV</td>
+<td>回遊分析結果（人数）</td>
+</tr>
+<tr class="even">
+<td>kaiyu_jinryu_chiiki_1</td>
+<td></td>
+<td>CSV</td>
+<td>回遊分析結果（地域）</td>
+</tr>
+<tr class="odd">
+<td>kaiyu_jinryu_hosuu_1</td>
+<td></td>
+<td>CSV</td>
+<td>回遊分析結果（歩数）</td>
+</tr>
+<tr class="even">
+<td>kaiyuusei_{number}</td>
+<td>○</td>
+<td>GIS</td>
+<td><p>回遊性情報（移動データ）</p>
+<p>number には分析回数を指定（1,2,3,…）</p></td>
+</tr>
+<tr class="odd">
+<td>accessspot_{number}</td>
+<td>○</td>
+<td>GIS</td>
+<td><p>人気スポット（点データ）</p>
+<p>number には分析回数を指定（1,2,3,…）</p></td>
+</tr>
+</tbody>
+</table>
+<p>QGIS、CSVデータの取込方式については、それぞれ以下<a href="#sec61">6-1</a>,<a href="#sec62">6-2</a>を参照してください。</p>
+<p>DDLにより取込を行うテーブルは<a href="#sec63">6-3</a>を参照してください。</p>
+<p>各テーブルの項目定義は、<a href="#sec64">6-4</a>以降の記載を参照してください。</p>
+<p>本システムのER図を以下に示します。</p>
+<p>※ 本章で記載のないテーブルは自由にカスタマイズ可能です。</p>
+<img src="../resources/devMan/image4.png" style="width:7.0in">
+<br>
+<h2 id="6-1取込手順gis">6-1.取込手順（GIS）</h2>
+<p><a id="sec61"></a></p>
+<ol>
+<li><p>項目定義に合わせたデータ（Shapeファイル）を用意します。フィールド名の文字数制約のため項目定義の内容が反映できない場合、データベースに取込後に変更します。</p>
+</li>
+<li><p>QGISを立ち上げ、「新規プロジェクト」を開きます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image6.png" style="width:7.0in">
+<ol start="3">
+<li>1で用意したデータをドラッグアンドドロップで開きます。</li>
+</ol>
+<img src="../resources/devMan/image7.png" style="width:7.0in">
+<ol start="4">
+<li>以下のように、取り込んだシェープファイルがレイヤに追加され、地図上に表示されます。</li>
+</ol>
+<img src="../resources/devMan/image8.png" style="width:7.0in">
+<p>テーブル定義に合わせて属性フィールドを編集します。レイヤを右クリックし、メニューから「属性テーブルを開く」をクリックします。</p>
+<img src="../resources/devMan/image9.png" style="width:4.5in">
+<ol start="5">
+<li>以下の通り属性テーブルが表示されますので、ヘッダ左端のボタンで編集モードへの切り替えを行ってください。</li>
+</ol>
+<img src="../resources/devMan/image10.png" style="width:7in">
+<ol start="6">
+<li>フィールドを追加する場合、「フィールドを追加」をクリックし、開いた画面で追加するフィールド名とデータ型を設定します。</li>
+</ol>
+<img src="../resources/devMan/image11.png" style="width:7in">
+<img src="../resources/devMan/image12.png" style="width:3in">
+<ol start="7">
+<li>フィールドにデータを一括で格納する場合、フィールド演算機能を利用します。</li>
+</ol>
+<img src="../resources/devMan/image13.png" style="width:7in">
+<ol start="8">
+<li><p>データベースにデータを取り込みます。</p>
+<p>まずはデータベースの接続情報をQGISに登録します。</p>
+<p>「ブラウザ」ウィンドウから「PostgreSQL」を右クリックし、「新規接続」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image14.png" style="width:7.0in">
+<ol start="9">
+<li>データベースへの接続情報を入力します。</li>
+</ol>
+<ul>
+<li><p>名前：任意</p>
+</li>
+<li><p>ホスト：DBサーバのIPアドレス</p>
+</li>
+<li><p>ポート番号：DBのポート番号（デフォルト:5432）</p>
+</li>
+<li><p>データベース：データベース名</p>
+</li>
+</ul>
+<img src="../resources/devMan/image15.png" style="width:5in">
+<ol start="10">
+<li><p>「接続テスト」を押下すると、以下のダイアログが開くので、DBに接続するユーザ名とパスワードを入力し、「OK」を押下します。</p>
+</li>
+<li><p>元の画面に戻り、接続に成功すると「接続に成功しました」のダイアログが表示されるので、「OK」を押下して接続情報を登録します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image16.png" style="width:5in">
+<ol start="12">
+<li>ヘッダーメニューから「プラグイン」＞「プラグイン」の管理とインストールを押下します。</li>
+</ol>
+<img src="../resources/devMan/image17.png" style="width:7in">
+<ol start="13">
+<li>「DB」で検索し、DB Managerが未インストールの場合インストールして有効化します。</li>
+</ol>
+<img src="../resources/devMan/image18.png" style="width:7in">
+<ol start="14">
+<li>有効化されると、「データベース」&gt; 「DBマネージャ」を開くことができるので開きます。</li>
+</ol>
+<img src="../resources/devMan/image19.png" style="width:7in">
+<ol start="15">
+<li><p>以下の通りウィンドウが開くので、「PostGIS」を展開します。</p>
+<p>先ほど追加した接続が表示されるので、右クリックします。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image20.png" style="width:7.0in">
+<p>ユーザ名とパスワードを入力し、OKを押下します。</p>
+<img src="../resources/devMan/image21.png" style="width:5in">
+<ol start="16">
+<li>DBマネージャーから「レイヤ/ファイルのインポート」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image22.png" style="width:4.20764in;height:0.92847in">
+<ol start="17">
+<li><p>以下のダイアログが表示されます。</p>
+<p>「入力」で入力するレイヤを指定します。</p>
+<p>テーブルに、取り込み先となるテーブル名を入力します。</p>
+<p>主キー、ジオメトリのカラムに指定がなければ、チェックを入れデフォルト（id, geom）のままとしておきます。</p>
+<p>上書き更新する場合、「出力先テーブルを置き換える」にチェックを入れます。</p>
+<p>「空間インデックスを作成」にチェックを入れます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image23.png" style="width:5n">
+<p>「OK」を押下すると、インポートが開始します。</p>
+<p>インポートが完了すると、「インポートは成功しました」のダイアログが表示されます。</p>
+<img src="../resources/devMan/image24.png" style="width:5in">
+<br>
+<h2 id="6-2取込手順csv">6-2.取込手順（CSV）</h2>
+<p><a id="sec62"></a></p>
+<img src="../resources/devMan/image25.png" style="width:7in">
+<ol>
+<li>A5m2を開きます。「データベース」を右クリックし、「データベースの追加と削除」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image26.png" style="width:3.12361in;height:1.65556in">
+<ol start="2">
+<li>「追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image27.png" style="width:7.0in">
+<ol start="3">
+<li>「PostgreSQL（直接接続）」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image28.png" style="width:4in">
+<ol start="4">
+<li><a href="#sec5">第5章</a>で設定したデータベースの接続情報を入力し、「OK」を押下してください。</li>
+</ol>
+<ul>
+<li><p>サーバー名</p>
+</li>
+<li><p>ポート番号</p>
+</li>
+<li><p>データベース名</p>
+</li>
+<li><p>ユーザーID</p>
+</li>
+<li><p>パスワード</p>
+</li>
+</ul>
+<img src="../resources/devMan/image29.png" style="width:6.0in">
+<ol start="5">
+<li>以下の通りツリーが表示されます。作成したDB名をダブルクリックします。</li>
+</ol>
+<img src="../resources/devMan/image30.png" style="width:2.90191in;height:0.98056in">
+<ol start="6">
+<li>ユーザIDとパスワードを入力し「OK」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image31.png" style="width:6in">
+<ol start="7">
+<li>以下の通りツリーが展開されます。データベースを右クリックしメニューを開きます。</li>
+</ol>
+<img src="../resources/devMan/image32.png" style="width:3in">
+<ol start="8">
+<li>「CSV/TSVファイルからテーブル作成（インポート）」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image33.png" style="width:4in">
+<ol start="9">
+<li>インポートするCSVファイルを選択し、「開く」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image34.png" style="width:7.0in">
+<ol start="10">
+<li>テーブル項目定義に従って、テーブル名と列名、データ型、必須、主キーを設定します。設定後「テーブル作成&amp;インポート」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image35.png" style="width:7.0in">
+<ol start="11">
+<li>取込後、テーブルが作成され、テーブルをダブルクリックでデータが表示されるので、内容に相違ないことを確認します。</li>
+</ol>
+<img src="../resources/devMan/image36.png" style="width:3in">
+<img src="../resources/devMan/image37.png" style="width:5.407in;height:1.56272in">
+<br>
+<h2 id="6-3取込手順ddl">6-3.取込手順（DDL）</h2>
+<p><a id="sec63"></a></p>
+<ol>
+<li>配布されているenvironmant_settingsに含まれるpostgres_ddl.sqlをa5m2で開き、カーソルを最上部に合わせます。</li>
+</ol>
+<img src="../resources/devMan/image38.png" style="width:6in">
+<ol start="2">
+<li>投入先でDBサーバを選択し、実行を押下します。</li>
+</ol>
+<img src="../resources/devMan/image39.png" style="width:6in">
+<ol start="3">
+<li><p>テーブルの作成が実行されます。</p>
+</li>
+<li><p>実行後、以下のテーブルが作成されていることを確認します。</p>
+</li>
+</ol>
+<ul>
+<li><p>activity</p>
+</li>
+<li><p>activity_type</p>
+</li>
+<li><p>attatchments</p>
+</li>
+<li><p>group_type</p>
+</li>
+<li><p>login_user</p>
+</li>
+</ul>
+<img src="../resources/devMan/image40.png" style="width:4in">
+<ol start="5">
+<li>group_typeテーブルにエリアマネジメント団体種別の名称を投入します。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Id</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>type_name</td>
+<td>エリアマネジメント団体種別</td>
+<td>text</td>
+<td></td>
+<td></td>
+<td>画面に表示するエリアマネジメント団体の名称を登録</td>
+</tr>
+</tbody>
+</table>
+<ol start="6">
+<li><p>login_userテーブルにログインユーザ情報を投入します。</p>
+<p>以下のカラム定義でCSVファイルを作成し、取込を行ってください。</p>
+<p>※ パスワードはSpringBootのソースを使ってハッシュ化する必要があるため、第13章のセットアップ完了後に手順7以降の手順を実施し、取込を行ってください。</p>
+</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>user_id</td>
+<td>ユーザID</td>
+<td>varchar(10)</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr class="even">
+<td>login_id</td>
+<td>ログインID</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td>ログイン時に使用するID</td>
+</tr>
+<tr class="odd">
+<td>password</td>
+<td>パスワード</td>
+<td>varchar(1024)</td>
+<td></td>
+<td></td>
+<td>ハッシュ化したパスワード</td>
+</tr>
+<tr class="even">
+<td>role</td>
+<td>ロール</td>
+<td>varchar(10)</td>
+<td></td>
+<td></td>
+<td><p>以下のいずれかで設定すること.</p>
+<p>admin : 管理者</p>
+<p>user : 一般ユーザ</p></td>
+</tr>
+</tbody>
+</table>
+<ol start="7">
+<li>Spring Tool Suite 4を開き、プロジェクトを開きます。</li>
+</ol>
+<img src="../resources/devMan/image41.png" style="width:7.0in">
+<ol start="8">
+<li>view3d.util.AuthUtil.javaを開きますを開きます。</li>
+</ol>
+<img src="../resources/devMan/image42.png" style="width:7in">
+<ol start="9">
+<li>AuthUtil.javaの末尾、public class AuthUtil { }を閉じている中括弧の直前に以下のコードを追記します。</li>
+</ol>
+<table><tbody><tr>
+            <td>/**
+<ul>
+<li><p>ハッシュ生成確認用</p>
+</li>
+<li></li>
+<li><p>@param args 引数(使用しない)</p>
+</li>
+</ul>
+<p>*/</p>
+<p>public static void main(String[] args) {</p>
+<p>System.out.println(AuthUtil.createHash(&quot;superStrongP@ssword&quot;));</p>
+<p>}</p></td>
+</tr></tbody></table>
+<ol start="10">
+<li><p>「superStrongP@ssword」の部分をパスワードにしたい文字列に置換します。</p>
+</li>
+<li><p>「3dviewapi」を右クリックし、「実行」&gt;「Spring Bot アプリケーション」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image43.png" style="width:5in">
+<ol start="12">
+<li>「Javaアプリケーションを選択」で「AuthUtil」を選択し、「OK」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image44.png" style="width:6.0in">
+<ol start="13">
+<li><p>「Javaアプリケーションを選択」で「AuthUtil」を選択し、「OK」を押下します。</p>
+<p>「コンソール」に実行結果のハッシュ文字列が出力されるので、コピーして、取込用CSVファイルの「password」列のパスワードを設定したいユーザの行に貼り付けます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image45.png" style="width:7.0in">
+<img src="../resources/devMan/image46.png" style="width:6in">
+<ol start="14">
+<li><p>10でパスワード文字列を入力した部分を変更して、作成するログインユーザ分のパスワードを作成します。</p>
+</li>
+<li><p>すべてのパスワードを作成し終えたら、9で追記したコードを削除します。</p>
+</li>
+</ol>
+<br>
+<h2 id="6-4テーブル項目定義歩行空間ネットワークデータ">6-4.テーブル項目定義（歩行空間ネットワークデータ）</h2>
+<p><a id="sec64"></a></p>
+<ol>
+<li>歩行空間ネットワークデータ（ノード）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>node_3d</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ 経路探索機能で使用する最低限のカラムのみ記載。用途に応じてカラムは追加可能。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>geom</td>
+<td>ジオメトリ</td>
+<td>geometry</td>
+<td></td>
+<td></td>
+<td><p>ポイント（3D）</p>
+<p>座標系は平面直角座標系とすること</p></td>
+</tr>
+<tr class="odd">
+<td>node_id</td>
+<td>ノードID</td>
+<td>varchar(40)</td>
+<td></td>
+<td></td>
+<td><p>ノードを識別する一意のID.リンクの開始・終了ノードIDとの対応が必要.</p>
+<p>Integer型に型変換可能な値とすること</p></td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>歩行空間ネットワークデータ（リンク）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>link_3d</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ 経路探索機能で使用する最低限のカラムのみ記載。用途に応じてカラムは追加可能。</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>geom</td>
+<td>ジオメトリ</td>
+<td>geometry</td>
+<td></td>
+<td></td>
+<td><p>ポリライン（3D）</p>
+<p>座標系は平面直角座標系とすること</p></td>
+</tr>
+<tr class="odd">
+<td>link_id</td>
+<td>リンクID</td>
+<td>varchar(40)</td>
+<td></td>
+<td></td>
+<td><p>リンクを識別する一意のID.</p>
+<p>Integer型に型変換可能な値とすること</p></td>
+</tr>
+<tr class="even">
+<td>start_id</td>
+<td>開始ID</td>
+<td>varchar(40)</td>
+<td></td>
+<td></td>
+<td><p>リンクの開始点のノードID.</p>
+<p>Integer型に型変換可能な値とすること</p></td>
+</tr>
+<tr class="odd">
+<td>end_id</td>
+<td>終了ID</td>
+<td>varchar(40)</td>
+<td></td>
+<td></td>
+<td><p>リンクの終了点のノードID.</p>
+<p>Integer型に型変換可能な値とすること</p></td>
+</tr>
+<tr class="even">
+<td>distance</td>
+<td>距離</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td><p>リンクの距離.</p>
+<p>経路探索（健常者向け）で使用.</p></td>
+</tr>
+<tr class="odd">
+<td>rt_struct</td>
+<td>経路の構造</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 車道と歩道の物理的な分離あり</p>
+<p>2: 車道と歩道の物理的な分離なし</p>
+<p>3: 横断歩道</p>
+<p>4: 横断歩道の路面標示の無い道路の横断部</p>
+<p>5: 地下通路</p>
+<p>6: 歩道橋　（ペデストリアンデッキ含む）</p>
+<p>7: 施設内通路</p>
+<p>8: その他の経路の構造</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>route_type</td>
+<td>経路の種別</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 対応する属性情報なし</p>
+<p>2: 動く歩道</p>
+<p>3: 踏切</p>
+<p>4: エレベーター</p>
+<p>5: エスカレーター</p>
+<p>6: 階段</p>
+<p>7: スロープ</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="odd">
+<td>direction</td>
+<td>方向性</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 両方向</p>
+<p>2: 起点より終点方向</p>
+<p>3: 終点より起点方向</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>width</td>
+<td>幅員</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 1.0m 未満</p>
+<p>2: 1.0m 以上～2.0m 未満</p>
+<p>3: 2.0m以上～3.0m 未満</p>
+<p>4: 3.0m 以上</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="odd">
+<td>vtcl_slope</td>
+<td>縦断勾配</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 5％以下</p>
+<p>2: 5％より大きい（起点より終点が高い）</p>
+<p>3: 5％より大きい（起点より終点が低い）</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>lev_diff</td>
+<td>段差</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 2 ㎝以下</p>
+<p>2: 2 ㎝より大きい</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="odd">
+<td>tfc_signal</td>
+<td>歩行者用信号機の有無</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 歩行者用信号機なし</p>
+<p>2: 歩車分離式信号機あり</p>
+<p>3: 押しボタン式信号機あり</p>
+<p>4: これら以外の信号機</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>tfc_s_type</td>
+<td>歩行者用信号機の種別</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 音響設備なし</p>
+<p>2: 音響設備あり（音響用押しボタンなし）</p>
+<p>3: 音響設備あり（音響用押しボタンあり）</p>
+<p>4: これら以外の信号機</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="odd">
+<td>brail_tile</td>
+<td>視覚障害者誘導用ブロック等の有無</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: 視覚障害者誘導用ブロック等なし</p>
+<p>2: 視覚障害者誘導用ブロック等あり</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>elevator</td>
+<td>エレベーターの種別</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: エレベーターなし</p>
+<p>2: エレベーターあり（バリアフリー対応なし）</p>
+<p>3: エレベーターあり（車いす使用者対応）</p>
+<p>4: エレベーターあり（視覚障害者対応）</p>
+<p>5: エレベーターあり（車いす使用者、視覚障害者対応）</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="odd">
+<td>roof</td>
+<td>屋根の有無</td>
+<td>bigint</td>
+<td></td>
+<td></td>
+<td><p>1: なし</p>
+<p>2: あり</p>
+<p>99: 不明</p></td>
+</tr>
+<tr class="even">
+<td>cost_wheelchair</td>
+<td>車いす利用者向けコスト</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td><p>車いす利用者向け経路探索用コスト.</p>
+<!-- <p>値はデータベース取込後、「[第10章](#sec10)」の手順でセットすること.</p></td> -->
+<p>値はデータベース取込後、<a href="#sec10">第10章</a>の手順でセットすること.</p></td>
+</tr>
+<tr class="odd">
+<td>cost_elderly</td>
+<td>高齢者向けコスト</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td><p>高齢者・乳幼児向け経路探索用コスト.</p>
+<!-- <p>値はデータベース取込後、「[第10章](#sec10)」の手順でセットすること.</p></td> -->
+<p>値はデータベース取込後、<a href="#sec10">第10章</a>の手順でセットすること.</p></td>
+</tr>
+<tr class="even">
+<td>cost_brail</td>
+<td>視覚障害者向けコスト</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td><p>視覚障害者向け経路探索用コスト.</p>
+<!-- <p>値はデータベース取込後、「[第10章](#sec10)」の手順でセットすること.</p></td> -->
+<p>値はデータベース取込後、<a href="#sec10">第10章</a>の手順でセットすること.</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="6-5テーブル項目定義地域統計情報">6-5.テーブル項目定義（地域統計情報）</h2>
+<ol>
+<li>町丁目界データ</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>chochomokukai_erimane</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ 用途に応じてカラムは追加可能。</p>
+<table>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 12%">
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>geom</td>
+<td>ジオメトリ</td>
+<td>geometry</td>
+<td></td>
+<td></td>
+<td>マルチポリゴン型</td>
+</tr>
+<tr class="odd">
+<td>s_name</td>
+<td>町丁目名</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td><p>一意の町丁目名.</p>
+<p>ダッシュボード表示時にgis_joint2テーブルと結合利用.</p></td>
+</tr>
+<tr class="even">
+<td>area_management_type</td>
+<td>エリアマネジメント団体種別名</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>3dview_url</td>
+<td>3D都市モデルビューワ連携URL</td>
+<td>text</td>
+<td></td>
+<td></td>
+<!-- <td>「[第17章](#sec17)」の手順でURLを設定する.</td> -->
+<td><a href="#sec17">第17章</a>の手順でURLを設定する.</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>地価公示価格</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>chika2</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>地点名</td>
+<td>地点名</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>和暦</td>
+<td>和暦</td>
+<td>varchar(20)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>西暦</td>
+<td>西暦</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>地価</td>
+<td>地価</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>区分</td>
+<td>区分</td>
+<td>varchar(20)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>エリア</td>
+<td>エリア</td>
+<td>varchar(20)</td>
+<td></td>
+<td></td>
+<td>group_typeテーブルの区分と対応</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>地点名</th>
+<th>和暦</th>
+<th>西暦</th>
+<th>地価</th>
+<th>区分</th>
+<th>エリア</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>○○東5-1</td>
+<td>平成30年</td>
+<td>2018</td>
+<td>473000</td>
+<td>商業地</td>
+<td>キタ</td>
+</tr>
+<tr>
+<td>2</td>
+<td>○○東5-1</td>
+<td>令和元年</td>
+<td>2019</td>
+<td>506000</td>
+<td>商業地</td>
+<td>キタ</td>
+</tr>
+<tr>
+<td>3</td>
+<td>○○南5-9</td>
+<td>平成30年</td>
+<td>2018</td>
+<td>2080000</td>
+<td>商業地</td>
+<td>ミナミ</td>
+</tr>
+<tr>
+<td>4</td>
+<td>○○南5-9</td>
+<td>令和元年</td>
+<td>2019</td>
+<td>2160000</td>
+<td>商業地</td>
+<td>ミナミ</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>町丁目別統計項目</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>gis_joint2</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr class="even">
+<td>地点名</td>
+<td>地点名</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td><p>町丁目名.</p>
+<p>chochomokukai_erimaneのs_nameと対応.</p></td>
+</tr>
+<tr class="odd">
+<td>エリマネ</td>
+<td>エリマネ</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td>group_typeテーブルの区分と対応</td>
+</tr>
+<tr class="even">
+<td>カテゴリ</td>
+<td>カテゴリ</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td>統計項目</td>
+</tr>
+<tr class="odd">
+<td>和暦</td>
+<td>和暦</td>
+<td>varchar(10)</td>
+<td></td>
+<td></td>
+<td>統計年度（和暦）</td>
+</tr>
+<tr class="even">
+<td>西暦</td>
+<td>西暦</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>統計年度（西暦）</td>
+</tr>
+<tr class="odd">
+<td>数</td>
+<td>数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>統計値</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>地点名</th>
+<th>エリマネ</th>
+<th>カテゴリ</th>
+<th>和暦</th>
+<th>西暦</th>
+<th>数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>人口</td>
+<td>R4</td>
+<td>2022</td>
+<td>1780</td>
+</tr>
+<tr>
+<td>2</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>人口</td>
+<td>R3</td>
+<td>2021</td>
+<td>1801</td>
+</tr>
+<tr>
+<td>3</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>世帯</td>
+<td>R4</td>
+<td>2022</td>
+<td>904</td>
+</tr>
+<tr>
+<td>4</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>世帯</td>
+<td>R3</td>
+<td>2021</td>
+<td>900</td>
+</tr>
+<tr>
+<td>5</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>事業所</td>
+<td>H28</td>
+<td>2016</td>
+<td>99</td>
+</tr>
+<tr>
+<td>6</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>事業所</td>
+<td>H26</td>
+<td>2014</td>
+<td>99</td>
+</tr>
+<tr>
+<td>7</td>
+<td>東町</td>
+<td>ヒガシ</td>
+<td>単身世帯</td>
+<td>R4</td>
+<td>2022</td>
+<td>421</td>
+</tr>
+<tr>
+<td>8</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>人口</td>
+<td>R4</td>
+<td>2022</td>
+<td>1860</td>
+</tr>
+<tr>
+<td>9</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>人口</td>
+<td>R3</td>
+<td>2021</td>
+<td>1879</td>
+</tr>
+<tr>
+<td>10</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>世帯</td>
+<td>R4</td>
+<td>2022</td>
+<td>1271</td>
+</tr>
+<tr>
+<td>11</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>世帯</td>
+<td>R3</td>
+<td>2021</td>
+<td>1280</td>
+</tr>
+<tr>
+<td>12</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>事業所</td>
+<td>H28</td>
+<td>2016</td>
+<td>218</td>
+</tr>
+<tr>
+<td>13</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>事業所</td>
+<td>H26</td>
+<td>2014</td>
+<td>223</td>
+</tr>
+<tr>
+<td>14</td>
+<td>西町</td>
+<td>ニシ</td>
+<td>単身世帯</td>
+<td>R4</td>
+<td>2022</td>
+<td>865</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>エリマネ団体の認知度</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>erimane_ninchido</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>エリア</td>
+<td>エリア</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>和暦</td>
+<td>和暦</td>
+<td>varchar(10)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>西暦</td>
+<td>西暦</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>認知度</td>
+<td>認知度</td>
+<td>numeric</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>エリア</th>
+<th>和暦</th>
+<th>西暦</th>
+<th>認知度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>キタ</td>
+<td>R4</td>
+<td>2022</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>キタ</td>
+<td>R5</td>
+<td>2023</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ミナミ</td>
+<td>R4</td>
+<td>2022</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ミナミ</td>
+<td>R5</td>
+<td>2023</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ナカ</td>
+<td>R4</td>
+<td>2022</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ナカ</td>
+<td>R5</td>
+<td>2023</td>
+<td>0.35</td>
+</tr>
+</tbody>
+</table>
+<ol start="5">
+<li>駅利用者数</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>station_users</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>会社名</td>
+<td>会社名</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>年</td>
+<td>年</td>
+<td>varchar(5)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>利用者数</td>
+<td>利用者数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>会社名</th>
+<th>年</th>
+<th>利用者数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>○○電鉄</td>
+<td>2017</td>
+<td>29097</td>
+</tr>
+<tr>
+<td>2</td>
+<td>○○電鉄</td>
+<td>2018</td>
+<td>30122</td>
+</tr>
+<tr>
+<td>3</td>
+<td>○○電鉄</td>
+<td>2019</td>
+<td>32791</td>
+</tr>
+<tr>
+<td>4</td>
+<td>○○電鉄</td>
+<td>2020</td>
+<td>16550</td>
+</tr>
+<tr>
+<td>5</td>
+<td>××鉄道</td>
+<td>2017</td>
+<td>154338</td>
+</tr>
+<tr>
+<td>6</td>
+<td>××鉄道</td>
+<td>2018</td>
+<td>154238</td>
+</tr>
+<tr>
+<td>7</td>
+<td>××鉄道</td>
+<td>2019</td>
+<td>154184</td>
+</tr>
+<tr>
+<td>8</td>
+<td>××鉄道</td>
+<td>2020</td>
+<td>101090</td>
+</tr>
+</tbody>
+</table>
+<ol start="6">
+<li>商圏調査の支持率</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>syokencyosa_shijiritsu</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>商圏エリア</td>
+<td>商圏エリア</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>割合</td>
+<td>割合</td>
+<td>Double precision</td>
+<td></td>
+<td></td>
+<td>%</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>商圏エリア</th>
+<th>割合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>●●町</td>
+<td>44.4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>■■町</td>
+<td>32.2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>×山</td>
+<td>15.1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>○○市役所周辺</td>
+<td>4.1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>○○駅前</td>
+<td>4.2</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="7">
+<li>商業施設</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>syogyoshisetsu</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>店舗名</td>
+<td>店舗名</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>住所</td>
+<td>住所</td>
+<td>varchar(100)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>開設年</td>
+<td>開設年</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>店舗面積</td>
+<td>店舗面積</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>店舗名</th>
+<th>住所</th>
+<th>開設年</th>
+<th>店舗面積</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>○○百貨店</td>
+<td>xx区○○町12-1</td>
+<td>1999</td>
+<td>40825</td>
+</tr>
+<tr>
+<td>2</td>
+<td>●●マート</td>
+<td>xx区■■町1-4</td>
+<td>2013</td>
+<td>10357</td>
+</tr>
+<tr>
+<td>3</td>
+<td>××シティ</td>
+<td>○○区△△町4-2</td>
+<td>2016</td>
+<td>7788</td>
+</tr>
+</tbody>
+</table>
+<ol start="8">
+<li>自治体全体の統計値</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>region_summary</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr class="even">
+<td>カテゴリ</td>
+<td>カテゴリ</td>
+<td>text</td>
+<td></td>
+<td></td>
+<td><p>以下のいずれかで設定すること.</p>
+<p>・人口</p>
+<p>・世帯数</p>
+<p>・駅利用者数まとめ</p>
+<p>・事業所数</p>
+<p>・従業者数</p>
+<p>・公示地価</p>
+<p>総合評価の算出処理で使用するので、すべてのカテゴリを設定すること.</p></td>
+</tr>
+<tr class="odd">
+<td>和暦</td>
+<td>和暦</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>西暦</td>
+<td>西暦</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>値</td>
+<td>値</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td>統計値</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>カテゴリ</th>
+<th>和暦</th>
+<th>西暦</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>人口</td>
+<td>R3</td>
+<td>2021</td>
+<td>1189149</td>
+</tr>
+<tr>
+<td>2</td>
+<td>人口</td>
+<td>R4</td>
+<td>2022</td>
+<td>1187049</td>
+</tr>
+<tr>
+<td>3</td>
+<td>世帯数</td>
+<td>R3</td>
+<td>2021</td>
+<td>575232</td>
+</tr>
+<tr>
+<td>4</td>
+<td>世帯数</td>
+<td>R4</td>
+<td>2022</td>
+<td>578741</td>
+</tr>
+<tr>
+<td>5</td>
+<td>駅利用者数まとめ</td>
+<td>R1</td>
+<td>2019</td>
+<td>363226</td>
+</tr>
+<tr>
+<td>6</td>
+<td>駅利用者数まとめ</td>
+<td>R2</td>
+<td>2020</td>
+<td>269578</td>
+</tr>
+<tr>
+<td>7</td>
+<td>事業所数</td>
+<td>H26</td>
+<td>2014</td>
+<td>55733</td>
+</tr>
+<tr>
+<td>8</td>
+<td>事業所数</td>
+<td>H28</td>
+<td>2016</td>
+<td>53327</td>
+</tr>
+<tr>
+<td>9</td>
+<td>従業者数</td>
+<td>H26</td>
+<td>2014</td>
+<td>599407</td>
+</tr>
+<tr>
+<td>10</td>
+<td>従業者数</td>
+<td>H28</td>
+<td>2016</td>
+<td>581331</td>
+</tr>
+<tr>
+<td>11</td>
+<td>公示地価</td>
+<td>R3</td>
+<td>2021</td>
+<td>525312.5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>公示地価</td>
+<td>R4</td>
+<td>2022</td>
+<td>541750</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="9">
+<li>総合評価</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>sougou_hyouka_result</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>カテゴリ</td>
+<td>カテゴリ</td>
+<td>text</td>
+<td></td>
+<td></td>
+<td><p>以下のいずれかで設定すること.</p>
+<p>・人口</p>
+<p>・世帯数</p>
+<p>・駅利用者数まとめ</p>
+<p>・事業所数</p>
+<p>・従業者数</p>
+<p>・公示地価</p>
+<p>・総合評価</p>
+<p>すべてのカテゴリを設定すること.</p></td>
+</tr>
+<tr class="odd">
+<td>年度</td>
+<td>年度</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>全体比較</td>
+<td>全体比較</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>過去比較</td>
+<td>過去比較</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>カテゴリ</th>
+<th>年度</th>
+<th>全体比較</th>
+<th>過去比較</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>人口</td>
+<td>2022</td>
+<td>3.022594</td>
+<td>2.999128</td>
+</tr>
+<tr>
+<td>2</td>
+<td>世帯数</td>
+<td>2022</td>
+<td>2.997356</td>
+<td>3.016077</td>
+</tr>
+<tr>
+<td>3</td>
+<td>駅利用者数まとめ</td>
+<td>2022</td>
+<td>2.59621</td>
+<td>1.895085</td>
+</tr>
+<tr>
+<td>4</td>
+<td>事業所数</td>
+<td>2022</td>
+<td>3.116334</td>
+<td>3.000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>従業者数</td>
+<td>2022</td>
+<td>3.303411</td>
+<td>3.000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>公示地価</td>
+<td>2022</td>
+<td>3.091724</td>
+<td>3.122362</td>
+</tr>
+<tr>
+<td>7</td>
+<td>総合評価</td>
+<td>2022</td>
+<td>3.021272</td>
+<td>2.838775</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="6-6テーブル項目定義回遊性">6-6.テーブル項目定義（回遊性）</h2>
+<ol>
+<li>回遊分析結果（年齢）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyu_jinryu_nenrei_1</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>項目</td>
+<td>項目</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>人数</td>
+<td>人数</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>割合</td>
+<td>割合</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td>同じ回数で合計1.0となるように設定</td>
+</tr>
+<tr>
+<td>回数</td>
+<td>回数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>分析回数を設定すること. 1,2,3,…</td>
+</tr>
+<tr>
+<td>項目id</td>
+<td>項目id</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>項目に対応する一意のID</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>項目</th>
+<th>人数</th>
+<th>割合</th>
+<th>回数</th>
+<th>項目id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20歳未満</td>
+<td>16</td>
+<td>0.06015</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20代</td>
+<td>33</td>
+<td>0.12406</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>20歳未満</td>
+<td>10</td>
+<td>0.045662</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>20代</td>
+<td>30</td>
+<td>0.136986</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="2">
+<li>回遊分析結果（性別）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyu_jinryu_seibetsu_1</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>性別</td>
+<td>性別</td>
+<td>varchar(20)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>人数</td>
+<td>人数</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>割合</td>
+<td>割合</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td>同じ回数で合計1.0となるように設定</td>
+</tr>
+<tr>
+<td>回数</td>
+<td>回数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>分析回数を設定すること. 1,2,3,…</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>性別</th>
+<th>人数</th>
+<th>割合</th>
+<th>回数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>男性</td>
+<td>126</td>
+<td>0.473684</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>女性</td>
+<td>136</td>
+<td>0.511278</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>その他</td>
+<td>4</td>
+<td>0.015038</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>男性</td>
+<td>96</td>
+<td>0.438356</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>回遊分析結果（人数）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyu_jinryu_ninzuu_1</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>日付</td>
+<td>日付</td>
+<td>Date</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>利用者数</td>
+<td>利用者数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>回数</td>
+<td>回数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>分析回数を設定すること. 1,2,3,…</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>日付</th>
+<th>利用者数</th>
+<th>回数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2022/2/21</td>
+<td>63</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2022/2/22</td>
+<td>87</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>・・・</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>2022/3/7</td>
+<td>98</td>
+<td>2</td>
+</tr>
+<tr>
+<td>16</td>
+<td>2022/3/8</td>
+<td>95</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="4">
+<li>回遊分析結果（地域）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyu_jinryu_chiiki_1</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>住所</td>
+<td>住所</td>
+<td>varchar(50)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>人数</td>
+<td>人数</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>割合</td>
+<td>割合</td>
+<td>double preciion</td>
+<td></td>
+<td></td>
+<td>同じ回数で合計1.0となるように設定</td>
+</tr>
+<tr>
+<td>回数</td>
+<td>回数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>分析回数を設定すること. 1,2,3,…</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>住所</th>
+<th>人数</th>
+<th>割合</th>
+<th>回数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>○○市中区</td>
+<td>25</td>
+<td>0.093985</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>○○市西区</td>
+<td>28</td>
+<td>0.105263</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>・・・</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>○○市中区</td>
+<td>25</td>
+<td>0.114155</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="5">
+<li>回遊分析結果（歩数）</li>
+</ol>
+<p>■ テーブル定義</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyu_jinryu_hosuu_1</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td>一意のID</td>
+</tr>
+<tr>
+<td>日付</td>
+<td>日付</td>
+<td>date</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>歩数</td>
+<td>歩数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>天気</td>
+<td>天気</td>
+<td>varchar(20)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>最低気温</td>
+<td>最低気温</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>最高気温</td>
+<td>最高気温</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>回数</td>
+<td>回数</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td>分析回数を設定すること. 1,2,3,…</td>
+</tr>
+</tbody>
+</table>
+<p>■ データサンプル</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>日付</th>
+<th>歩数</th>
+<th>天気</th>
+<th>最低気温</th>
+<th>最高気温</th>
+<th>回数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2022/2/21</td>
+<td>456150</td>
+<td>晴雪</td>
+<td>-0.8</td>
+<td>7.3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2022/2/22</td>
+<td>630695</td>
+<td>晴雪</td>
+<td>-0.8</td>
+<td>7.6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>15</td>
+<td>2022/3/7</td>
+<td>608957</td>
+<td>曇り</td>
+<td>1</td>
+<td>11</td>
+<td>2</td>
+</tr>
+<tr>
+<td>16</td>
+<td>2022/3/8</td>
+<td>644313</td>
+<td>晴れ</td>
+<td>2</td>
+<td>14</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ol start="6">
+<li>回遊性情報（移動データ）</li>
+</ol>
+<p>■ テーブル定義</p>
+<p>※ numberには分析回数が入る。</p>
+<p>※ 分析回数が追加されるごとにテーブルを新規登録すること。</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>kaiyuusei_{number}</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 25%">
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>geom</td>
+<td>ジオメトリ</td>
+<td><p>Geometry</p>
+<p>(MultiLineString)</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>移動経路</td>
+<td>移動経路</td>
+<td>varchar(254)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>合計</td>
+<td>合計</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>orig_fid</td>
+<td>orig_fid</td>
+<td>integer</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>shape_leng</td>
+<td>shape_leng</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>距離</td>
+<td>距離</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol start="7">
+<li>人気スポット（点データ）</li>
+</ol>
+<p>■ テーブル定義</p>
+<p>※ numberには分析回数が入る。</p>
+<p>※ 分析回数が追加されるごとにテーブルを新規登録すること。</p>
+<table>
+<thead>
+<tr>
+<th>テーブル名</th>
+<th>accessspot_{number}</th>
+</tr>
+</thead>
+</table>
+<p>■ カラム定義</p>
+<p>※ カラム内容は固定。</p>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 18%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カラム名</th>
+<th>カラム論理名</th>
+<th>型</th>
+<th>必須</th>
+<th>主キー</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>ID</td>
+<td>integer</td>
+<td>○</td>
+<td>○</td>
+<td><p>一意のID</p>
+<p>QGISから取り込んだ際に採番するため、元データには設定不要</p></td>
+</tr>
+<tr class="even">
+<td>スポット名</td>
+<td>スポット名</td>
+<td>varchar(254)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>合計</td>
+<td>合計</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>latitiude</td>
+<td>緯度</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td>WGS84(EPSG:4326)</td>
+</tr>
+<tr class="odd">
+<td>longitute</td>
+<td>経度</td>
+<td>double precision</td>
+<td></td>
+<td></td>
+<td>WGS84(EPSG:4326)</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h1 id="7-データ取込3d都市モデルビューワ">7 データ取込（3D都市モデルビューワ）</h1>
+<h2 id="7-1航空写真">7-1.航空写真</h2>
+<p>航空写真のタイル化を行います。</p>
+<p>タイル化した航空写真をファイルサーバに格納します。</p>
+<ol>
+<li><p>GeoTiff形式の航空写真データを予め用意します。</p>
+</li>
+<li><p>QGISを立ち上げます。</p>
+</li>
+<li><p>GeoTiffファイルが複数枚ある場合、結合を行います。プロセッシング　&gt;　ツールボックス を選択してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image48.png" style="width:7.0in">
+<ol start="4">
+<li>プロセッシングツールボックスウィンドウが開きます。「GDAL」&gt;「ラスタその他」&gt;「結合（gdal_merge）」を選択してください。</li>
+</ol>
+<img src="../resources/devMan/image49.png" style="width:5in">
+<ol start="5">
+<li>「入力レイヤ」の3点リーダを押下します。</li>
+</ol>
+<img src="../resources/devMan/image50.png" style="width:5.03889in;height:4.75972in">
+<ol start="6">
+<li>「ファイルを追加」または「ディレクトリを追加」から航空写真のgeotiff一式を選択します。選択が終了したら「◁」で元の画面に戻ります。</li>
+</ol>
+<img src="../resources/devMan/image51.png" style="width:7.0in" alt="グラフィカル ユーザー インターフェイス, テキスト, アプリケーション, メール 自動的に生成された説明">
+<ol start="7">
+<li>「出力レイヤ」&gt;「ファイルに保存」で保存先を選び、「実行」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image53.png" style="width:7.0in">
+<ol start="8">
+<li><p>実行が完了すると、QGIS上に結合後の航空写真が表示されます。</p>
+</li>
+<li><p>続いて投影変換を実施します。プロセッシングツールボックスから「GDAL」&gt;「ラスタ投影」&gt;「再投影」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image55.png" style="width:4in">
+<ol start="10">
+<li><p>入力レイヤで手順8で作成された航空写真を選択します。</p>
+<p>変換元CRSで元のGeoTiffの座標系、ラスタのCRSでEPSG:3857を選択します。</p>
+<p>「実行」を押下すると処理が開始されます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image56.png" style="width:7.0in" alt="グラフィカル ユーザー インターフェイス, アプリケーション 自動的に生成された説明">
+<ol start="11">
+<li>続いてXYZタイルの作成を行います。プロセッシングツールボックスから、「ラスタツール」&gt;「XYZタイルの生成（ディレクトリ形式）」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image59.png" style="width:6.0in">
+<ol start="12">
+<li>Extentで出力範囲を設定します。下記のボタン押下で出力する範囲を地図上から選択可能です。</li>
+</ol>
+<img src="../resources/devMan/image60.png" style="width:7.0in">
+<ol start="13">
+<li>Minimum zoom と Maximum zoom（最大・最小ズームレベル）を設定します。</li>
+</ol>
+<p>※ 複数の範囲に分割して設定・実行を繰り返すことを推奨します。</p>
+<img src="../resources/devMan/image61.png" style="width:7.0in">
+<ol start="14">
+<li>「出力フォルダ」から出力先を設定し、「実行」を押下してください。</li>
+</ol>
+<img src="../resources/devMan/image62.png" style="width:7.0in">
+<ol start="15">
+<li><p>実行が完了すると、ディレクトリ形式でタイル化されたファイルが出力されます。</p>
+</li>
+<li><p>出力されたファイルの内容を確認し、ファイルサーバに移動させます。</p>
+</li>
+</ol>
+<br>
+<h2 id="7-2データ">7-2.データ</h2>
+<ol>
+<li><p>GeoTiff形式のDEMデータを予め用意します。</p>
+</li>
+<li><p>以下URLからCesium ion にサインインします。</p>
+<p><a href="https://ion.cesium.com/signin">https://ion.cesium.com/signin</a></p>
+<p>※ アカウントの作成が必要になります。</p>
+</li>
+<li><p>サインイン後、「My Assets」タブを開き、「Add data」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image63.png" style="width:2.94792in;height:1.61667in">
+<ol start="4">
+<li>「Add files」を選択し、用意したDEMデータをアップロードします。</li>
+</ol>
+<img src="../resources/devMan/image64.png" style="width:2.98056in;height:2.10417in">
+<ol start="5">
+<li>「My Assets」 に追加したデータが表示されるので、「ID」（assetId）を控えておきます。</li>
+</ol>
+<br>
+<h2 id="7-33d都市モデル">7-3.3D都市モデル</h2>
+<p>3DTiles形式のデータを用意し、データサーバに格納します。</p>
+<p>データサーバは、静的webコンテンツの公開が可能な構成としてください。</p>
+<p>例）データサーバ本体にwebサーバをインストールする。またはwebサーバからファイルマウントでデータサーバを物理的に、またアクセス権限の面でも参照可能とする。</p>
+<p>3DTilesのデータにはhttp(s)アクセスを行うため、データサーバ上での配置場所はwebサーバのドキュメントルートなど、http(s)アクセス可能な場所とします。</p>
+<p>データのフォルダ構成は以下のようなものとします。</p>
+<img src="../resources/devMan/image65.png" style="width:3.80193in;height:2.2166in">
+<br>
+<h1 id="8-ランドマークデータ作成">8 ランドマークデータ作成</h1>
+<p>本システムでは、下図のようにランドマークを地図上に表示することで、地番の選択等の3Dビューワ画面での操作性を向上させることができます。</p>
+<p>本章では、ランドマーク表示に使用するCZMLファイルの作成・配置手順を説明します。</p>
+<img src="../resources/devMan/image66.png" style="width:1.80357in;height:1.97399in">
+<br>
+<h2 id="8-1ランドマークのポイントデータの準備">8-1.ランドマークのポイントデータの準備</h2>
+<p><a id="sec81"></a></p>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>QGISを起動します。</li>
+</ol>
+<img src="../resources/devMan/image67.png" style="width:7.0in">
+<ol start="2">
+<li>ランドマークのポイントデータを作成し、QGISに取り込みます。</li>
+</ol>
+<img src="../resources/devMan/image68.png" style="width:7.0in">
+<p>ポイントデータを作成する際、以下の2種類の属性フィールドを設定してください。</p>
+<table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>フィールド名</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td><p>ランドマークの名称.</p>
+<p>ラベルとして表示.</p></td>
+</tr>
+<tr class="even">
+<td>kind</td>
+<td><p>ランドマークのカテゴリ.</p>
+<p>ランドマークの色分け表示に使用.</p></td>
+</tr>
+</tbody>
+</table>
+<img src="../resources/devMan/image69.png" style="width:4in">
+<ol start="3">
+<li><p>ポイントデータをGeoJSON形式にエクスポートします。</p>
+<p>レイヤを右クリックし、メニューから「エクスポート」&gt;「新規ファイルに地物を保存」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image70.png" style="width:5in">
+<ol start="4">
+<li>形式で「GeoJSON」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image71.png" style="width:5in">
+<ol start="5">
+<li><p>「ファイル名」右の「…」から保存先とファイル名を指定します。</p>
+<p>座標参照系で「EPSG:4326 –WGS84」を選択します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image72.png" style="width:5.90903in;height:1.3375in">
+<ol start="6">
+<li>「OK」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image73.png" style="width:5in">
+<br>
+<h2 id="8-2python3x-実行環境の準備">8-2.Python3.x 実行環境の準備</h2>
+<p>※ 作業PC上にて行う</p>
+<p>Python3.xの実行環境を準備します。</p>
+<p>実行環境に指定はありませんが、本書では実行環境としてAnacondaを使用します。</p>
+<ol>
+<li><p>以下からAnacondaをインストールします。</p>
+<p><a href="https://www.anaconda.com/products/distribution">https://www.anaconda.com/products/distribution</a></p>
+<p>Anacondaインストール手順の参考サイト：</p>
+<p><a href="https://www.python.jp/install/anaconda/windows/install.html">https://www.python.jp/install/anaconda/windows/install.html</a></p>
+</li>
+<li><p>インストールが完了するとスタートメニューに「Anaconda3(64-bit)」が追加されます。</p>
+<p>「Anaconda3(64-bit)」&gt; 「Anaconda Prompt(anaconda3)」を立ち上げます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image74.png" style="width:4.35673in;height:2.47858in">
+<ol start="3">
+<li>Anaconda Promptが開きます。</li>
+</ol>
+<img src="../resources/devMan/image75.png" style="width:7in">
+<ol start="4">
+<li>以下コマンドを入力し仮想環境を作成します。</li>
+</ol>
+<!--
+<img src="../resources/devMan/image76.jpeg" style="width:7.0in" />
+-->
+<pre><code class="lang-Text">conda create -n calculate-env python=3.9
+</code></pre>
+<p>※landmark-envの箇所は任意の環境名
+<br>
+作成中に以下の通り確認されるので、「y」を入力します。</p>
+<!--
+<img src="../resources/devMan/image77.png" style="width:2in" />
+-->
+<pre><code class="lang-Text">Proceed ([y]/n?) y
+</code></pre>
+<ol start="5">
+<li>以下コマンドを入力し仮想環境を有効化します。</li>
+</ol>
+<pre><code class="lang-Text">conda activate landmark-env
+</code></pre>
+<p>環境が以下のように(base)から(landmark-env)に切り替わっていることを確認します。</p>
+<!--
+<img src="../resources/devMan/image79.jpeg" style="width:7.0in" />
+-->
+<pre><code class="lang-Text">(base)C:\       &gt;conda activate caluculate-env
+(calculate-env)C:\
+</code></pre>
+<ol start="6">
+<li>以下コマンドを入力し、外部ライブラリをインストールします。</li>
+</ol>
+<pre><code class="lang-Text">pip install Pillow
+</code></pre>
+<br>
+<h2 id="8-3generate_landmark_billboardpyの設定変更">8-3.generate_landmark_billboard.pyの設定変更</h2>
+<p><strong>対象:erimane-dashboard-tool/SRC/util/ランドマーク/generate_landmark_billboard.py</strong></p>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li><p>作業ディレクトリを作成し、「generate_landmark_billboard.py」と、<a href="#sec81">8-1</a>で作成したGeoJSONファイルを格納します。</p>
+</li>
+<li><p>generate_landmark_billboard.pyをエディタで開きます。</p>
+</li>
+<li><p>generate_landmark_billboard.pyの12行目から20行目を編集します。</p>
+<p><a href="#sec81">8-1</a>で作成した属性フィールド「kind」の属性フィールド値の種類ごとに色分けを設定します。</p>
+<p>色は0-255のRGB値で設定してください。</p>
+<p>参考ページ：</p>
+<p><a href="https://www.lab-nemoto.jp/www/leaflet_edu/else/ColorMaker.html">https://www.lab-nemoto.jp/www/leaflet_edu/else/ColorMaker.html</a></p>
+<p>カテゴリを増やす場合、color_define = [　] の中に要素を追加・削除します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image80.jpeg" style="width:6.84444in;height:3.16875in">
+<p>※ color_defineを設定しなかった場合、デフォルトで以下の色に設定されます。</p>
+<img src="../resources/devMan/image81.png" style="width:0.69801in;height:0.26045in">
+<ol start="4">
+<li>generate_landmark_billboard.pyの189行目から204行目を編集します。</li>
+</ol>
+<img src="../resources/devMan/image82.jpeg" style="width:7in">
+<br>
+<h2 id="8-4generate_landmark_billboardpyの実行">8-4.generate_landmark_billboard.pyの実行</h2>
+<p><a id="sec84"></a></p>
+<p><strong>対象:erimane-dashboard-tool/SRC/util/landmark/generate_landmark_billboard.py</strong></p>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li><p>作業ディレクトリ上に「billboard_image」フォルダを作成します。</p>
+</li>
+<li><p>作業ディレクトリ上に「landmark.czml」が存在する場合、ほかの場所に退避させます。</p>
+</li>
+<li><p>作業ディレクトリが以下の構成になっていることを確認してください。</p>
+</li>
+</ol>
+<ul>
+<li><p>「billboard_image」フォルダ</p>
+</li>
+<li><p>landmark.geojson</p>
+</li>
+<li><p>generate_landmark_billbboard.py</p>
+</li>
+</ul>
+<img src="../resources/devMan/image84.png" style="width:5.90556in;height:1.45625in">
+<ol start="4">
+<li>Anaconda promptを開き、作業ディレクトリに移動します。</li>
+</ol>
+<pre><code class="lang-Text">cd 作業ディレクトリ
+</code></pre>
+<ol start="5">
+<li>以下コマンドでpythonファイルを実行します。</li>
+</ol>
+<pre><code class="lang-Text">python generate_landmark_billboard.py
+</code></pre>
+<ol start="6">
+<li>エラーが表示されることなく、以下の通り終了しているかどうか確認します。</li>
+</ol>
+<img src="../resources/devMan/image85.png" style="width:7.0in">
+<ol start="7">
+<li>作業ディレクトリにlandmark.czmlが生成されていることを確認します。</li>
+</ol>
+<img src="../resources/devMan/image86.png" style="width:5.82687in;height:1.41319in">
+<ol start="8">
+<li>landmark.czmlをテキストエディタやメモ帳で開き、中身が生成されていることを確認します。</li>
+</ol>
+<img src="../resources/devMan/image87.png" style="width:7.0in">
+<ol start="9">
+<li>billboard_imageフォルダの下に画像が作成されていることを確認します。</li>
+</ol>
+<img src="../resources/devMan/image88.png" style="width:7.0in">
+<ol start="10">
+<li>画像を開いた時に以下のようにランドマーク名が表示できていればOKです。</li>
+</ol>
+<img src="../resources/devMan/image89.png" style="width:1.34911in;height:1.27651in">
+<br>
+<h2 id="8-5生成ファイル一式の配置">8-5.生成ファイル一式の配置</h2>
+<ol>
+<li><p>ファイルサーバに「landmark」ディレクトリを作成します。</p>
+</li>
+<li><p>「landmark」ディレクトリに<a href="#sec84">8-4</a>で生成したlandmark.czmlとbillboard_imageフォルダを配置します。</p>
+</li>
+</ol>
+<br>
+<h1 id="9-イベント回遊情報czmlファイル作成">9 イベント回遊情報CZMLファイル作成</h1>
+<p>イベント回遊情報を3D表示するためのczmlファイルを作成します。</p>
+<br>
+<h2 id="9-1イベント回遊情報データの準備">9-1.イベント回遊情報データの準備</h2>
+<p><a id="sec91"></a></p>
+<ol>
+<li>イベント回遊情報データを用意します。データは始点と終点を直線で結ぶ2Dのポリライン形式とし、以下の属性情報を含む形とします。</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>フィールド名</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ORIG_FID</td>
+<td>整数</td>
+<td>一意のID.</td>
+</tr>
+<tr class="even">
+<td>移動経路</td>
+<td>文字列</td>
+<td><p>始点と終点の名称.</p>
+<p>3D都市モデルビューワで表示する地物名.</p></td>
+</tr>
+<tr class="odd">
+<td>合計</td>
+<td>整数</td>
+<td>合計人数</td>
+</tr>
+<tr class="even">
+<td>距離</td>
+<td>浮動小数点</td>
+<td>始点と終点の距離（m）</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>用意したデータをQGISで取り込みます。</li>
+</ol>
+<img src="../resources/devMan/image90.png" style="width:7.0in">
+<ol start="3">
+<li>データをGeoJSON形式でエクスポートします。「レイヤ &gt; エクスポート &gt; 新規ファイルに地物を保存」を選択してください。</li>
+</ol>
+<img src="../resources/devMan/image91.png" style="width:7.0in">
+<ol start="4">
+<li>「形式」をGeoJSON、「座標参照系（CRS）」を「EPSG:4326 – WGS84」を選択し、保存するファイル名を指定して「OK」を押下してください。</li>
+</ol>
+<img src="../resources/devMan/image93.png" style="width:7.0in">
+<ol start="5">
+<li><p>3 4と同様の手順でもう1つGeoJSONファイルを作成します。このとき、「座標参照系」は平面直角座標系としてください。</p>
+<p>使用する平面直角座標系は地域により異なりますので、以下サイトを参照して設定してください。</p>
+<p><a href="https://www.gsi.go.jp/LAW/heimencho.html">https://www.gsi.go.jp/LAW/heimencho.html</a></p>
+<p><a href="https://www.gsi.go.jp/sokuchikijun/jpc.html">https://www.gsi.go.jp/sokuchikijun/jpc.html</a></p>
+</li>
+</ol>
+<img src="../resources/devMan/image95.png" style="width:7.0in">
+<br>
+<h2 id="9-2export_czml_paraborapyの実行">9-2.export_czml_parabora.pyの実行</h2>
+<p><strong>対象:erimane-dashboard-tool/SRC/util/czml/export_czml_parabora.py</strong></p>
+<ol>
+<li><p><a href="#sec91">9-1</a>で作成した2つのGeoJSONファイルと、export_czml_parabora.pyを同じフォルダに配置します。</p>
+</li>
+<li><p>export_czml_parabora.pyをエディタで開きます。186～198行目で下表箇所を環境変数として設定しているので、環境やデータに合わせて設定を変更します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image97.png" style="width:7.0in">
+<table>
+<colgroup>
+<col style="width: 51%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>変数名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GEOJSON_LONLAT_FILE_PATH</td>
+<!-- <td>「[9-1](#sec91)」の手順4で出力した、緯度経度座標系のGeoJSONファイルのファイルパス</td> -->
+<td><a href="#sec91">9-1</a>の手順4で出力した、緯度経度座標系のGeoJSONファイルのファイルパス</td>
+</tr>
+<tr class="even">
+<td>GEOJSON_PLAIN_FILE_PATH</td>
+<!-- <td>「[9-1](#sec91)」の手順5で出力した、平面直角座標系のGeoJSONファイルのファイルパス</td> -->
+<td><a href="#sec91">9-1</a>の手順5で出力した、平面直角座標系のGeoJSONファイルのファイルパス</td>
+</tr>
+<tr class="odd">
+<td>CZML_FILE_PATH</td>
+<td>出力するczmlファイルのファイルパス</td>
+</tr>
+<tr class="even">
+<td>MAX_HEIGHT</td>
+<td>放物線の最大高さ（m）</td>
+</tr>
+<tr class="odd">
+<td>SEPARATE_COUNT</td>
+<td>放物線の分割回数</td>
+</tr>
+<tr class="even">
+<td>RAISE_HEIGHT</td>
+<td><p>3Dデータのかさ上げ高さ（m）</p>
+<p>※ 3D都市モデルビューワ上で表示した際に地表面に埋もれる場合、適宜設定を見直してファイルを再生成してください。</p></td>
+</tr>
+<tr class="odd">
+<td>DISPLAY_THRESHOLD</td>
+<td><p>表示閾値</p>
+<p>※ 「合計」フィールドが設定値以下のデータはczmlファイルに出力されません。</p></td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Anaconda promptを開き、作業ディレクトリに移動します。</li>
+</ol>
+<img src="../resources/devMan/image99.png" style="width:5.0in">
+<ol start="4">
+<li>以下コマンドでpythonファイルを実行します。</li>
+</ol>
+<img src="../resources/devMan/image101.png" style="width:5.0in">
+<ol start="5">
+<li>czmlファイルが生成されていることを確認し、テキストエディタで開き中身が生成できていることを確認します。</li>
+</ol>
+<img src="../resources/devMan/image102.png" style="width:7.0in">
+<ol start="6">
+<li>問題なく生成されていれば、3D都市モデルビューワに搭載した際、以下のように放物線状にデータが表示されます。</li>
+</ol>
+<img src="../resources/devMan/image103.png" style="width:7.0in">
+<br>
+<h1 id="10-歩行空間ネットワークデータコスト値算出追加">10 歩行空間ネットワークデータコスト値算出・追加</h1>
+<p><a id="sec10"></a></p>
+<p><strong>対象:</strong> <strong>erimane-dashboard-tool/SRC/util/cost/calculate_and_update_cost.py</strong></p>
+<p>経路探索で使用する歩行者ネットワークデータのコスト値を算出し、データに追加します。</p>
+<br>
+<h2 id="10-1calculate_and_update_costpyの設定変更">10-1.calculate_and_update_cost.pyの設定変更</h2>
+<ol>
+<li><p>calculate_and_update_cost.pyをエディタで開きます。</p>
+</li>
+<li><p>227～231行目でデータベースへの接続情報を環境変数に設定しているので、使用するデータベースの情報に書き換えます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image105.png" style="width:6in">
+<table>
+<thead>
+<tr>
+<th>環境変数名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDS_HOST</td>
+<td>データベースのホスト名</td>
+</tr>
+<tr>
+<td>RDS_PORT</td>
+<td>データベースのポート番号（文字列）</td>
+</tr>
+<tr>
+<td>RDS_DBNAME</td>
+<td>データベース名</td>
+</tr>
+<tr>
+<td>RDS_USER</td>
+<td>データベースに接続するユーザ</td>
+</tr>
+<tr>
+<td>RDS_PASSWORD</td>
+<td>データベースのパスワード</td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="10-2calculate_and_update_costpyの実行">10-2.calculate_and_update_cost.pyの実行</h2>
+<ol>
+<li>以下コマンドを入力し仮想環境を作成します。</li>
+</ol>
+<!-- <img src="../resources/devMan/image76.jpeg" style="width:7.0in" /> -->
+<pre><code class="lang-Text">conda create -n calculate-env python=3.9
+</code></pre>
+<p>※landmark-envの箇所は任意の環境名
+<br>
+作成中に以下の通り確認されるので、「y」を入力します。</p>
+<!-- <img src="../resources/devMan/image77.png" style="width:2.0in" /> -->
+<pre><code class="lang-Text">Proceed([y]/n)? y
+</code></pre>
+<ol start="2">
+<li>以下コマンドを入力し仮想環境を有効化します。</li>
+</ol>
+<!-- <img src="../resources/devMan/image106.jpeg" style="width:5in" /> -->
+<pre><code class="lang-Text">conda activate calculate-env
+</code></pre>
+<ol start="3">
+<li>環境が以下のように(base)から(calculate-env)に切り替わっていることを確認します。</li>
+</ol>
+<!-- <img src="../resources/devMan/image107.png" style="width:5in" /> -->
+<pre><code class="lang-Text">(base)C:\       &gt;conda activate caluculate-env
+(calculate-env)C:\
+</code></pre>
+<ol start="4">
+<li>以下コマンドを入力し、外部ライブラリをインストールします。</li>
+</ol>
+<!-- <img src="../resources/devMan/image108.jpeg" style="width:5in" /> -->
+<pre><code class="lang-Text">pip install psycopg2
+</code></pre>
+<ol start="5">
+<li>作業ディレクトリに移動します。</li>
+</ol>
+<!-- <img src="../resources/devMan/image109.jpeg" style="width:5in" /> -->
+<pre><code class="lang-Text">cd 作業ディレクトリ
+</code></pre>
+<ol start="6">
+<li>以下コマンドでpythonファイルを実行します。</li>
+</ol>
+<!-- <img src="../resources/devMan/image110.jpeg" style="width:6in" /> -->
+<pre><code class="lang-Text">python calculate_and_update_cost.py
+</code></pre>
+<ol start="7">
+<li>実行が開始されると、以下のようなメッセージがコンソール上に出力され続けます。</li>
+</ol>
+<!-- <img src="../resources/devMan/image111.jpeg" style="width:7.0in" /> -->
+<pre><code class="lang-Text">distance=10.2 wheel_chair_cost=13.333 elderly_cost=12.11 brail_cost=19.22
+</code></pre>
+<ol start="8">
+<li><p>メッセージの表示が終了すると、実行完了になります。</p>
+<p>※ リンクテーブルの全レコードに対して更新処理が実行されるため、処理に時間がかかります</p>
+</li>
+<li><p>link_3dテーブルを確認し、wheel_chair_cost、elderly_cost、brail_costのカラムにデータが追加できていることを確認してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image112.png" style="width:3in">
+<br>
+<h1 id="11-geoserverレイヤ作成">11 GeoServerレイヤ作成</h1>
+<p><strong>必要リソース：erimane-dashboard-tool/SRC/Settings/environmant_settings/</strong></p>
+<p>本システムの3D都市モデルビューワ画面上に表示するレイヤを設定します。</p>
+<p>以下のレイヤは作成が必須となります。後述する共通手順<a href="#sec111">11-1</a>,<a href="#sec111">11-2</a>,<a href="#sec113">11-3</a>,<a href="#sec114">11-4</a>を参照してレイヤを作成してください。</p>
+<p>「SQLファイル」に記載のあるレイヤは<a href="#sec113">11-3</a>、記載のないレイヤは<a href="#sec114">11-4</a>の手順でレイヤを登録してください。</p>
+<p>※ スタイルファイル、SQLファイルはenvironment_settings.zipの中に含まれています。</p>
+<p>※ SQLファイルの内容は、レイヤによっては編集が必要になります。コメントの内容を確認して編集してください。</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 19%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カテゴリ</th>
+<th>レイヤ名</th>
+<th>説明</th>
+<th>スタイルファイル</th>
+<th>SQLファイル</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td rowspan="2">エリマネ・イベント活動</td>
+<td>エリマネ活動情報</td>
+<td></td>
+<td style="word-break: break-all">geoserver_style_area_management_activity.sld</td>
+<td style="word-break: break-all">geoserver_view_area_managment_activity.sql</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>イベント活動情報</td>
+<td></td>
+<td style="word-break: break-all">geoserver_style_event_activity.sld</td>
+<td style="word-break: break-all">geoserver_view_event_activity.sql</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td rowspan="2">地域統計情報</td>
+<td>町丁目</td>
+<td>町丁目の領域と地域統計情報を表示</td>
+<td style="word-break: break-all">geoserver_style_district.sld</td>
+<td style="word-break: break-all">geoserver_view_district.sql</td>
+<td><p>レイヤを1つ作成。</p>
+<p>クエリで指定した町丁目を表示。</p></td>
+</tr>
+<tr class="even">
+<td>エリア指定</td>
+<td>エリア区分の領域と地域統計情報（集計）を表示</td>
+<td style="word-break: break-all">geoserver_style_area_disignate.sld</td>
+<td style="word-break: break-all">geoserver_view_area_disignate.sql</td>
+<td><p>エリア区分ごとにレイヤを作成</p>
+<p>※ スタイルは適宜変更してください</p></td>
+</tr>
+<tr class="odd">
+<td>歩行空間ネットワーク</td>
+<td>リンク3D</td>
+<td></td>
+<td>デフォルトスタイル (line)</td>
+<td style="word-break: break-all">geoserver_view_link3d.sql</td>
+<td></td>
+</tr>
+<tr class="even">
+<td rowspan="2">回遊性</td>
+<td>人気スポットn</td>
+<td></td>
+<td style="word-break: break-all">geoserver_style_access_spot.sld</td>
+<td style="word-break: break-all">geoserver_view_access_spot_n.sql</td>
+<td>nは回遊分析回数（回数ごとにレイヤを追加）</td>
+</tr>
+<tr class="odd">
+<td>人気スポットラベルn</td>
+<td></td>
+<td style="word-break: break-all">geoserver_style_access_spot.sld</td>
+<td style="word-break: break-all">geoserver_view_access_spot_label_n.sql</td>
+<td>nは回遊分析回数（回数ごとにレイヤを追加）</td>
+</tr>
+</tbody>
+</table>
+<p>上記以外にも、取り込んだデータのレイヤを作成し、3D都市モデルビューワ画面に表示することができます。レイヤ作成時の特記事項を<a href="#sec115">11-5</a>に記載しております。</p>
+<br>
+<h2 id="11-1ワークスペースとストアを登録する">11-1.ワークスペースとストアを登録する</h2>
+<p><a id="sec111"></a></p>
+<ol>
+<li><p>以下URLから、GeoServerにログインします。</p>
+<p>初期IDとパスワードは admin/geoserver になります。</p>
+</li>
+</ol>
+<p>※ セキュリティの観点から、初期パスワードは初回ログイン後に変更してください。</p>
+<table><tbody><tr>
+            <td>http://[webサーバのIPアドレス]:8080/geoserver</td>
+</tr></tbody></table>
+<img src="../resources/devMan/image113.png" style="width:7in">
+<ol>
+<li>メニューバーから「ワークスペース」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image116.png" style="width:3in">
+<ol start="2">
+<li>登録済みのワークスペース一覧が開きます。「新規ワークスペース追加」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image117.png" style="width:7in">
+<ol start="3">
+<li>Name. ネームスペースURIに任意の名前を入力し、「保存」を押します。</li>
+</ol>
+<img src="../resources/devMan/image118.png" style="width:4.09687in;height:3.03889in">
+<p>※ 登録したワークスペース名は以降のレイヤ設定や、<a href="#sec16">第16章</a>の設定ファイル更新でも使用します。</p>
+<ol start="4">
+<li>メニューバーから「ストア」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image119.png" style="width:3in">
+<ol start="5">
+<li>登録済みのストア一覧が開きます。「ストア新規追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image120.png" style="width:7in">
+<ol start="6">
+<li>新規データソースから、「PostGIS」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image121.png" style="width:3in">
+<ol start="7">
+<li>ワークスペースで、4で作成したワークスペースを選択し、任意のデータソース名を入力します。</li>
+</ol>
+<img src="../resources/devMan/image122.png" style="width:7in">
+<p>パラメータ接続の部分には、<a href="#sec5">第5章</a>で作成したデータベースへの接続情報を入力します。入力が終わったら「保存」を押下します。</p>
+<br>
+<h2 id="11-2スタイルを登録する">11-2.スタイルを登録する</h2>
+<p><a id="sec112"></a></p>
+<p>※ 本章冒頭の表で「スタイルファイル」の記載があるレイヤについては記載の.sldファイルを使用して、手順8から実施してください。</p>
+<ol>
+<li>まず、レイヤのスタイル（.sldファイル）を作成します。QGISを開きます。</li>
+</ol>
+<img src="../resources/devMan/image123.png" style="width:7in">
+<ol start="2">
+<li><p>PostgreSQLから、DBサーバに接続します。
+※ 接続の作成手順は<a href="#sec6">第6章</a>を参照してください。</p>
+</li>
+<li><p>レイヤを作成するデータをドラッグアンドドロップで地図上に表示します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image124.png" style="width:7in">
+<ol start="4">
+<li>追加したレイヤを右クリックし、メニューからプロパティを開きます。</li>
+</ol>
+<img src="../resources/devMan/image125.png" style="width:5.0in">
+<ol start="5">
+<li><p>スタイルを設定します。</p>
+<p>スタイルの設定方法は以下を参考にしてください。</p>
+<p><a href="https://docs.qgis.org/3.16/ja/docs/user_manual/style_library/style_manager.html">https://docs.qgis.org/3.16/ja/docs/user_manual/style_library/style_manager.html</a></p>
+</li>
+</ol>
+<img src="../resources/devMan/image127.png" style="width:7.0in">
+<ol start="6">
+<li>スタイル設定後、レイヤを右クリックし、「エクスポート」&gt;「QGISレイヤスタイルファイルとして保存」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image128.png" style="width:7in">
+<ol start="7">
+<li>「SLDスタイルファイル」を選択し、ファイルを保存する場所を選択します。</li>
+</ol>
+<p>選択後、「OK」でファイルを出力します。</p>
+<img src="../resources/devMan/image130.png" style="width:4.5in" alt="グラフィカル ユーザー インターフェイス, テキスト 自動的に生成された説明">
+<img src="../resources/devMan/image132.png" style="width:4.5in">
+<ol start="8">
+<li><p>続いて出力したSLDファイルを、スタイルとしてGeoServerに登録します。</p>
+</li>
+<li><p>メニューバーから「スタイル」を選択します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image133.png" style="width:2.11211in;height:3.15308in">
+<ol start="10">
+<li>登録済みのスタイル一覧が開きます。「新規スタイル追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image136.png" style="width:4.58227in;height:1.60035in">
+<ol start="11">
+<li>ユーザ名を入力します。名前は任意ですが、判別しやすいようにスタイルファイルファイルの名前としておきます。 ワークスペースは、<a href="#sec111">11-1</a>で作成したワークスペースを選択します。</li>
+</ol>
+<img src="../resources/devMan/image137.png" style="width:4.5">
+<ol start="12">
+<li>「ファイルを選択」を押下し、フォルダからアップロードするスタイル（.sld）ファイルを選択します。</li>
+</ol>
+<img src="../resources/devMan/image140.png" style="width:4.5">
+<ol start="13">
+<li>「アップロード」をクリックします。</li>
+</ol>
+<img src="../resources/devMan/image142.png" style="width:4.5">
+<ol start="14">
+<li>アップロードされるsldファイルの中身が表示されるので、「検証」を押下して、「保存」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image144.png" style="width:7.0in">
+<ol start="15">
+<li>スタイルが登録されます。</li>
+</ol>
+<br>
+<h2 id="11-3レイヤを作成するビューの編集が必要な場合">11-3.レイヤを作成する（ビューの編集が必要な場合）</h2>
+<p><a id="sec113"></a></p>
+<ol>
+<li>メニューバーから「レイヤ」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image146.png" style="width:2.2031in;height:3.25332in">
+<ol start="2">
+<li>登録済みのレイヤ一覧が表示されます。「リソース新規追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image148.png" style="width:4.59333in;height:1.90993in">
+<ol start="3">
+<li>レイヤ追加元で、<a href="#sec111">11-1</a>で作成したストアを選択します。</li>
+</ol>
+<img src="../resources/devMan/image150.png" style="width:4.5">
+<ol start="4">
+<li>データベースに登録済みのテーブルが一覧表示されます。 「SQLビューを新規作成」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image151.png" style="width:7.0">
+<ol start="5">
+<li><p>「名称を表示」にレイヤ名を入力します。 「SQLステートメント」にSQLファイルの中身を貼り付けます。</p>
+<ul>
+<li><p>コメントを参照して内容を編集してください。</p>
+</li>
+<li><p>コメント箇所は削除して貼り付けてください。</p>
+</li>
+</ul>
+</li>
+</ol>
+<img src="../resources/devMan/image153.png" style="width:5in">
+<ol start="6">
+<li>「SQLからパラメータを推測」を押下します。SQLの中に「%変数名%」といった箇所を当て込んでおくと、該当箇所をクエリパラメータとして指定できるようになります。設定がある場合以下のようにパラメータが一覧表示されます。</li>
+</ol>
+<img src="../resources/devMan/image155.png" style="width:7in">
+<ol start="7">
+<li><p>必要であればデフォルト値を設定し、正規表現を修正します。</p>
+</li>
+<li><p>「ジオメトリタイプトSRIDを推測」にチェックを入れた状態で「属性」の「再読み込み」を押下します。
+読み込むと、属性が一覧表示されます。ジオメトリの種類とSRIDがセットされていない場合、ここで設定しなおします。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image157.png" style="width:7in">
+<ol start="9">
+<li>「保存」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image159.png" style="width:7in">
+<ol start="10">
+<li>「レイヤ編集」に遷移します。下の方に遷移して、「範囲矩形」の欄を確認します。</li>
+</ol>
+<img src="../resources/devMan/image161.png" style="width:5.26487in;height:4.65195in">
+<img src="../resources/devMan/image162.png" style="width:5.18458in;height:2.66789in">
+<ol start="11">
+<li>「ネイティブの範囲矩形」で「データを元に算出」を押下し、「緯度経度範囲矩形」で「ネイティブの範囲をもとに算出」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image164.png" style="width:4.89139in;height:2.54175in">
+<ol start="12">
+<li>以下の通り値が出力されます。 出力された値は、レイヤの描画範囲になります。</li>
+</ol>
+<img src="../resources/devMan/image166.png" style="width:5.90556in;height:2.94167in">
+<p>※ クエリによる表示レイヤの絞り込みを行っている場合や、エリマネ・イベント活動情報など新規データの登録が行われるレイヤの場合は自動算出では適切な範囲矩形が設定されません。</p>
+<p>前者の場合、全件表示用レイヤを作成し、そちらで設定した範囲矩形をコピーして貼り付ける、後者の場合データの登録が想定される範囲で設定、もしくは「Compute from SRS bounds」（座標系の範囲全域を設定）を選択などの方法を取り、適切な範囲矩形を設定してください。</p>
+<ol start="13">
+<li>一度上にスクロールし、タブから「公開」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image168.png" style="width:4.78715in;height:4.22535in">
+<ol start="14">
+<li>タブが切り替わります。「WMS設定」で、「デフォルトスタイル」を選択します。スタイル一覧から、設定したいスタイルを選択します。</li>
+</ol>
+<img src="../resources/devMan/image171.png" style="width:5.44929in;height:2.51959in">
+<ol start="15">
+<li>タブを再び切り替えて、「タイルキャッシング」を開きます。</li>
+</ol>
+<img src="../resources/devMan/image173.png" style="width:5.90556in;height:5.18472in">
+<ol start="16">
+<li>「このレイヤーのキャッシュ済みレイヤーを作成」と「このレイヤのタイルキャッシングを有効化」のチェックを外します。</li>
+</ol>
+<img src="../resources/devMan/image175.png" style="width:5.24861in;height:1.95033in">
+<ol start="17">
+<li>「保存」を押下します。レイヤが登録されます。</li>
+</ol>
+<img src="../resources/devMan/image177.png" style="width:4.31804in;height:4.85017in">
+<ol start="18">
+<li>登録結果を確認します。メニューバーから「レイヤプレビュー」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image178.png" style="width:3.40189in;height:5.01817in">
+<ol start="19">
+<li>作成済みのレイヤ一覧が表示されます。作成したレイヤの行の「OpenLayers」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image181.png" style="width:5.90556in;height:2.7125in">
+<ol start="20">
+<li>別タブが開き、レイヤのプレビューが確認できます。</li>
+</ol>
+<img src="../resources/devMan/image182.png" style="width:2.38963in;height:5.17236in">
+<br>
+<h2 id="11-4レイヤを作成するビューの編集が不要な場合">11-4.レイヤを作成する（ビューの編集が不要な場合）</h2>
+<p><a id="sec114"></a></p>
+<ol>
+<li>メニューバーから「レイヤ」を選択し、続いて「リソース新規追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image183.png" style="width:3.0041in;height:4.40184in">
+<img src="../resources/devMan/image185.png" style="width:7.0in">
+<ol start="2">
+<li>レイヤ追加元で、<a href="#sec111">11-1</a>で追加したデータソースを選択します。</li>
+</ol>
+<img src="../resources/devMan/image186.png" style="width:3.25203in;height:1.98097in">
+<ol start="3">
+<li>データベースに登録済みのテーブル一覧が表示されます。</li>
+</ol>
+<p>レイヤを作成する判定レイヤのテーブルの行の「公開」または「再公開」を押下します。</p>
+<img src="../resources/devMan/image189.png" style="width:5.90556in;height:1.62708in">
+<ol start="4">
+<li>レイヤ編集画面が開きます。</li>
+</ol>
+<img src="../resources/devMan/image190.png" style="width:5.32265in;height:4.70301in">
+<img src="../resources/devMan/image191.png" style="width:4.72808in;height:2.43743in">
+<ol start="5">
+<li><p>「データ」タブで範囲矩形を編集します。</p>
+<p>「ネイティブの範囲矩形」で、「データを元に算出」を押下し、続いて「緯度経度範囲矩形」の「ネイティブの範囲を元に算出」を押下します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image193.png" style="width:4.77307in;height:2.4797in">
+<ol start="6">
+<li>「公開」タブに切り替えて、「WMS設定」のデフォルトスタイルの<a href="#sec111">11-1</a>で登録したスタイルを選択します。</li>
+</ol>
+<img src="../resources/devMan/image196.png" style="width:3.12666in;height:2.60186in">
+<ol start="7">
+<li><p>「タイルキャッシング」タブに切り替えて、「このレイヤーのキャッシュ済みレイヤーを作成」と「このレイヤのタイルキャッシングを有効化」のチェックを外します。</p>
+</li>
+<li><p>「保存」を押下します。</p>
+</li>
+</ol>
+<br>
+<h2 id="11-5特記事項">11-5.特記事項</h2>
+<p><a id="sec115"></a></p>
+<p>■ レイヤグループについて</p>
+<p>複数のデータソースを1つのレイヤにまとめて表示したい場合、以下の手順でレイヤグループを作成します。</p>
+<ol>
+<li>GeoServerのサイドメニューバーから「レイヤグループ」を選択します。</li>
+</ol>
+<img src="../resources/devMan/image197.png" style="width:3in">
+<ol start="2">
+<li>「レイヤグループ新規追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image198.png" style="width:7.0in">
+<ol start="3">
+<li>通常のレイヤと同様に設定を行います。</li>
+</ol>
+<img src="../resources/devMan/image200.png" style="width:5.16702in;height:5.75457in">
+<ol start="4">
+<li>「レイヤ」でレイヤの追加や表示順の設定を行います。</li>
+</ol>
+<img src="../resources/devMan/image202.png" style="width:5.90556in;height:1.21181in">
+<ol start="5">
+<li><p>保存でレイヤを保存します。通常のレイヤと同様に利用可能です。</p>
+<p>■ レイヤの3D表示について</p>
+<p>レイヤの内容を3D都市モデルビューワ上で3D表示したい場合、erimane_init.jsonのレイヤ設定箇所でczmlTemplateプロパティを設定します。</p>
+<p>czmlのスタイル設定を記述することで3D表示が可能となります。</p>
+<p>czmlの属性設定内容は下記を参照してください。</p>
+<p><a href="https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide">https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide</a></p>
+<p>※ レイヤの配信方式はWFSとします。</p>
+<p>WFSの表示設定は下記を参照してください。</p>
+<p><a href="https://docs.terria.io/guide/connecting-to-data/catalog-type-details/wfs/">https://docs.terria.io/guide/connecting-to-data/catalog-type-details/wfs/</a></p>
+<p>以下に設定例を記載します。</p>
+</li>
+</ol>
+<p>例1） ビルボード表示</p>
+<p>アイコン画像を使用して3D表示します。</p>
+<p>表示イメージ</p>
+<img src="../resources/devMan/image203.png" style="width:3.37031in;height:3.38616in">
+<p>設定例</p>
+<p>※ 元画像を用意してサーバに配置の上、imageで参照パスを設定してください。</p>
+<pre><code class="lang-Text">&quot;czmlTemplate&quot;: {
+
+                    &quot;billboard&quot;: {
+
+                      &quot;eyeOffset&quot;: {
+
+                        &quot;cartesian&quot;: [
+
+                          0,
+
+                          0,
+
+                          0
+
+                        ]                      },
+
+                      &quot;horizontalOrigin&quot;: &quot;CENTER&quot;,
+
+                      &quot;image&quot;: &quot; /resource/legends/marker_hinan.png&quot;,
+
+                      &quot;scale&quot;: 0.5,
+
+                      &quot;heightReference&quot;: &quot;RELATIVE_TO_GROUND&quot;,
+
+                      &quot;pixelOffset&quot;: {
+
+                        &quot;cartesian2&quot;: [
+
+                          0,
+
+                          0
+
+                        ]
+
+                      },
+
+                      &quot;show&quot;: true,
+
+                      &quot;verticalOrigin&quot;: &quot;BOTTOM&quot;,
+
+                      &quot;sizeInMeters&quot;: true
+
+                    },
+
+                    &quot;heightOffset&quot;: 100
+
+                  }
+</code></pre>
+<p>例2） シリンダー表示</p>
+<p>表示イメージ</p>
+<img src="../resources/devMan/image204.png" style="width:1.63402in;height:2.6571in">
+<p>設定例</p>
+<p>※ referenceで表示サイズの設定に使用するパラメータ名を指定してください。</p>
+<pre><code class="lang-Text">&quot;czmlTemplate&quot;: {
+
+                            &quot;ellipse&quot;: {
+
+                              &quot;semiMinorAxis&quot;: 10.0,
+
+                              &quot;semiMajorAxis&quot;: 10.0,
+
+                              &quot;extrudedHeight&quot;: {
+
+                                &quot;number&quot;: 10,
+
+                                &quot;reference&quot;: &quot;#properties.合計&quot;
+
+                              },
+
+                              &quot;height&quot;: 40.0,
+
+                              &quot;numberOfVerticalLines&quot;: 100,
+
+                              &quot;heightReference&quot;: &quot;RELATIVE_TO_GROUND&quot;,
+
+                              &quot;material&quot;: {
+
+                                &quot;solidColor&quot;: {
+
+                                  &quot;color&quot;: {
+
+                                    &quot;rgba&quot;: [
+
+                                      255,
+
+                                      0,
+
+                                      0,
+
+                                      100
+
+                                    ]
+
+                                  }
+
+                                }
+
+                              },
+
+                              &quot;outline&quot;: true,
+
+                              &quot;outlineColor&quot;: {
+
+                                &quot;rgba&quot;: [
+
+                                  255,
+
+                                  0,
+
+                                  0,
+
+                                  0
+
+                                ]
+
+                              }
+
+                            }
+
+                          }
+
+                        },
+</code></pre>
+<br>
+<h1 id="12-地域情報ダッシュボード設定metabase">12 地域情報ダッシュボード設定（metabase）</h1>
+<p><strong>必要リソース：erimane-dashboard-tool/SRC/Settings/environmant_settings/</strong></p>
+<p>本章では地域情報ダッシュボード（metabase）の設定手順を記載します。</p>
+<p>地域情報ダッシュボードの構成は下図の通りとなっています。</p>
+<p>図中の章・節番号を記載の箇所についてセットアップおよび設定が必要になりますので、順を追って設定を実施してください。</p>
+<p>metabaseの設定手順の詳細は下記公式docを参照してください。</p>
+<p><a href="https://www.metabase.com/learn/getting-started/">https://www.metabase.com/learn/getting-started/</a></p>
+<img src="../resources/devMan/image205.png" style="width:7in">
+<br>
+<h2 id="12-1管理アカウントを登録する">12-1.管理アカウントを登録する</h2>
+<ol>
+<li>ブラウザを開き、 以下URLを入力しmetabaseの管理コンソールにアクセスします。</li>
+</ol>
+<p>http://[WEB/DBサーバのIPアドレス]:3000/</p>
+<ol start="2">
+<li><p>初回アクセス時に管理アカウントの登録が必要になります。以下URLを参照してアカウントの登録を実施してください。</p>
+<p><a href="https://www.metabase.com/docs/latest/configuring-metabase/setting-up-metabase">https://www.metabase.com/docs/latest/configuring-metabase/setting-up-metabase</a></p>
+</li>
+<li><p>以後は作成した管理アカウントでサインインします。</p>
+</li>
+</ol>
+<br>
+<h2 id="12-2データソースを設定する">12-2.データソースを設定する</h2>
+<p><a id="sec122"></a></p>
+<ol>
+<li>「設定」から「管理者設定」を開きます。</li>
+</ol>
+<img src="../resources/devMan/image206.png" style="width:7in">
+<img src="../resources/devMan/image207.png" style="width:3in">
+<ol start="2">
+<li>管理者画面が表示されるので、「データベース」タブに切り替えます。</li>
+</ol>
+<img src="../resources/devMan/image208.png" style="width:7.0in">
+<ol start="3">
+<li>「データベースを追加」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image209.png" style="width:7.0in">
+<ol start="4">
+<li>データベースの接続情報を入力してください。</li>
+</ol>
+<img src="../resources/devMan/image210.png" style="width:5in">
+<ol start="5">
+<li>「保存」を押下してください。</li>
+</ol>
+<img src="../resources/devMan/image211.png" style="width:5in">
+<ol start="6">
+<li>データベースに追加されます。</li>
+</ol>
+<img src="../resources/devMan/image212.png" style="width:7in">
+<ol start="7">
+<li><p>以降8～12の手順はデータベースにテーブルを追加した場合必ず実施してください。</p>
+</li>
+<li><p>データベースを選択します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image213.png" style="width:7in">
+<ol start="9">
+<li>設定画面が開くので、「今すぐデータベーススキーマと同期する」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image214.png" style="width:7in">
+<ol start="10">
+<li>「同期を開始しました!」の表示に変わるので、元の表示に戻るまで待ちます。</li>
+</ol>
+<p><img src="../resources/devMan/image215.png" style="width:2.62537in;height:1.10432in"><img src="../resources/devMan/image216.png" style="width:2.62721in;height:0.97992in"></p>
+<ol start="11">
+<li>表示が変わったら「変更を保存」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image217.png" style="width:6in">
+<ol start="12">
+<li>「管理画面から離れる」を押下し管理画面を終了します。</li>
+</ol>
+<img src="../resources/devMan/image218.png" style="width:7in">
+<br>
+<h2 id="12-3質問を作成する">12-3.質問を作成する</h2>
+<ol>
+<li>ヘッダ部右端の「+新しい」ボタンをクリックし、「質問」を押下します。</li>
+</ol>
+<p>※ コレクションを押下するとフォルダが作成できるので分類に活用してください。</p>
+<img src="../resources/devMan/image219.png" style="width:7in">
+<ol start="2">
+<li>データ選択画面が開くので<a href="#sec122">12-2</a>で作成したデータソースを選択してください。</li>
+</ol>
+<img src="../resources/devMan/image220.png" style="width:2.98681in;height:2.82463in">
+<ol start="3">
+<li>可視化するテーブルを選択してください。</li>
+</ol>
+<img src="../resources/devMan/image221.png" style="width:3in">
+<ol start="4">
+<li>質問作成画面が表示されます。フィルタや結合、ソートなどがGUIベースで設定できます。</li>
+</ol>
+<img src="../resources/devMan/image222.png" style="width:7.0in">
+<ol start="5">
+<li>「ビジュアライズ」を押下すると、可視化設定が行えます。</li>
+</ol>
+<img src="../resources/devMan/image223.png" style="width:7.0in">
+<img src="../resources/devMan/image224.png" style="width:4in">
+<ol start="6">
+<li>「ビジュアライゼーション」でテーブルや棒グラフ、円グラフなど可視化の方法を設定できます。</li>
+</ol>
+<img src="../resources/devMan/image225.png" style="width:6in">
+<ol start="7">
+<li>表示用のSQLをカスタマイズする場合は「エディタを表示する」&gt; 「SQLをみる」を押下し、「この質問をSQLに変換します」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image226.png" style="width:7.0in">
+<img src="../resources/devMan/image227.png" style="width:7.0in">
+<img src="../resources/devMan/image228.png" style="width:5.0in">
+<ol start="8">
+<li>SQLの編集をすることで、テーブルに表示する項目や、グラフの集計方式を柔軟に設定できます。</li>
+</ol>
+<img src="../resources/devMan/image229.png" style="width:7in">
+<ol start="9">
+<li><p>変数を設定することで、ダッシュボードの表示内容にフィルタを追加することができます。フィルタには自由入力やリスト選択が適用可能です。</p>
+<p>SQL文の中で「{}」で囲んだ箇所が変数として使用されます。</p>
+<p>[[]]で囲むと、囲まれた範囲内の変数が入力された場合のみSQLの構文として評価されます。以下に避難施設を対象にkubun,name,addressを変数として利用したサンプルを示します。</p>
+</li>
+</ol>
+<p>SQL</p>
+<table><tbody><tr>
+            <td>SELECT "public"."hinanshisetsu_ichiran"."id" AS "id",
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;区分&quot; AS &quot;区分&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;名称&quot; AS &quot;名称&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;所在地&quot; AS &quot;所在地&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;施設区分&quot; AS &quot;施設区分&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;避難場所&quot; AS &quot;避難場所&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;滞在場所&quot; AS &quot;滞在場所&quot;,</p>
+<p>&quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;.&quot;受入可能人数&quot; AS &quot;受入可能人数&quot;, ...</p>
+<p>FROM &quot;public&quot;.&quot;hinanshisetsu_ichiran&quot;</p>
+<p>WHERE true [[AND {{kubun}}]][[AND {{name}}]][[AND {{address}}]]</p></td>
+</tr></tbody></table>
+<p>変数の設定例</p>
+<p><img src="../resources/devMan/image230.png" style="width:2in"><img src="../resources/devMan/image231.png" style="width:2in"><img src="../resources/devMan/image232.png" style="width:2in"></p>
+<p>フィルタの表示イメージ</p>
+<img src="../resources/devMan/image233.png" style="width:7.0in">
+<img src="../resources/devMan/image234.png" style="width:7.0in">
+<p>詳細は下記公式docを参照してください。</p>
+<p><a href="https://www.metabase.com/learn/sql-questions/sql-variables">https://www.metabase.com/learn/sql-questions/sql-variables</a></p>
+<ol start="10">
+<li>イベント・エリマネ活動情報についてはenvironmnt_settings に含まれる下表の対応のファイルを使用してSQLを設定してください。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>質問名</th>
+<th>ファイル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>エリマネ活動詳細</td>
+<td>metabase_view_area_management_detail.txt</td>
+</tr>
+<tr>
+<td>エリマネ活動履歴</td>
+<td>metabase_view_area_management_history.txt</td>
+</tr>
+<tr>
+<td>イベント活動詳細</td>
+<td>metabase_view_event_detail.txt</td>
+</tr>
+<tr>
+<td>イベント活動履歴</td>
+<td>metabase_view_event_history.txt</td>
+</tr>
+</tbody>
+</table>
+<ol start="11">
+<li>質問を作成し終えたら「保存」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image235.png" style="width:4.0465in;height:0.90903in">
+<ol start="12">
+<li>名前と保存先のコレクションを指定して「保存」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image236.png" style="width:4.49284in;height:3.64931in">
+<ol start="13">
+<li>押下後保存に成功すると下記ダイアログが表示されるので、ダッシュボードに追加する場合、「追加する」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image237.png" style="width:5.14655in;height:2.31282in">
+<ol start="14">
+<li>追加先のダッシュボードを選択します。ダッシュボードを未作成の場合「新ダッシュボードを作成する」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image238.png" style="width:5.90439in;height:4.3375in">
+<ol start="15">
+<li>ダッシュボード編集画面に遷移するので、レイアウトを設定します。</li>
+</ol>
+<br>
+<h2 id="12-4ダッシュボードを作成する">12-4.ダッシュボードを作成する</h2>
+<ol>
+<li>画面ヘッダ右端の「+新しい」ボタンを押下し、「ダッシュボード」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image239.png" style="width:5.90903in;height:2.77917in">
+<ol start="2">
+<li>「名前」と保存するコレクションの場所を選択して、「作成する」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image240.png" style="width:4.56498in;height:3.60417in">
+<ol start="3">
+<li>新規ダッシュボードが作成されます。</li>
+</ol>
+<img src="../resources/devMan/image241.png" style="width:5.53085in;height:1.16614in">
+<ol start="4">
+<li>右上のボタンから質問、テキストボックス、フィルタを追加することができます。</li>
+</ol>
+<img src="../resources/devMan/image242.png" style="width:4.59306in;height:0.95486in">
+<ol start="5">
+<li>質問を追加します。一覧から追加する質問を選択してください。</li>
+</ol>
+<p><img src="../resources/devMan/image243.png" style="width:2.38426in;height:2.26008in">　<img src="../resources/devMan/image244.png" style="width:2.73664in;height:1.90148in"></p>
+<ol start="6">
+<li>ダッシュボードに質問が追加されます。</li>
+</ol>
+<p>ドラッグで配置の設定や、質問にマウスフォーカスで表示されるボタンから可視化や挙動の設定が行えます。ダッシュボードに質問を追加しカスタマイズを行ってください。</p>
+<img src="../resources/devMan/image245.png" style="width:4.99709in;height:2.84067in">
+<ol start="7">
+<li><p>フィルタを追加します。</p>
+<p>フィルタの種類を選択してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image246.png" style="width:3.5in">
+<img src="../resources/devMan/image247.png" style="width:3.5in">
+<ol start="8">
+<li><p>フィルタをかける対象を設定してください。</p>
+<p>※ 質問に変数を設定することでフィルタ適用が可能となります。</p>
+<p>※ イベント活動詳細・エリマネ活動詳細ダッシュボードでは、3D都市モデルビューワ画面との連携で使用するため、「活動ID」を必ずフィルタで設定してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image248.png" style="width:7.0in">
+<p>※ フィルタ状態でのダッシュボード表示はクエリパラメータによって指定可能です。</p>
+<ol start="9">
+<li><p>テキストボックスを追加します。</p>
+<p>テキストボックスが表示されるのでテキストを入力します。</p>
+<p>マークダウンの設定も可能です。質問と同様にレイアウトや可視化のオプションを設定可能です。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image249.png" style="width:3.5in">
+<ol start="10">
+<li>ダッシュボードヘッダ部に以下のテキストボックスを用意することで、画面遷移を設定します。</li>
+</ol>
+<table><tbody><tr>
+            <td>[前に戻る](/dashboard/#page=2)　[トップに戻る](/dashboard/)　[ログアウト](/logout/)</td>
+</tr></tbody></table>
+<img src="../resources/devMan/image250.png" style="width:3.20878in;height:0.69801in">
+<p>※ ダッシュボード画面（/dashboard/）への遷移時に特定のタブを開いた状態にしたい場合（上記「前に戻る」ボタンの挙動）#page=xxで開くindexの番号を指定します。</p>
+<p>indexの設定は第16章<a href="#sec164">16-4</a>の記載を参照してください。</p>
+<ol start="11">
+<li>ダッシュボードの編集が終了したら、「保存」を押下します。</li>
+</ol>
+<br>
+<h2 id="12-5ダッシュボードの公開設定を行う">12-5.ダッシュボードの公開設定を行う</h2>
+<ol>
+<li>ダッシュボードのページで「共有」ボタンを押下します。</li>
+</ol>
+<img src="../resources/devMan/image251.png" style="width:2.83607in;height:1.18767in">
+<ol start="2">
+<li>「共有を有効化する」をONにします。</li>
+</ol>
+<img src="../resources/devMan/image252.png" style="width:6.0in">
+<ol start="3">
+<li>「リンクを公開する」からURLをコピーします。</li>
+</ol>
+<img src="../resources/devMan/image253.png" style="width:6in">
+<ol start="4">
+<li>コピーしたURLは第16章<a href="#sec163">16-3</a>、及び第16章<a href="#sec164">16-4</a>の設定で使用するため控えておきます。</li>
+</ol>
+<br>
+<h1 id="13-アプリケーションデプロイspring-boot">13 アプリケーションデプロイ（Spring Boot）</h1>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/api</p>
+<p>確認済みサーバ環境：Ubuntu 22.04.1 LTS</p>
+<p>確認済み作業PC環境 ：Windows 10 Pro</p>
+<br>
+<h2 id="13-1必要ツールのインストール">13-1.必要ツールのインストール</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li><p>Spring Tool Suite 4のインストールを行ってください。</p>
+<p><a href="https://spring.io/tools">https://spring.io/tools</a></p>
+<p>※ インストール方法の参考サイト：</p>
+<p><a href="https://qiita.com/t-shin0hara/items/d60116ab299a4dc8a9d0">https://qiita.com/t-shin0hara/items/d60116ab299a4dc8a9d0</a></p>
+</li>
+<li><p>lombokのインストールを行ってください。</p>
+<p><a href="https://projectlombok.org/download">https://projectlombok.org/download</a></p>
+<p>※ インストール方法の参考サイト：</p>
+<p><a href="https://qiita.com/r_saiki/items/82231ded1450f5ed5671">https://qiita.com/r_saiki/items/82231ded1450f5ed5671</a></p>
+</li>
+</ol>
+<br>
+<h2 id="13-2warの作成準備">13-2.warの作成準備</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>適当な場所にworkspaceを作成してプロジェクト(erimane-dashboard-tool/SRC/api)を配置してください。</li>
+</ol>
+<img src="../resources/devMan/image254.png" style="width:5.86311in;height:2.16389in">
+<ol start="2">
+<li>Spring Tool Suite 4を起動して、1で作成したworkspaceをlaunchしてください。</li>
+</ol>
+<img src="../resources/devMan/image255.png" style="width:5.87919in;height:2.72778in">
+<ol start="3">
+<li><p>プロジェクトのインポートを行います。</p>
+<p>Import projects .. &gt; Maven &gt; Existing Maven Projectsを選択してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image256.png" style="width:5.90903in;height:4.54514in">
+<p>Root Directoryにworkspace内に配置したproject folderを指定します。</p>
+<img src="../resources/devMan/image257.png" style="width:5.90903in;height:4.48056in">
+<ol start="4">
+<li><p>Mavenの更新を行います。</p>
+<p>プロジェクト右クリック&gt; Maven &gt; Update Projectを選択してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image258.png" style="width:4.97983in;height:3.88654in">
+<p>更新画面でOKを選択すると、Mavenの更新が始まります。</p>
+<img src="../resources/devMan/image259.png" style="width:4.05208in;height:4.3375in">
+<ol start="5">
+<li><p>src/main/resources/application.propertiesの編集を行ってください。</p>
+<p>プロパティ一覧と、編集を行う箇所は<a href="#sec14">第14章</a>を参照してください。</p>
+<p>変更が必要な設定箇所は以下になります。</p>
+</li>
+</ol>
+<ul>
+<li><p>データベースとの接続情報</p>
+</li>
+<li><p>CORSの許可設定(外部からアクセスするフロント側のURL)</p>
+</li>
+<li><p>データの座標系</p>
+</li>
+<li><p>パス関係</p>
+</li>
+</ul>
+<img src="../resources/devMan/image260.png" style="width:7.0in">
+<p>※ application.propertiesが文字化けする場合は、application.propertiesを右クリック&gt;properties&gt;Resource&gt;Text file encodingをUTF-8へ変更してください。</p>
+<img src="../resources/devMan/image261.png" style="width:7.0in">
+<br>
+<h2 id="13-3warの作成">13-3.warの作成</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>プロジェクト右クリック&gt; Run As &gt; Maven buildを選択してください。</li>
+</ol>
+<img src="../resources/devMan/image262.png" style="width:7.0in">
+<ol start="2">
+<li>Goalsに「package」を入力し、Runボタンを押下します。</li>
+</ol>
+<img src="../resources/devMan/image263.png" style="width:6.0in">
+<ol start="3">
+<li>targetフォルダに3dviewapi-0.0.1-SNAPSHOT.warが作られていることを確認してください。</li>
+</ol>
+<br>
+<h2 id="13-4warのデプロイ">13-4.warのデプロイ</h2>
+<ol>
+<li><p>Webサーバの適当な場所に3dviewapi-0.0.1-SNAPSHOT.warをアップロードしてください。ここでは /home/upload/ に転送する事としています。</p>
+</li>
+<li><p>tomcatに配備します。</p>
+<p>※ 配備の際、3dviewapi-0.0.1-SNAPSHOT.war</p>
+<p>から3dviewapi.warに名前を変更してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /home/upload/
+
+mv 3dviewapi-0.0.1-SNAPSHOT.war /opt/apache-tomcat/webapps/3dviewapi.war
+</code></pre>
+<p>※ 配備後にapplication.propertiesを編集する場合は下記のように行います。編集後、保存して再起動を行ってください。</p>
+<pre><code class="lang-Text">vi /opt/apache-tomcat/webapps/3dviewapi/WEB-INF/classes/application.properties
+
+systemctl restart tomcat
+</code></pre>
+<ol start="3">
+<li>最後に、application.propertiesのapp.file.rootpathで指定する添付ファイルの格納先ディレクトリを作成してください。</li>
+</ol>
+<pre><code class="lang-Text">mkdir /opt/3dviewapi/
+
+chown tomcat /opt/3dviewapi/
+</code></pre>
+<br>
+<h2 id="13-5デプロイ後の確認">13-5.デプロイ後の確認</h2>
+<ol>
+<li><p>http://&lt;サーバマシンのIPアドレス&gt;/v2/api-docs にアクセスします。</p>
+</li>
+<li><p>API定義のjsonが画面上に表示されることを確認してください。</p>
+</li>
+</ol>
+<h1 id="14-アプリケーション設定ファイル更新spring-boot">14 アプリケーション設定ファイル更新(Spring Boot)</h1>
+<p><a id="sec14"></a></p>
+<p>以下にアプリケーション設定ファイルの設定一覧を記載します。</p>
+<p>環境やアプリケーションの用途に応じて設定を変更してください。</p>
+<p>※ 「環境」列に○がついている項目は、環境に応じた設定が必須です。</p>
+<br>
+<h2 id="14-1applicationproperties">14-1.application.properties</h2>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th rowspan="2"><strong>プロパティ名</strong></th>
+<th colspan="2"><strong>環境設定</strong></th>
+<th rowspan="2"><strong>設定値</strong></th>
+<th rowspan="2"><strong>内容</strong></th>
+</tr>
+<tr class="odd">
+<th><strong>必須</strong></th>
+<th><strong>任意</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>spring.jpa.database</td>
+<td>　</td>
+<td>　</td>
+<td>POSTGRESQL</td>
+<td>データベース種類</td>
+</tr>
+<tr class="even">
+<td>spring.datasource.url</td>
+<td>○</td>
+<td>　</td>
+<td style="word-break-all">jdbc:postgresql://[DBサーバのIPアドレス]:[DBサーバのポート番号]/[データベース名]</td>
+<td>データベース接続情報</td>
+</tr>
+<tr class="odd">
+<td>spring.datasource.username</td>
+<td>○</td>
+<td>　</td>
+<td>devps</td>
+<td>データベースアクセスに使用するユーザ名</td>
+</tr>
+<tr class="even">
+<td>spring.datasource.password</td>
+<td>○</td>
+<td>　</td>
+<td>省略</td>
+<td>データベースアクセスに使用するパスワード</td>
+</tr>
+<tr class="odd">
+<td>app.cors.allowed.origins</td>
+<td>○</td>
+<td></td>
+<td style="word-break-all">http://localhost,https://example.com</td>
+<td>APIの使用を許可するURL(カンマ区切り)</td>
+</tr>
+<tr class="even">
+<td>app.filter.cookie.expire</td>
+<td></td>
+<td>○</td>
+<td>2592000</td>
+<td>Cookieの有効時間(秒)</td>
+</tr>
+<tr class="odd">
+<td>app.jwt.token.secretkey</td>
+<td>○</td>
+<td></td>
+<td>secret</td>
+<td>JWTの署名の作成、検証で使用する秘密鍵</td>
+</tr>
+<tr class="even">
+<td>app.filter.ignore</td>
+<td></td>
+<td>○</td>
+<td>省略</td>
+<td><p>認証フィルタの例外APIパス</p>
+<p>※ 複数指定時、末尾に「\」が必須（最終末尾は不要）</p></td>
+</tr>
+<tr class="odd">
+<td>app.filter.admin</td>
+<td></td>
+<td>○</td>
+<td>省略</td>
+<td><p>管理者のみ許可するAPIパス</p>
+<p>※ 複数指定時、末尾に「\」が必須（最終末尾は不要）</p></td>
+</tr>
+<tr class="even">
+<td>app.filter.unable</td>
+<td></td>
+<td>○</td>
+<td>省略</td>
+<td><p>アクセス不可対象にするAPIパス</p>
+<p>※ 複数指定時、末尾に「\」が必須（最終末尾は不要）</p></td>
+</tr>
+<tr class="odd">
+<td>app.file.rootpath</td>
+<td>○</td>
+<td></td>
+<td style="word-break-all">/opt/3dviewapi/attatchment/</td>
+<td style="word-break-all">エリマネ・イベント活動での添付写真の格納先</td>
+</tr>
+<tr class="even">
+<td>app.api.rootpath</td>
+<td>○</td>
+<td></td>
+<td> style="word-break-all"/api/activity/attachments/</td>
+<td><p>添付ファイルが参照できるAPIのURLを指定</p>
+<p>※ フロント側での参照時に使用</p></td>
+</tr>
+<tr class="odd">
+<td style="word-break-all">spring.servlet.multipart.max-file-size</td>
+<td>　</td>
+<td>　○</td>
+<td>50MB</td>
+<td>ファイル1つの最大サイズ</td>
+</tr>
+<tr class="even">
+<td style="word-break-all">spring.servlet.multipart.max-request-size</td>
+<td>　</td>
+<td>　○</td>
+<td>100MB</td>
+<td>複数ファイル全体の最大サイズ</td>
+</tr>
+<tr class="odd">
+<td>app.activity.view.epsg</td>
+<td></td>
+<td>○</td>
+<td>4326</td>
+<td>活動登録時のフロント側のepsg</td>
+</tr>
+<tr class="even">
+<td>app.activity.data.epsg</td>
+<td></td>
+<td>○</td>
+<td>3857</td>
+<td>活動登録時のデータベース側のepsg</td>
+</tr>
+<tr class="odd">
+<td>app.route.view.epsg</td>
+<td></td>
+<td>○</td>
+<td>4326</td>
+<td>経路探索時のフロント側のepsg</td>
+</tr>
+<tr class="even">
+<td>app.route.data.epsg</td>
+<td>○</td>
+<td></td>
+<td>6671</td>
+<td>「node_3d」テーブルのepsg</td>
+</tr>
+<tr class="odd">
+<td>app.custom.log.flag</td>
+<td></td>
+<td>○</td>
+<td>true</td>
+<td>カスタムログを使用するかどうか<br>
+※ カスタムログは利用者のアクセス履歴を記録するために使用するログになります。目的に応じて設定を変更してください。</td>
+</tr>
+<tr class="even">
+<td>app.csv.log.path.login</td>
+<td>○</td>
+<td></td>
+<td style="word-break-all">/opt/3dviewapi/customlogs/login_log.csv</td>
+<td><p>ログイン（アクセス）ログの出力先</p>
+<p>※ csv形式のみ</p></td>
+</tr>
+<tr class="odd">
+<td>app.csv.log.header.login</td>
+<td></td>
+<td></td>
+<td>省略</td>
+<td><p>ログイン（アクセス）ログのheader</p>
+<p>※ 変更不可</p></td>
+</tr>
+<tr class="even">
+<td>logging.file.name</td>
+<td></td>
+<td>○</td>
+<td style="word-break-all">/opt/tomcat/logs/3dviewapi.log</td>
+<td>アプリケーションログの出力先</td>
+</tr>
+<tr class="odd">
+<td style="word-break-all">logging.level.org.springframework.web</td>
+<td>　</td>
+<td>○</td>
+<td>アプリケーションログ出力レベル設定</td>
+<td>INFO</td>
+</tr>
+<tr class="even">
+<td style="word-break-all">logging.level.jp.co.ajiko.urbandx.view3d</td>
+<td>　</td>
+<td>○</td>
+<td>アプリケーションログ出力レベル設定</td>
+<td>DEBUG</td>
+</tr>
+</tbody>
+</table>
+<h1 id="15-アプリケーションデプロイ3dviewer">15 アプリケーションデプロイ（3DViewer）</h1>
+<p>対象プロジェクトフォルダ: erimane-dashboard-tool/SRC/3dview</p>
+<p>確認済みサーバ環境：Ubuntu 22.04.1 LTS</p>
+<p>確認済み作業PC環境 ：Windows 10 Pro</p>
+<br>
+<h2 id="15-1必要ツールのインストール-作業pc上にて行う">15-1.必要ツールのインストール　※ 作業PC上にて行う</h2>
+<ol>
+<li><p>Node.js v10.0 以降、npm v6.0 以降のインストールを行ってください。</p>
+<p><a href="https://nodejs.org/ja/download/">https://nodejs.org/ja/download/</a></p>
+<p>※ インストール方法の参考サイト：</p>
+<p><a href="https://qiita.com/echolimitless/items/83f8658cf855de04b9ce">https://qiita.com/echolimitless/items/83f8658cf855de04b9ce</a></p>
+</li>
+<li><p>コマンドでyarn v1.19.0 以降のインストールを行ってください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">npm install -g yarn
+</code></pre>
+<p>※ インストール方法の参考サイト：</p>
+<p><a href="https://qiita.com/kurararara/items/21c70c4adfd3bb323412">https://qiita.com/kurararara/items/21c70c4adfd3bb323412</a></p>
+<ol start="3">
+<li><p>Git Bashのインストール</p>
+<p><a href="https://gitforwindows.org/">https://gitforwindows.org/</a></p>
+<p>※ インストール方法の参考サイト：</p>
+<p><a href="https://qiita.com/suke_masa/items/404f06309bb32ca6c9c5">https://qiita.com/suke_masa/items/404f06309bb32ca6c9c5</a></p>
+</li>
+</ol>
+<br>
+<h2 id="15-2nodejs依存モジュールのインストール">15-2.nodejs依存モジュールのインストール</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>Git Bashからプロジェクトフォルダ直下に移動してください。</li>
+</ol>
+<pre><code class="lang-Text">cd erimane-dashboard-tool/SRC/3dview
+</code></pre>
+<ol start="2">
+<li>Git Bashからnodejs依存モジュールのインストールを行ってください。</li>
+</ol>
+<pre><code class="lang-Text">export NODE_OPTIONS=--max_old_space_size=4096
+
+yarn
+</code></pre>
+<br>
+<h2 id="15-3設定ファイルの更新">15-3.設定ファイルの更新</h2>
+<p>※ 作業PC上にて行う</p>
+<p><a href="#sec16">第16章</a>の手順で設定ファイルを更新します。</p>
+<p>※ 第16章<a href="#sec162">16-2</a>はビルド後も再ビルドすることなく変更が可能です。</p>
+<br>
+<h2 id="15-4plateau-viewのビルド">15-4.PLATEAU VIEWのビルド</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>プロジェクトフォルダ直下に移動して、ビルドを行います。</li>
+</ol>
+<pre><code class="lang-Text">cd 3dview
+
+yarn gulp release
+</code></pre>
+<ol start="2">
+<li><p>プロジェクトフォルダ直下にある</p>
+<p>devserverconfig.jsonをproductionserverconfig.jsonに名前を変更してください。変更済みの場合は不要です。</p>
+</li>
+</ol>
+<br>
+<h2 id="15-5ダッシュボード画面のデプロイ">15-5.ダッシュボード画面のデプロイ</h2>
+<p>※ サーバ上にて行う</p>
+<ol>
+<li><p>プロジェクトフォルダ直下のdashboard-uiフォルダをサーバ上に転送してください。</p>
+<p>ここでは 「/home/upload/」 に転送する事としています。</p>
+<p>転送後、「/usr/local/apache2/htdocs/」配下に配置してください。対象のリソースは下表の通りです。</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>リソース名</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>csvdata</td>
+<td>地域統計／回遊性情報の更新画面</td>
+</tr>
+<tr>
+<td>dashboard</td>
+<td>地域情報ダッシュボード画面</td>
+</tr>
+<tr>
+<td>login</td>
+<td>ログイン画面</td>
+</tr>
+<tr>
+<td>logout</td>
+<td>ログアウト画面</td>
+</tr>
+<tr>
+<td>menu</td>
+<td>メニュー画面</td>
+</tr>
+<tr>
+<td>meta</td>
+<td>ダッシュボード画面設定ファイル</td>
+</tr>
+<tr>
+<td>migratoryinfo</td>
+<td>地域統計／回遊性情報ダッシュボード画面</td>
+</tr>
+<tr>
+<td>redirect</td>
+<td>リダイレクト画面</td>
+</tr>
+<tr>
+<td>image</td>
+<td>イベント回遊情報の説明画像等</td>
+</tr>
+</tbody>
+</table>
+<p>※ 「meta/config.json」は第16章<a href="#sec164">16-4</a>の手順で設定ファイルを更新してください。</p>
+<pre><code class="lang-Text">cd /home/upload/dashboard-ui/
+
+mv csvdata /usr/local/apache2/htdocs/
+
+mv dashboard/usr/local/apache2/htdocs/
+
+mv login /usr/local/apache2/htdocs/
+
+mv logout /usr/local/apache2/htdocs/
+
+mv menu /usr/local/apache2/htdocs/
+
+mv meta /usr/local/apache2/htdocs/
+
+mv migratoryinfo /usr/local/apache2/htdocs/
+
+mv redirect /usr/local/apache2/htdocs/
+
+mv image /usr/local/apache2/htdocs/
+</code></pre>
+<ol start="2">
+<li><p>プロジェクトフォルダ直下のapache-confフォルダをサーバ上に転送してください。ここでは 「/home/upload/」 に転送する事としています。</p>
+<p>転送後、httpd.conf及び、authentication.rbを「/usr/local/apache2/htdocs/」配下に配置してください。</p>
+<p>既存のhttpd.confは 「/home/backup/」 に退避する事としています。</p>
+<p>※ 「authentication.rb」は第16章<a href="#sec165">16-5</a>の手順で設定値を更新してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">mkdir /home/backup/
+
+mv /usr/local/apache2/conf/httpd.conf /home/backup/
+
+cd /home/upload/apache-conf/
+
+mv httpd.conf /usr/local/apache2/conf/
+
+mv authentication.rb /usr/local/apache2/conf/
+</code></pre>
+<ol start="3">
+<li>httpd.conf及びauthentication.rbを変更した場合はapacheの再起動を必ず行ってください。</li>
+</ol>
+<pre><code class="lang-Text">/usr/local/apache2/bin/apachectl restart
+</code></pre>
+<br>
+<h2 id="15-6plateau-viewのデプロイ">15-6.PLATEAU VIEWのデプロイ</h2>
+<p>※ 作業PC上にて行う</p>
+<ol>
+<li>デプロイ先の作成を行います。フォルダ名の指定は自由です。</li>
+</ol>
+<pre><code class="lang-Text">mkdir /opt/PLATEAU_VIEW
+</code></pre>
+<ol start="2">
+<li><p>適当な場所にプロジェクト直下のwwwroot,node_modules,ecosystem.config.js,ecosystem-production.config.js,productionserverconfig.jsonをアップロードしてください。</p>
+</li>
+<li><p>wwwroot,node_modules,ecosystem.config.js,ecosystem-production.config.js,productionserverconfig.jsonをデプロイ先直下へ配置してください。</p>
+</li>
+</ol>
+<pre><code class="lang-Text">cd /home/upload/
+
+mv wwwroot /opt/PLATEAU_VIEW/
+
+mv node_modules /opt/PLATEAU_VIEW/
+
+mv ecosystem.config.js /opt/PLATEAU_VIEW/
+
+mv ecosystem-production.config.js /opt/PLATEAU_VIEW/
+
+mv productionserverconfig.json /opt/PLATEAU_VIEW/
+</code></pre>
+<ol start="4">
+<li>デプロイ先に移動し、PLATEAU VIEWを起動します。</li>
+</ol>
+<pre><code class="lang-Text">cd /opt/PLATEAU_VIEW
+
+./node_modules/.bin/pm2 start ecosystem-production.config.js --update-env --env production
+</code></pre>
+<br>
+<h2 id="15-7デプロイ後の確認">15-7.デプロイ後の確認</h2>
+<ol>
+<li><p>http://&lt;サーバマシンのIPアドレス&gt;/login/ にアクセスしログインを行います。</p>
+</li>
+<li><p>メニューから3dviewerを選択し、3D都市モデルビューワ画面が表示されればここまでの一連の設定が完了しています。</p>
+</li>
+</ol>
+<br>
+<h1 id="16-アプリケーション設定ファイル更新3dviewer">16 アプリケーション設定ファイル更新(3DViewer)</h1>
+<p><a id="sec16"></a></p>
+<p>3DViewerでは、以下3種類の設定ファイルを使用します。</p>
+<p>搭載するデータに合わせて適切に設定を行ってください。</p>
+<table>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 24%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>ファイル名</strong></th>
+<th><strong>パス</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>config.json</td>
+<td>/wwwroot</td>
+<td><p>・初期ファイルとして参照するファイルの設定</p>
+<p>・アプリケーション名</p>
+<p>・ヘルプメニュー内容</p></td>
+</tr>
+<tr class="even">
+<td><p>erimane_init.json</p>
+<p>（Initファイル）</p></td>
+<td>/wwwroot/init</td>
+<td><p>・初期表示位置</p>
+<p>・搭載レイヤ</p></td>
+</tr>
+<tr class="odd">
+<td>customconfig.json</td>
+<td>/packages/terriajs</td>
+<td><p>・GeoServer、APIのURL</p>
+<p>・レイヤ設定</p>
+<p>・metabase連携設定等</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="16-1configjson">16-1.config.json</h2>
+<p>本書ではカスタマイズが必要な箇所のみ記載します。</p>
+<p>詳細なカスタマイズ手順はTerria公式サイトの以下ページを参照してください。</p>
+<p><a href="https://docs.terria.io/guide/customizing/client-side-config/">https://docs.terria.io/guide/customizing/client-side-config/</a></p>
+<table>
+<colgroup>
+<col style="width: 40%">
+<col style="width: 23%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>プロパティ名</strong></th>
+<th><strong>初期値</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>initializationUrls</td>
+<td>erimane_init</td>
+<td><p>・初期ファイルとして参照するInitファイル名。</p>
+<p>Initファイルを変える場合、記載を変更。</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="16-2erimane_initjson">16-2.erimane_init.json</h2>
+<p><a id="sec162"></a></p>
+<p>本書ではカスタマイズが必要な箇所のみ記載します。</p>
+<p>詳細なカスタマイズ手順はTerria公式サイトの以下ページを参照してください。</p>
+<p><a href="https://docs.terria.io/guide/customizing/initialization-files/">https://docs.terria.io/guide/customizing/initialization-files/</a></p>
+<p><a href="https://docs.terria.io/guide/connecting-to-data/catalog-items/">https://docs.terria.io/guide/connecting-to-data/catalog-items/</a></p>
+<p>主なプロパティ一覧は下記になります。</p>
+<table>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>プロパティ名</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>homeCamera</td>
+<td>ホームボタン押下時に表示する範囲</td>
+</tr>
+<tr class="even">
+<td>initialCamera</td>
+<td>初期表示範囲とカメラ位置</td>
+</tr>
+<tr class="odd">
+<td>baseMaps</td>
+<td><p>ベースマップ（航空写真等の背景図）</p>
+<p>Items：選択セット一覧を定義</p>
+<p>enabledBaseMaps：利用可能背景図一覧</p></td>
+</tr>
+<tr class="even">
+<td>catalog</td>
+<td><p>レイヤ一覧</p>
+<p>※ 建物モデル、ランドマーク、判定レイヤ等</p></td>
+</tr>
+<tr class="odd">
+<td>workbench</td>
+<td>初期表示するレイヤ一覧</td>
+</tr>
+</tbody>
+</table>
+<p>以下に、各カスタマイズ箇所の設定手順を記載します。</p>
+<ol>
+<li><p>カメラ位置</p>
+<p>homeCameraと inititalCameraを修正し、表示させたい位置に合わせます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image264.png" style="width:7in">
+<ol start="2">
+<li><p>航空写真</p>
+<p>baseMapsのitemsを編集します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image265.jpeg" style="width:7.38056in;height:5.85069in">
+<p>背景地図を追加した場合、</p>
+<p>baseMapsのenabledBaseMapsを編集します。</p>
+<img src="../resources/devMan/image266.jpeg" style="width:7.0in">
+<ol start="3">
+<li><p>建物モデル</p>
+<p>catalogのmembersの中の「//データセット/建物モデル」を編集します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image267.jpeg" style="width:7.0in">
+<ol start="4">
+<li><p>ランドマーク</p>
+<p>Catalogのmembersの中の「//データセット/ランドマーク」を編集します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image268.jpeg" style="width:7.0in">
+<ol start="5">
+<li><p>表示レイヤ</p>
+<p>「//データセット」の下に各表示レイヤの設定を追加してください。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image269.jpeg" style="width:7.0in">
+<p>※ 回遊性情報の場合はwfs及びczmlを使用しているため、下記の箇所を置き換えてください。erimane_init.jsonでは1回目と2回目を記載していますが、必要に応じてn回目の追加及び削除を行ってください。</p>
+<img src="../resources/devMan/image270.jpeg" style="width:7.0in">
+<img src="../resources/devMan/image271.png" style="width:7.0in">
+<p>※ GeoServerのURLは以下のフォーマットとなります。</p>
+<table><tbody><tr>
+            <td>http://[WebサーバのIPアドレス]/[ワークスペース名]/wms</td>
+</tr></tbody></table>
+<p>※ GeoServerのレイヤ名は以下のフォーマットとなります。</p>
+<table><tbody><tr>
+            <td>[ワークスペース名]:[レイヤタイトル]</td>
+</tr></tbody></table>
+<p>GeoServerサイトの「レイヤプレビュー」の「ユーザ名」に表示される内容になります。</p>
+<br>
+<h2 id="16-3customconfigjson">16-3.customconfig.json</h2>
+<p><a id="sec163"></a></p>
+<p>以下プロパティ一覧です。</p>
+<p>環境に合わせて変更してください。</p>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><p><strong>プロ</strong></p>
+<p><strong>パティ①</strong></p></th>
+<th><p><strong>プロ</strong></p>
+<p><strong>パティ②</strong></p></th>
+<th><strong>初期値</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td rowspan="6">config</td>
+<td>tokenName</td>
+<td>token</td>
+<td><p>Cookie名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>tokenAttributeName</td>
+<td>X-ROLE</td>
+<td><p>tokenの属性名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>apiUrl</td>
+<td>/api</td>
+<td><p>apiのルート相対パスを指定</p>
+<p>※ 最後の/(スラッシュ)は省略</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>geoServerUrl</td>
+<td>/geoserver</td>
+<td><p>geoserverのルート相対パスを指定</p>
+<p>※ 最後の/(スラッシュ)は省略</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td style="word-break-all">activityDetailsUrlForErimane</td>
+<td style="word-break-all">/metabase/public/dashboard/xxxxxxxxx</td>
+<td>metabaseで作成したエリマネ活動情報の共有URLを設定</td>
+</tr>
+<tr class="even">
+<td style="word-break-all">activityDetailsUrlForEvent</td>
+<td style="word-break-all">/metabase/public/dashboard/xxxxxxxxx</td>
+<td>metabaseで作成したイベント活動情報の共有URLを設定</td>
+</tr>
+<tr class="odd">
+<td rowspan="3">layerId</td>
+<td>erimane</td>
+<td>//データセット/地域・エリマネ活動可視化/エリマネ活動結果</td>
+<td><p>erimane_init.jsonで設定したエリマネ活動結果のIDを設定</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>event</td>
+<td>//データセット/賑わい創出/イベント活動結果</td>
+<td><p>erimane_init.jsonで設定したイベント活動結果のIDを設定</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>excursionAnalysis</td>
+<td>//データセット/賑わい創出/回遊分析情報/[excursionAnalysisCount]回目/[excursionAnalysisType]</td>
+<td><p>erimane_init.jsonで設定した回遊性情報のID形式</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td rowspan="3">queryParameter</td>
+<td style="word-break-all">parameterNameForActivityDetailsUrl</td>
+<td style="word-break-all">%25E6%25B4%25BB%25E5%258B%2595id</td>
+<td><p>URLエンコード済みのパラメータ名を設定</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>activityType</td>
+<td><p>{</p>
+<p>"erimane":1,</p>
+<p>"event":2</p>
+<p>}</p></td>
+<td><p>metabaseのエリマネ・イベント活動リンクから3dviewerへの遷移時に使用する識別値</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>excursionAnalysisType</td>
+<td><p>{</p>
+<p>"spot":"人気スポット(3D)",</p>
+<p>"excursion":"イベント回遊情報"</p>
+<p>}</p></td>
+<td><p>回遊性情報のグラフリンクから3dviewerへの遷移時に使用する識別値</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td rowspan="2">feature</td>
+<td style="word-break-all">featurePropertyNameForExcursionAnalysisId</td>
+<td><p>{</p>
+<p>"spot":"スポット名",</p>
+<p>"excursion":"移動経路"</p>
+<p>}</p></td>
+<td><p>回遊性情報のグラフリンクから3dviewerへの遷移時に属性表示で使用する識別値</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td style="word-break-all">featurePropertyNameForParentActivityId</td>
+<td>parent_activity_id</td>
+<td><p>metabaseのエリマネ・イベント活動リンクから3dviewerへの遷移時に属性表示で使用する識別値</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="16-4ダッシュボード画面metaconfigjson">16-4.（ダッシュボード画面）meta/config.json</h2>
+<p><a id="sec164"></a></p>
+<table>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 25%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>プロパティ名</strong></th>
+<th><strong>初期値</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>title</td>
+<td>○○市エリア地域情報プラットフォーム</td>
+<td>ログイン画面、メニュー画面で使用するトップタイトルテキストを設定してください。</td>
+</tr>
+<tr class="even">
+<td>tokenName</td>
+<td>token</td>
+<td><p>Cookie名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>tokenAttributeName</td>
+<td>X-ROLE</td>
+<td><p>tokenの属性名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>urlBasePath</td>
+<td>空文字</td>
+<td><p>全体のルート相対パスを指定してください。</p>
+<p>例)<a href="http://examle.com/v1/login">http://examle.com/v1/login</a></p>
+<p>v1が全体のルート相対パスの始まりとなる場合、「/v1」を設定値とします。</p>
+<p>※ 最後の/(スラッシュ)は省略</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>apiUrlBasePath</td>
+<td>/api</td>
+<td><p>apiのルート相対パスを指定してください。</p>
+<p>※ 最後の/(スラッシュ)は省略</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>kaiyuseiMetabaseTemplateUrl</td>
+<td style="word-break-all">/metabase/public/dashboard/xxxxxxxxxx</td>
+<td>回遊性情報で読み込むiframeのテンプレートURLを指定できます。</td>
+</tr>
+<tr class="odd">
+<td>dashboardMenu</td>
+<td>省略</td>
+<td><p>indexが0の項目は管理者機能として固定の項目となります。</p>
+<p>indexが1以降の項目は自由に追加・変更が行えます。</p>
+<p>linkは必要に応じて編集・追加をしてください。</p>
+<p>urlはmetabase側で参照するurlを指定します。</p>
+<p>targetはwindow名となり「_metabase」が固定値となります。</p></td>
+</tr>
+<tr class="even">
+<td>statisticsItemsInformation</td>
+<td>省略</td>
+<td><p>地域統計／回遊性情報の更新で使用するプルダウンの表示名を設定できます。</p>
+<p>displayNameの「○○市」と記載されている箇所を変更してください。</p>
+<p>valueは固定値となる為変更できません。</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h2 id="16-5authenticationrb">16-5.authentication.rb</h2>
+<p><a id="sec165"></a></p>
+<table>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 33%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>変数名</strong></th>
+<th><strong>初期値</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LOCAL_ROOT_PATH</td>
+<td>/usr/local/apache2/htdocs</td>
+<td><p>apacheのドキュメントルートを指定してください。</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>SECRET_KEY</td>
+<td>secret</td>
+<td><p>JWTの署名の検証で使用する秘密鍵となります。</p>
+<p>application.propertiesのapp.jwt.token.secretkeyと同一の値を設定してください。</p></td>
+</tr>
+<tr class="odd">
+<td>TOKEN_NAME</td>
+<td>token</td>
+<td><p>Cookie名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="even">
+<td>SUBJECT_NAME</td>
+<td>3dviewapi</td>
+<td><p>サブジェクト名</p>
+<p>※ 基本変更不要</p></td>
+</tr>
+<tr class="odd">
+<td>API_URL</td>
+<td>省略</td>
+<td><p>metabaseとgeoserverのローカルURLが正しいことを確認してください。</p>
+<p>※ 基本変更不要。</p>
+<p>※ 末尾の/(スラッシュ)は必須</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<h1 id="17-ダッシュボード3d都市モデルビューワ連携設定">17 ダッシュボード→3D都市モデルビューワ連携設定</h1>
+<p><a id="sec17"></a></p>
+<p>回遊性情報とエリマネ・イベント活動情報以外のデータをダッシュボードから3D都市モデルビューワに連携させる場合、以下手順で3D都市モデルビューワ画面の表示URLを取得し、データベースに登録する必要があります。</p>
+<ol>
+<li><p>3D都市モデルビューワ画面を開きます。</p>
+</li>
+<li><p>表示するレイヤを開き、対象地物にフォーカスします。地物をクリックし属性を表示させます。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image272.png" style="width:5.52824in;height:2.70366in">
+<ol start="3">
+<li>ヘッダ部の「共有/印刷」ボタンを押下し、「URLで共有」の「コピー」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image273.png" style="width:5.25in;height:3.5625in">
+<ol start="4">
+<li><p>クリップボードにURLがコピーされます。</p>
+</li>
+<li><p>コピーしたURLを、データベース上のテーブルのフォーカスする地物のレコードに挿入します。</p>
+<p>※ 予めURL格納用のカラムを用意しておきます。</p>
+</li>
+<li><p>metabaseを開き、質問のSQLでURLをテーブル表示するように設定します。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image274.png" style="width:7.0in">
+<ol start="7">
+<li>ビジュアライゼーション &gt; テーブル &gt;表示列 で表示を設定します。</li>
+</ol>
+<p><img src="../resources/devMan/image275.png" style="width:3.5in"><img src="../resources/devMan/image276.png" style="width:3.5in"></p>
+<ol start="8">
+<li>項目名を設定し、表示方式で「リンク」を選択します。</li>
+</ol>
+<br>
+<h1 id="18-ストーリーの設定">18 ストーリーの設定</h1>
+<p>3D都市モデルビューワ画面では、ストーリーを作成することが可能です。</p>
+<p>以下では作成手順を記載します。</p>
+<img src="../resources/devMan/image277.png" style="width:2.5in">
+<ol>
+<li>3D都市モデルビューワ画面上で表示したいレイヤを搭載し表示させたい位置にカメラを移動させます。</li>
+</ol>
+<img src="../resources/devMan/image278.png" style="width:5.57973in;height:2.7026in">
+<ol start="2">
+<li>ヘッダ部の「ストーリー」ボタンを押下しストーリーエディタを起動します。</li>
+</ol>
+<img src="../resources/devMan/image279.png" style="width:5.57344in;height:0.42708in">
+<ol start="3">
+<li>「シーンをキャプチャ」を押下します。</li>
+</ol>
+<img src="../resources/devMan/image280.png" style="width:2.5in">
+<ol start="4">
+<li>ストーリーの名前を決め保存を押下します。</li>
+</ol>
+<img src="../resources/devMan/image281.png" style="width:5.64625in;height:0.86458in">
+<ol start="5">
+<li>ストーリー一式を作成したら、「共有」でURLをコピーします。</li>
+</ol>
+<p><img src="../resources/devMan/image282.png" style="width:2.5in"><img src="../resources/devMan/image283.png" style="width:3.3389in;height:1.99507in"></p>
+<ol start="6">
+<li><p>コピーしたURLの「http://xxxxx/v1/plateau/#start= 」以下の部分をコピーし、URLエンコード部分をデコードします。以下URLのツールでデコード可能です。</p>
+<p><a href="https://tech-unlimited.com/urlencode.html">https://tech-unlimited.com/urlencode.html</a></p>
+</li>
+<li><p>デコードした文字列をJSONeditor等で整形します。</p>
+<p><a href="https://jsoneditoronline.org/#left=local.wikafo&amp;right=local.cotoza">https://jsoneditoronline.org/#left=local.wikafo&amp;right=local.cotoza</a></p>
+</li>
+<li><p>JSONの中のinitoSources.storiesの要素をコピーします。</p>
+</li>
+</ol>
+<img src="../resources/devMan/image284.png" style="width:3in">
+<ol start="9">
+<li>7でコピーした部分をerimane_init.jsonのstoriesの中に貼り付けます。</li>
+</ol>
+<img src="../resources/devMan/image285.png" style="width:7.0in">
+<ol start="10">
+<li>3D都市モデルビューワ画面を再読み込みすると以下のメッセージが表示され、「はい」押下でストーリーが表示できていれば完了です。</li>
+</ol>
+<img src="../resources/devMan/image286.png" style="width:1.98052in;height:1.25016in">
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
