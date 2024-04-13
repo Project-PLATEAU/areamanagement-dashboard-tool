@@ -1,0 +1,120 @@
+@import "~terriajs-variables";
+@import "../../../../Sass/common/mixins";
+
+.ModalWrapper {
+  color: $dark;
+  position: fixed;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($dark-with-overlay, 0.5);
+  opacity: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Modal{
+  width: 57.292vw;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-sizing: border-box;
+  padding: 4.010vw 8.333vw 6.354vw 7.240vw;
+}
+.title{
+  font-size: 1.042vw;
+font-weight: bold;
+color: #122757;
+}
+.title1{
+  font-size: 0.833vw;
+}
+.title2{
+  input{
+height: 1.970vw;
+background: #FFFFFF;
+border: 1px solid #DDDDDD;
+border-radius: 4px;
+outline: none !important;
+font-size: 0.729vw;
+  }
+  select{
+    height: 1.970vw;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    outline: none !important;
+    font-size: 0.729vw;
+      }
+}
+.button{
+  button{
+height: 1.979vw;
+background: #FFFFFF;
+border: 1px solid #666666;
+border-radius: 4px;
+margin:0 0.521vw;
+font-size: 0.781vw;
+color: #666666;
+padding: 0 2.344vw;
+&:nth-child(1){
+  background: #2AAE7A;
+  color: #fff;
+  border-color: #2AAE7A;
+}
+  }
+}
+.themeLayerTable{
+  thead{
+      tr{
+          th{
+              font-size: 0.729vw;
+              height: 2.396vw;
+          }
+      }
+  }
+  tbody{
+      tr{
+          td{
+              font-size: 0.729vw; 
+              color: #333;
+              height: 2.396vw;
+              input{
+                  outline: none !important;
+                  border: none !important;
+              }
+              &:nth-last-child(1){
+                button{
+                  width: 3.646vw !important;
+                  height: 1.563vw !important;
+                  background: #FFF2F2 !important;
+                  border: 1px solid #FFC4C4 !important;
+                  border-radius: 4px !important;
+                  color: #FA3232 !important;
+                  font-size: 0.729vw !important;
+                  margin: 0 0.521vw;
+                  padding: 0 !important;
+                }
+              }
+              &:nth-last-child(2){
+                button{
+                  width: 3.646vw !important;
+                  height: 1.563vw !important;
+                  background: #F6FFFB !important;
+                  border: 1px solid #90DBBD !important;
+                  border-radius: 4px !important;
+                  color: #2AAE7A !important;
+                  font-size: 0.729vw !important;
+                  margin: 0 0.521vw;
+                  padding: 0 !important;
+                }
+              }
+          }
+      }
+  }
+}

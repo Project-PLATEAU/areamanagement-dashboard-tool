@@ -1,0 +1,40 @@
+@import "~terriajs-variables";
+
+.helpBtn {
+  composes: btn from "../../../Sass/common/_buttons.scss";
+  composes: btn--map from "../../../Sass/common/_buttons.scss";
+}
+
+.helpBtn svg{
+  height: auto;
+  width: 27px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 auto;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.helpBtnSelected {
+  background-color: white !important;
+  font-size: 0.8125rem;
+  padding: 5px;
+  display: block;
+  min-height: 32px;
+  font-family: "Nunito", sans-serif;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  composes: btn from "../../../Sass/common/_buttons.scss";
+}
+
+.helpBtnSelected svg{
+  height: auto;
+  width: 27px;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 auto;
+  padding-left: 3px;
+  padding-right: 3px;
+}

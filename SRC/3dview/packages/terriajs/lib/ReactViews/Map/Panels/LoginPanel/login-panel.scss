@@ -1,0 +1,107 @@
+@import "~terriajs-variables";
+@import "../../../../Sass/common/mixins";
+
+.LoginModalWrapper {
+  color: $dark;
+  position: fixed;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($dark-with-overlay, 0.25);
+  opacity: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LoginModal{
+  background: whitesmoke;
+  padding: 10px 20px;
+  border-radius: 3px;
+}
+
+.z_login{
+  .LoginModalWrapper{
+    @media (max-width: 768px)  {
+      background: rgba(0,0,0,0.5);
+    }
+  }
+  .LoginModal{
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0px 26px 36px 0px #EBEEF7;
+border-radius: 14px;
+@media (max-width: 768px)  {
+width: 90%;
+box-sizing: border-box;
+box-shadow:initial;
+}
+.kAhQEk{
+margin-bottom: 0;
+}
+.jCqlPJ{
+margin-bottom: 0;
+}
+  }
+  .li{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+.h1{
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 9px;
+}
+.input{
+  width: 530px;
+  background: #FFFFFF;
+  border: 1px solid #DDDDDD;
+  border-radius: 6px;
+  box-sizing: border-box;
+  // padding: 0 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  @media (max-width: 768px)  {
+    width: 100%;
+  }
+  img{
+    width: auto;
+    margin-right: 10px;
+    position: absolute;
+    left: 20px;
+    z-index: 9;
+    &.yj{
+      left: auto;
+      right: 10px;
+    }
+  }
+  div{
+    flex: 1;
+    input{
+      background: #fff;
+      padding-left: 50px;
+      border: 1px solid #DDDDDD;
+      border-radius: 6px;
+      &:-internal-autofill-selected{
+        background-color: #fff !important;
+      }
+      @media (max-width: 768px)  {
+        border: 1px solid #2AAE7A;
+        border-radius: 6px;
+      }
+    }
+  }
+}
+  }
+  Button{
+    width: 100%;
+    min-height: 50px;
+    border-radius: 6px;
+  }
+}

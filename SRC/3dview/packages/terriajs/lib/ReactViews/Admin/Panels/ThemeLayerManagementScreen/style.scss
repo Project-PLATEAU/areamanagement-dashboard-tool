@@ -1,0 +1,128 @@
+.z_button1{
+    border: none;
+outline: none;
+background: none;
+    width: 6.250vw;
+    height: 1.970vw;
+    background: #2AAE7A;
+border-radius: 4px;
+color: #fff;
+font-size: 0.781vw;
+}
+.z_button2{
+    border: none;
+outline: none;
+background: none;
+    width: 6.250vw;
+    height: 1.970vw;
+border-radius: 4px;
+color: #666;
+font-size: 0.781vw;
+box-sizing: border-box;
+border: 1px solid #666;
+}
+.z_select{
+    select{
+        background: #FFFFFF;
+        border: 1px solid #EBEEF7;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: #536285;
+        outline: none !important;
+    }
+}
+.title{
+    font-size: 0.833vw !important;
+    color: #122757;
+}
+.title1{
+    font-size:0.833vw !important;
+    color:#333;
+    margin-bottom: 10px;
+}
+.img{
+    width: 3.125vw;
+}
+.themeLayerTable{
+    thead{
+        tr{
+            th{
+                font-size: 0.729vw;
+                height: 2.396vw;
+            }
+        }
+    }
+    tbody{
+        tr{
+            td{
+                font-size: 0.729vw; 
+                color: #333;
+                height: 2.396vw;
+                input{
+                    outline: none !important;
+                    border: none !important;
+                }
+            }
+        }
+    }
+}
+
+.themeLayerTable1{
+    thead{
+        tr{
+            th{
+                font-size: 0.729vw;
+                height: 2.396vw;
+            }
+        }
+    }
+    tbody{
+        tr{
+            td{
+                font-size: 0.729vw; 
+                color: #333;
+                height: 2.396vw;
+                input{
+                    outline: none !important;
+                    border: none !important;
+                }
+                button{
+                    background: #F6FFFB !important;
+border: 1px solid #90DBBD !important;
+border-radius: 4px !important;
+width: 3.646vw !important;
+span{
+    color: #2AAE7A;
+}
+                }
+            }
+        }
+    }
+}
+
+.themeLayerTable2{
+    thead{
+        tr{
+            th{
+                font-size: 0.729vw;
+                height: 2.396vw;
+            }
+        }
+    }
+    tbody{
+        tr{
+            td{
+                font-size: 0.729vw; 
+                color: #333;
+                height: 2.396vw;
+                input{
+                    outline: none !important;
+                    border: none !important;
+                }
+                button{
+                    width: 3.646vw !important;
+                }
+            }
+        }
+    }
+}

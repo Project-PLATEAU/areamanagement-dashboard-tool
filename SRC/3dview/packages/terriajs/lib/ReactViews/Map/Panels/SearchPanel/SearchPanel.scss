@@ -1,0 +1,86 @@
+@import "~terriajs-variables";
+@import "../../../../Sass/common/mixins";
+
+.z_jiansuo{
+    height: 100%;
+    .OKQLs{
+      width: 12px;
+      height: 6px;
+      overflow: hidden;
+      z-index: 10;
+      position: absolute;
+      top: 55%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      right: 15px;
+      pointer-events: none;
+      &::before{
+        content: "";
+        position: absolute;
+        transform: rotate(45deg);
+        width: 12px;
+        height: 12px;
+        left: 0;
+        bottom: 3px;
+        background: #536285;
+      }
+      svg{
+        display: none;
+      }
+    }
+    .gZBeA{
+        @media (max-width: 768px)  {
+            padding-top: 15px;
+        }
+    }
+    .egvBvY{
+      font-weight: bold;
+      font-size: 20px;
+      color: #2AAE7A;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      @media (max-width: 768px)  {
+        text-align: center;
+        font-weight: normal;
+        font-size: 18px;
+        font-weight: normal;
+      }
+    }
+    Button{
+      background: #F5F5F5;
+      border: 1px solid #DDDDDD;
+      border-radius: 4px;
+      height: 38px;
+      width: 41%;
+      @media (max-width: 768px)  {
+        border-radius: 40px;
+        width: 48%;
+      }
+    }
+    .CEiLi{
+      box-sizing: border-box;
+      background: #f5f5f5;
+      border:1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      z-index: 9;
+      @media (max-width: 768px)  {
+        background: #fff;
+      }
+    }
+
+    .z_OKQLs{
+      svg{
+        opacity: 0;
+      }
+    }
+    
+    .eRJlwo{
+      background-color: #2AAE7A !important;
+      min-height: 38px !important;
+    }
+    .kbEUjn{
+      margin-bottom: 50px;
+    }
+  }

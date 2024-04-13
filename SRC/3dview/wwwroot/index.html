@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="terria">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Use Chrome Frame in IE -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="description" content="PLATEAUは国土交通省が主導する、日本全国の3D都市モデルの整備・活用・オープンデータ化プロジェクト。PLATEAU VIEWでは、3D都市モデルをウェブ上で可視化するための実証環境として構築されたもの。">
+  <meta name="copyright" content="MLIT Japan">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+  <link rel="manifest" href="favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#282D32">
+  <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#282D32">
+  <title>地域情報プラットフォーム</title>
+  <style>
+	html {
+	  touch-action: manipulation!important;
+	}
+
+	#screenRotation {
+	  display: none;
+	  z-index: 99999;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0, 0, 0, .5);
+	}
+
+	#screenRotation img {
+	  text-align: center;
+	  display: block;
+	  margin: 0 auto;
+	}
+
+	#screenRotation div {
+	  margin: 0 auto;
+	  text-align: center;
+	  font-weight: bold;
+	  color: #fff;
+	}
+
+	.tjs-activity-panel__content, .tjs-post-layer-panel__content {
+	  padding-bottom: 200px!important;
+	  -webkit-overflow-scrolling: auto;
+	  -webkit-overflow-scrolling: touch;
+	}
+
+	.tjs-standard-user-interface__mainLeftGrid, .tjs-standard-user-interface__mainRightGrid {
+	  -webkit-overflow-scrolling: auto;
+	  -webkit-overflow-scrolling: touch;
+	}
+
+	#viewerGridLayout .react-resizable-handle::after {
+	  content: "";
+	  position: absolute;
+	  right: 3px;
+	  bottom: 3px;
+	  width: 7px;
+	  height: 7px;
+	  border-right: 2px solid rgba(255, 255, 255, 1);
+	  border-bottom: 2px solid rgba(255, 255, 255, 1);
+	}
+
+	.tjs-feature-info-section__content table iframe {
+	  max-width: 100%;
+	}
+
+	.tjs-feature-info-panel__panel .tjs-feature-info-section__content td img {
+	  width: 100%;
+	}
+
+	.tjs-post-layer-panel__upload1 .bkVNSv {
+	  margin-bottom: 0!important;
+	}
+
+	.tjs-post-layer-panel__upload1 img, .tjs-activity-panel__upload1 img {
+	  width: 100%!important;
+	  height: auto!important;
+	}
+
+	.tjs-SearchPanel__OKQLs::before, .tjs-RoutePanel__OKQLs::before, .tjs-feature-info-section__OKQLs::before {
+	  display: none!important;
+	}
+
+	.tjs-SearchPanel__OKQLs, .tjs-RoutePanel__OKQLs, .tjs-feature-info-section__OKQLs {
+	  content: ''!important;
+	  display: block!important;
+	  position: absolute;
+	  top: 50%!important;
+	  right: 0!important;
+	  transform: translate(-50%, -50%)!important;
+	  width: 0!important;
+	  height: 0!important;
+	  border: 10px solid transparent!important;
+	  border-top: 10px solid #536285!important;
+	  border-bottom: none!important;
+	  transition: .5s;
+	}
+
+	.tjs-feature-info-section__OKQLs {
+	  border: 5px solid transparent!important;
+	  border-top: 7px solid #fff!important;
+	  right: 5px!important;
+	}
+
+	@media (max-width: 768px) {
+	  .tjs-post-layer-panel__z_shangchuan .tjs-post-layer-panel__upload1 {
+	    width: 100%!important;
+	    height: 100%!important;
+	  }
+	  .kNgOBs {
+	    opacity: 1!important;
+	  }
+	  .tjs-post-layer-panel__z_shangchuan .tjs-post-layer-panel__bJrJHb::before, .tjs-post-layer-panel__z_shangchuan .tjs-post-layer-panel__bJrJHb::after {
+	    display: none;
+	  }
+	}
+
+	@media (max-width: 460px) {
+	  #viewerGridLayout {
+	    width: 100%!important;
+	    height: 100%!important;
+	    transform: none!important;
+	  }
+	  .react-grid-layout {
+	    min-height: 90%!important;
+	  }
+	  .evgfUi .tjs-map-column__map__inner+div {
+	    padding-bottom: 0!important;
+	    text-align: left!important;
+	    background: rgba(255, 241, 0, 0.7)!important;
+	  }
+	  .evgfUi .tjs-map-column__map__inner+div p {
+	    padding: 10px;
+	  }
+	}
+
+	@media (orientation: landscape) {
+	  @media (max-width: 768px) {
+	    .tjs-RoutePanel__z_jingluo .YgOYj {
+	      width:100%!important;
+	    }
+	    .tjs-login-panel__LoginModalWrapper {
+	      z-index: 99999!important;
+	    }
+	    #viewerGridLayout {
+	      width: 100%!important;
+	      transform: (0, 0);
+	    }
+	  }
+	}
+  </style>
+  <script>
+  L_PREFER_CANVAS = true;
+
+  function viewportSet() {
+    let wsw = window.screen.width;
+    if (wsw <= 460) {
+      // デバイス横幅460以下
+      document.querySelector("meta[name='viewport']").setAttribute("content", "width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no");
+    } else {
+      // それ以外
+      document.querySelector("meta[name='viewport']").setAttribute("content", "width=1580");
+    }
+  }
+
+  function viewportSetForMobile(alertFlag) {
+    let innerHeight = window.innerHeight;
+    let userDevice = navigator.userAgent;
+    let height = window.screen.height;
+    const mobileFlag = userDevice.indexOf('iPhone') > 0 || userDevice.indexOf('iPod') > 0 || (userDevice.indexOf('Android') > 0 && userDevice.indexOf('Mobile') > 0 && height < 500);
+    if (mobileFlag) {
+      if (window.orientation % 180 == 90 || window.orientation % 180 == -90) {
+        document.querySelector("meta[name='viewport']").setAttribute("content", "width=760, user-scalable=no");
+        document.getElementById("screenRotation").style.display = "block";
+      } else {
+        document.getElementById("screenRotation").style.display = "none";
+        viewportSet();
+        document.getElementsByClassName("react-grid-layout")[0].style.cssText = "height:" + innerHeight + "px!important";
+      }
+    } else {
+      if (mobileFlag) {
+        document.getElementsByClassName("react-grid-layout")[0].style.cssText = "height:" + innerHeight + "px!important";
+      }
+      document.getElementById("screenRotation").style.display = "none";
+      viewportSet();
+    }
+  }
+  window.addEventListener("DOMContentLoaded", viewportSet, false);
+  window.addEventListener("resize", () => {
+    viewportSetForMobile()
+  }, false);
+  window.addEventListener("orientationchange", () => {
+    viewportSetForMobile(true)
+  }, false);
+  </script>
+</head>
+<body>
+  <div id="ui">
+  </div>
+  <div id="screenRotation">
+    <img src="./sample/screen-rotation.png">
+    <div>縦画面で使用してください</div>
+  </div>
+  <script src="./build/TerriaMap.js"></script>
+</body>
+</html>

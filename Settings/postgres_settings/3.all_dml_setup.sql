@@ -1,0 +1,9 @@
+\encoding UTF8;
+\i ./dml/post_layer_attribute.sql;
+\i ./dml/activity_type.sql;
+\i ./dml/graph_list_template_settings.sql;
+\i ./dml/graph_list_type.sql;
+\i ./dml/group_type.sql;
+\i ./dml/layer.sql;
+\i ./dml/layer_source.sql;
+\i ./dml/layer_source_field.sql;

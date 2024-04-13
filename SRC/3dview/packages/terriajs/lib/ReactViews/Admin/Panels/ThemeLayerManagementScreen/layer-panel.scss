@@ -1,0 +1,111 @@
+@import "~terriajs-variables";
+@import "../../../../Sass/common/mixins";
+
+.ModalWrapper {
+  color: $dark;
+  position: fixed;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($dark-with-overlay, 0.5);
+  opacity: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Modal{
+  background: white;
+  padding: 3.636vw 5.208vw;
+  border-radius: 14px;
+  width: 57.292vw;
+  height: 38.542vw;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.833vw;
+}
+.title{
+  font-size: 1.042vw;
+  color: #122757;
+}
+.z_table{
+  width: 100%;
+  thead{
+    tr{
+      font-size: 0.833vw;
+    }
+    td{
+      height: 1.979vw;
+      input{
+        height: 1.979vw;
+        font-size: 0.729vw;
+        outline: none !important;
+        border: 1px solid #ddd !important;
+      }
+      select{
+        height: 1.979vw;
+        font-size: 0.729vw;
+        outline: none !important;
+      }
+    }
+  }
+  tbody{
+    tr{
+      font-size: 0.833vw;
+    }
+    td{
+      height: 1.979vw;
+      &:nth-last-child(1){
+        text-align: center;
+        input{
+          width: 100%;
+          border: 1px solid #FAFAFA !important;
+          background: #FAFAFA !important;
+          text-align: center;
+        }
+      }
+      input{
+        height: 1.979vw;
+        font-size: 0.729vw;
+        width: 14.583vw;
+        outline: none !important;
+        border: 1px solid #ddd !important;
+      }
+      select{
+        height: 1.979vw;
+        font-size: 0.729vw;
+        outline: none !important;
+        width: 14.583vw;
+      }
+    }
+  }
+}
+
+.z_button1{
+  border: none;
+outline: none;
+background: none;
+  width: 6.250vw;
+  height: 1.970vw;
+  background: #2AAE7A;
+border-radius: 4px;
+color: #fff;
+font-size: 0.781vw;
+}
+.z_button2{
+  border: none;
+outline: none;
+background: none;
+  width: 6.250vw;
+  height: 1.970vw;
+border-radius: 4px;
+color: #666;
+font-size: 0.781vw;
+box-sizing: border-box;
+border: 1px solid #666;
+}

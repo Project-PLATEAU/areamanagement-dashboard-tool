@@ -1,0 +1,131 @@
+{
+    "config": {
+        "plateauPath":"/plateau",
+        "apiUrl":"/api",
+        "geoServerUrl":"/geoserver",
+        "geoServerWorkSpaceName":"workspace",
+        "defaultShowWorkbench":false,
+        "defaultThemeId":"1",
+        "attachmentFileUrlForActivity":"/api/activity/attachments",
+        "attachmentFileUrlForPostLayer":"/api/layers/attachments",
+        "billboardUrlForPostLayer":"/api/layers/billboard/iconImage",
+        "billboardUrlForActivity":"/api/activity/billboard/iconImage",
+        "layerTypeNamesForRouteSearch":"workspace:link_3d",
+        "layerTypeNamesForMachiChomeSearch":"workspace:chochomokukai_part"
+    },
+    "layout":{
+        "leftInitialWidth":4,
+        "leftInitialHeight":8,
+        "rightInitialWidth":4,
+        "rightInitialHeight":8
+    },
+    "layerUniqueIdCorrespondenceTable":{
+        "activity":"//データセット/地域・エリマネ活動可視化/エリマネ活動結果",
+        "event":"//データセット/賑わい創出/イベント活動結果",
+        "postLayer1":"//データセット/投稿レイヤ/投稿レイヤ1",
+        "postLayer2":"//データセット/投稿レイヤ/投稿レイヤ2",
+        "postLayer3":"//データセット/投稿レイヤ/投稿レイヤ3",
+        "postLayer4":"//データセット/投稿レイヤ/投稿レイヤ4",
+        "postLayer5":"//データセット/投稿レイヤ/投稿レイヤ5",
+        "postLayer6":"//データセット/投稿レイヤ/投稿レイヤ6",
+        "postLayer7":"//データセット/投稿レイヤ/投稿レイヤ7",
+        "postLayer8":"//データセット/投稿レイヤ/投稿レイヤ8",
+        "postLayer9":"//データセット/投稿レイヤ/投稿レイヤ9",
+        "postLayer10":"//データセット/投稿レイヤ/投稿レイヤ10"
+    },
+    "statisticsItemsInformation": [
+        {
+            "value": "chika2",
+            "displayName": "地価公示価格"
+        },
+        {
+            "value": "erimane_ninchido",
+            "displayName": "活動前と比較した認知度の推移"
+        },
+        {
+            "value": "gis_joint2_household",
+            "displayName": "町丁目別人口世帯数"
+        },
+        {
+            "value": "gis_joint2_population",
+            "displayName": "町丁目別年齢別人口"
+        },
+        {
+            "value": "gis_joint2_size",
+            "displayName": "町丁目別世帯人員別世帯数"
+        },
+        {
+            "value": "gis_joint2_office",
+            "displayName": "事務所数"
+        },
+        {
+            "value": "gis_joint2_employee",
+            "displayName": "従業者数"
+        },
+        {
+            "value": "station_users",
+            "displayName": "駅の乗降客数"
+        },
+        {
+            "value": "syogyoshisetsu",
+            "displayName": "商業施設"
+        },
+        {
+            "value": "syokencyosa_shijiritsu",
+            "displayName": "商圏調査の支持率"
+        },
+        {
+            "value": "city_summary",
+            "displayName": "市まとめ"
+        },
+        {
+            "value": "kaiyusei_people",
+            "displayName": "回遊性情報_来場者人数"
+        },
+        {
+            "value": "kaiyusei_age",
+            "displayName": "回遊性情報_来場者年齢"
+        },
+        {
+            "value": "kaiyusei_gender",
+            "displayName": "回遊性情報_来場者性別"
+        },
+        {
+            "value": "kaiyusei_region",
+            "displayName": "回遊性情報_来場者地域"
+        },
+        {
+            "value": "kaiyusei_steps",
+            "displayName": "回遊性情報_来場者歩数"
+        }
+    ],
+    "postLayerSelectOption" : [],
+    "featureIdAliasName":"属性ID",
+    "activityIdAliasName":"活動ID",
+    "attributeDisplayExclusionList" : [
+        "id",
+        "_id_",
+        "feature_id",
+        "gml_id",
+        "parent_feature_id",
+        "activity_id",
+        "parent_activity_id",
+        "category",
+        "mid"
+    ],
+    "attributeDisplayExclusionListForLayerName":[],
+    "columnDisplayExclusionList" : [
+        "属性ID",
+        "活動ID",
+        "id",
+        "MID"
+    ],
+    "postLayerIconCorrespondenceTable":{
+        "sample1":"/plateau/sample/sample_b_1.png",
+        "sample2":"/plateau/sample/sample_b_4.png",
+        "sample3":"/plateau/sample/sample_b_5.png",
+        "sample4":"/plateau/sample/sample_b_6.png",
+        "sample5":"/plateau/sample/sample_b_7.png",
+        "sample6":"/plateau/sample/sample_b_8.png"
+    }
+}

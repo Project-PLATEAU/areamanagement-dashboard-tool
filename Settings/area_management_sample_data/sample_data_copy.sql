@@ -1,0 +1,13 @@
+\COPY chika2 FROM './area_statistics/chika2.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY erimane_ninchido FROM './area_statistics/erimane_ninchido.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY gis_joint2 FROM './area_statistics/gis_joint2.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY region_summary FROM './area_statistics/region_summary.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY sougou_hyouka_result FROM './area_statistics/sougou_hyouka_result.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY station_users FROM './area_statistics/station_users.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY syogyoshisetsu FROM './area_statistics/syogyoshisetsu.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY syokencyosa_shijiritsu FROM './area_statistics/syokencyosa_shijiritsu.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY kaiyu_jinryu_chiiki_1 FROM './migratory_info/kaiyu_jinryu_chiiki_1.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY kaiyu_jinryu_hosuu_1 FROM './migratory_info/kaiyu_jinryu_hosuu_1.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY kaiyu_jinryu_nenrei_1 FROM './migratory_info/kaiyu_jinryu_nenrei_1.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY kaiyu_jinryu_ninzuu_1 FROM './migratory_info/kaiyu_jinryu_ninzuu_1.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
+\COPY kaiyu_jinryu_seibetsu_1 FROM './migratory_info/kaiyu_jinryu_seibetsu_1.csv' DELIMITER ',' CSV HEADER encoding 'UTF8';
