@@ -18,8 +18,10 @@
 また、スマートフォンからの情報閲覧、地域情報の登録機能も実装しており、地域情報の集約、公開が可能です。<br>
 詳細は<a href="https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0080_ver01.pdf">技術検証レポート</a>を参照してください。</p>
 
-## **3.利用手順**<!-- 納品時リンク変更 -->
+## **3.利用手順**
+
 ### **インストール**
+
 * 本システムで必要となるソフトウェアを下表に示します。 [稼働環境構築手順書](https://project-plateau.github.io/areamanagement-dashboard-tool/manual/devMan.html)を参照の上、ソフトウェアのインストール及びセットアップを完了させてください。
 
     [エリアマネジメント・ダッシュボード　稼働環境構築手順書](https://project-plateau.github.io/areamanagement-dashboard-tool/manual/devMan.html)
@@ -43,13 +45,14 @@
   
 
 ### **使い方**
+
 #### **利用できる動作環境**
 
 最新のデスクトップ版　Chrome、Safari、Edge上
 
 最小システム要件　CPU：2 GHz 4コア以上、システムメモリ（RAM）：4GB以上
 
-#### **操作マニュアル**<!-- 納品時リンク変更 -->
+#### **操作マニュアル**
 
 本システムの使い方は下記の操作マニュアルを参照ください。
 
